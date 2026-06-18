@@ -1,6 +1,6 @@
 <div class="bravo-form-search-all {{$style}} @if(!empty($style) and $style == "carousel") bravo-form-search-slider @endif" @if(empty($style)) style="background-image: linear-gradient(0deg,rgba(0, 0, 0, 0.0),rgba(0, 0, 0, 0.0)),url('{{$bg_image_url}}') !important;width: 100%;
 
-    background-size: contain !important;
+    /* background-size: contain !important; */
     background-repeat: no-repeat !important;
     background-position: top !important;
       " @endif>

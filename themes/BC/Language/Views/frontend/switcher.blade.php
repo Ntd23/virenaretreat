@@ -4,14 +4,13 @@
 @endphp
 {{--Multi Language--}}
 @if(!empty($languages) && setting_item('site_enable_multi_lang'))
-    <li class="dropdown">
+    <li class="dropdown language-dropdown">
         @foreach($languages as $language)
             @if($locale == $language->locale)
                 <a href="#" data-toggle="dropdown" class="is_login">
                     @if($language->flag)
                         <span class="flag-icon flag-icon-{{$language->flag}}"></span>
                     @endif
-                    {{$language->name}}
                     <i class="fa fa-angle-down"></i>
                 </a>
             @endif
