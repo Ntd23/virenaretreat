@@ -1,0 +1,7 @@
+9999999999s:104:".blog-breadcrumb {
+    display: none !important;
+}
+
+.text-heading{
+    display: none !important;
+}";

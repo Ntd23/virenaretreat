@@ -1,0 +1,12 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /login
+Disallow: /register
+Disallow: /booking/
+Disallow: /user/
+Disallow: /forgot-password
+Disallow: /social-login/
+Disallow: /*?set_currency=*
+Disallow: /*?set_lang=*
+
+Sitemap: https://virenaretreat.com/sitemap.xml

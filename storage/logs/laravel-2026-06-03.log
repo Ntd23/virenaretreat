@@ -1,0 +1,776 @@
+[2026-06-03 07:36:45] production.DEBUG: From: Booking Core <contact@bookingcore.test>
+To: contact@bookingcore.test
+Subject: [Virenaretreat] New message
+MIME-Version: 1.0
+Date: Wed, 03 Jun 2026 07:36:45 +0000
+Message-ID: <f1e312b1c47345de7c4d7488b484ef76@bookingcore.test>
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<!doctype html>
+<html xmlns=3D"http://www.w3.org/1999/xhtml" xmlns:v=3D"urn:schemas-microso=
+ft-com:vml" xmlns:o=3D"urn:schemas-microsoft-com:office:office">
+    <head>
+        <title></title>
+        <meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge">
+        <!--<![endif]-->
+        <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DU=
+TF-8">
+        <meta name=3D"viewport" content=3D"width=3Ddevice-width, initial-sc=
+ale=3D1">
+        <link rel=3D'stylesheet' id=3D'google-font-css-css'  href=3D'https:=
+//fonts.googleapis.com/css?family=3DPoppins%3A400%2C500%2C600' type=3D'text=
+/css' media=3D'all' />
+        <style>
+            .b-email-wrap{
+                background: #ebeef2;
+                padding: 40px 0px;
+                color: #1A2B48;
+                font-size: 14px;
+                font-family: 'Poppins', sans-serif !important;
+                font-weight: normal;
+                line-height: 1.5;
+                overflow-x: hidden;
+                margin: 0px;
+            }
+            .b-header{
+                background: #c6483f;
+                padding: 30px;
+                color: white;
+            }
+            .b-header .site-title,
+            .b-header h1,
+            .b-header h2,
+            .b-header h3,
+            .b-header h4,
+            .b-header h5,
+            .b-header p
+            {
+                margin:0px;
+                display: block;
+                text-align: center;
+            }
+            .b-container{
+                max-width: 600px;
+                margin: 0px auto;
+            }
+
+            .b-panel{
+                border: 1px solid rgba(0, 0, 0, 0.1);
+                margin-bottom: 30px;
+                padding: 30px;
+                background: white;
+            }
+            .b-panel .b-panel{
+                padding: 0px;
+                box-shadow: none;
+            }
+            .b-panel-title{
+                text-align: center;
+                margin-bottom: 30px;
+                font-size: 24px;
+                font-weight: 500;
+            }
+            .b-table-wrap{
+                overflow-x:auto;
+            }
+            .b-table{
+                width: 100%;
+            }
+            .b-table tr td,
+            .b-table .b-tr,
+            .b-table tr th{
+                padding: 10px;
+            }
+            .b-table .b-tr{
+                clear: both;
+                border-bottom: 1px solid #EAEEF3;
+            }
+            .b-table .b-tr:after{
+                display: table;
+                clear: both;
+                content:'';
+            }
+            .b-table tr td{
+                border-bottom: 1px solid #EAEEF3;
+            }
+            .b-table tbody tr:nth-child(even) td{
+                /*background: #f5f7fd;*/
+            }
+            .b-table tbody tr td.label,
+            .b-table .b-tr .label{
+                font-weight: 500;
+            }
+            .b-table tbody tr td.val,
+            .b-table .b-tr .val{
+                text-align: right;
+            }
+
+            .b-table tbody tr td.val p,
+            .b-table .b-tr .val p{
+                padding: 0;
+                margin: 0;
+            }
+
+            .b-table .b-tr .label,
+            .b-table .b-tr .val{
+                float: left;
+                width: 50%;
+            }
+            .pricing-list{
+                text-align: left;
+                margin: 0px;
+                padding: 0px;
+                list-style: none;
+            }
+            .pricing-list td{
+                padding: 7px 0px;
+            }
+            .pricing-list td .val{
+                text-align: right;
+            }
+            .pricing-list .no-flex{
+                display: block;
+            }
+            .email-headline{
+                margin-top: 0px;
+            }
+
+            .text-center{
+                text-align: center;
+            }
+
+            .btn{
+                display: inline-block;
+                color: #212529;
+                text-align: center;
+                vertical-align: middle;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                background-color: #ebeef2;
+                line-height: 1.5;
+                border: none;
+                -webkit-box-shadow: none;
+                box-shadow: none;
+                border-radius: 3px;
+                padding: 7px 20px;
+                -webkit-transition: background .2s, color .2s;
+                transition: background .2s, color .2s;
+                font-size: 14px;
+                font-weight: 500;
+                text-decoration: none;
+            }
+            .btn.btn-primary{
+
+                background: #5191FA;
+                color: white;
+            }
+            .mt20{
+                margin-top: 20px;
+            }
+            .no-padding{
+                padding: 0px;
+            }
+            .no-r-padding{
+                padding-right: 0px!important;
+            }
+            .fsz21{
+                font-size: 21px;
+            }
+            .no-b-border{
+                border-bottom: 0px!important;
+            }
+            @media screen and (max-width: 768px) {
+                .b-panel{
+                    padding: 15px;
+                }
+                .b-table tr td,
+                .b-table tr th{
+                    padding-right: 2px;
+                    padding-left: 2px;
+                }
+                .b-panel-title{
+                    font-size: 18px;
+                    font-weight: bold;
+                    margin-bottom: 15px;
+                }
+                .b-email-wrap{
+                    padding: 0px;
+                }
+
+                .b-table .b-tr .label,
+                .b-table .b-tr .val{
+                    float:none;
+                }
+
+                .b-table .b-tr .val{
+                    text-align: left;
+                }
+            }
+                    </style>
+    </head>
+    <body>
+        <div class=3D"b-email-wrap">
+            <div class=3D"" style=3D"">
+    <div class=3D"b-container">
+        <div class=3D"b-header">
+                        <h1 class=3D"site-title">Virenaretreat</h1>
+        </div>
+    </div>
+</div>
+
+           =20
+    <div class=3D"b-container">
+        <div class=3D"b-panel">
+            <h3 class=3D"email-headline"><strong>Hello Administrator</stron=
+g></h3>
+            <p>Here are new contact information:</p>
+            <br>
+            <div class=3D"b-panel">
+                <div class=3D"b-table-wrap">
+                    <table class=3D"b-table" cellspacing=3D"0" cellpadding=
+=3D"0">
+                        <tr class=3D"info-first-name">
+                            <td class=3D"label">T=C3=AAn</td>
+                            <td class=3D"val">Lucy Jordon</td>
+                        </tr>
+                        <tr class=3D"info-first-name">
+                            <td class=3D"label">Email</td>
+                            <td class=3D"val">lucyjordon.mkt@gmail.com</td>
+                        </tr>
+                        <tr class=3D"info-first-name">
+                            <td class=3D"label">Tin nh=E1=BA=AFn</td>
+                            <td class=3D"val">Hello team virenaretreat.com,
+
+I came across your Website, when searching on Google and noticed that you d=
+o not show in the organic listings.
+
+We can increase targeted traffic to your website so that it appears on Goog=
+le&#039;s first page. Bing, Yahoo, AOL, etc.
+
+Our main focus will be to help generate more sales &amp; online traffic.
+
+May I send you a quote &amp; price list?
+
+Best regards,
+Lucy Jordon Project Manager
+
+
+
+
+
+Note: - If you=E2=80=99re not Interested in our Services, send us  &quot; N=
+O &quot;</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+            <div class=3D"b-footer" style=3D"margin-top: 0px;">
+    <div class=3D"b-container">
+       =20
+    </div>
+</div>        </div>
+    </body>
+</html>
+  
+[2026-06-03 07:58:54] production.DEBUG: From: Booking Core <contact@bookingcore.test>
+To: contact@bookingcore.test
+Subject: [Virenaretreat] New message
+MIME-Version: 1.0
+Date: Wed, 03 Jun 2026 07:58:54 +0000
+Message-ID: <426b6b5c3e5313735baca98d7d522647@bookingcore.test>
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<!doctype html>
+<html xmlns=3D"http://www.w3.org/1999/xhtml" xmlns:v=3D"urn:schemas-microso=
+ft-com:vml" xmlns:o=3D"urn:schemas-microsoft-com:office:office">
+    <head>
+        <title></title>
+        <meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge">
+        <!--<![endif]-->
+        <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DU=
+TF-8">
+        <meta name=3D"viewport" content=3D"width=3Ddevice-width, initial-sc=
+ale=3D1">
+        <link rel=3D'stylesheet' id=3D'google-font-css-css'  href=3D'https:=
+//fonts.googleapis.com/css?family=3DPoppins%3A400%2C500%2C600' type=3D'text=
+/css' media=3D'all' />
+        <style>
+            .b-email-wrap{
+                background: #ebeef2;
+                padding: 40px 0px;
+                color: #1A2B48;
+                font-size: 14px;
+                font-family: 'Poppins', sans-serif !important;
+                font-weight: normal;
+                line-height: 1.5;
+                overflow-x: hidden;
+                margin: 0px;
+            }
+            .b-header{
+                background: #c6483f;
+                padding: 30px;
+                color: white;
+            }
+            .b-header .site-title,
+            .b-header h1,
+            .b-header h2,
+            .b-header h3,
+            .b-header h4,
+            .b-header h5,
+            .b-header p
+            {
+                margin:0px;
+                display: block;
+                text-align: center;
+            }
+            .b-container{
+                max-width: 600px;
+                margin: 0px auto;
+            }
+
+            .b-panel{
+                border: 1px solid rgba(0, 0, 0, 0.1);
+                margin-bottom: 30px;
+                padding: 30px;
+                background: white;
+            }
+            .b-panel .b-panel{
+                padding: 0px;
+                box-shadow: none;
+            }
+            .b-panel-title{
+                text-align: center;
+                margin-bottom: 30px;
+                font-size: 24px;
+                font-weight: 500;
+            }
+            .b-table-wrap{
+                overflow-x:auto;
+            }
+            .b-table{
+                width: 100%;
+            }
+            .b-table tr td,
+            .b-table .b-tr,
+            .b-table tr th{
+                padding: 10px;
+            }
+            .b-table .b-tr{
+                clear: both;
+                border-bottom: 1px solid #EAEEF3;
+            }
+            .b-table .b-tr:after{
+                display: table;
+                clear: both;
+                content:'';
+            }
+            .b-table tr td{
+                border-bottom: 1px solid #EAEEF3;
+            }
+            .b-table tbody tr:nth-child(even) td{
+                /*background: #f5f7fd;*/
+            }
+            .b-table tbody tr td.label,
+            .b-table .b-tr .label{
+                font-weight: 500;
+            }
+            .b-table tbody tr td.val,
+            .b-table .b-tr .val{
+                text-align: right;
+            }
+
+            .b-table tbody tr td.val p,
+            .b-table .b-tr .val p{
+                padding: 0;
+                margin: 0;
+            }
+
+            .b-table .b-tr .label,
+            .b-table .b-tr .val{
+                float: left;
+                width: 50%;
+            }
+            .pricing-list{
+                text-align: left;
+                margin: 0px;
+                padding: 0px;
+                list-style: none;
+            }
+            .pricing-list td{
+                padding: 7px 0px;
+            }
+            .pricing-list td .val{
+                text-align: right;
+            }
+            .pricing-list .no-flex{
+                display: block;
+            }
+            .email-headline{
+                margin-top: 0px;
+            }
+
+            .text-center{
+                text-align: center;
+            }
+
+            .btn{
+                display: inline-block;
+                color: #212529;
+                text-align: center;
+                vertical-align: middle;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                background-color: #ebeef2;
+                line-height: 1.5;
+                border: none;
+                -webkit-box-shadow: none;
+                box-shadow: none;
+                border-radius: 3px;
+                padding: 7px 20px;
+                -webkit-transition: background .2s, color .2s;
+                transition: background .2s, color .2s;
+                font-size: 14px;
+                font-weight: 500;
+                text-decoration: none;
+            }
+            .btn.btn-primary{
+
+                background: #5191FA;
+                color: white;
+            }
+            .mt20{
+                margin-top: 20px;
+            }
+            .no-padding{
+                padding: 0px;
+            }
+            .no-r-padding{
+                padding-right: 0px!important;
+            }
+            .fsz21{
+                font-size: 21px;
+            }
+            .no-b-border{
+                border-bottom: 0px!important;
+            }
+            @media screen and (max-width: 768px) {
+                .b-panel{
+                    padding: 15px;
+                }
+                .b-table tr td,
+                .b-table tr th{
+                    padding-right: 2px;
+                    padding-left: 2px;
+                }
+                .b-panel-title{
+                    font-size: 18px;
+                    font-weight: bold;
+                    margin-bottom: 15px;
+                }
+                .b-email-wrap{
+                    padding: 0px;
+                }
+
+                .b-table .b-tr .label,
+                .b-table .b-tr .val{
+                    float:none;
+                }
+
+                .b-table .b-tr .val{
+                    text-align: left;
+                }
+            }
+                    </style>
+    </head>
+    <body>
+        <div class=3D"b-email-wrap">
+            <div class=3D"" style=3D"">
+    <div class=3D"b-container">
+        <div class=3D"b-header">
+                        <h1 class=3D"site-title">Virenaretreat</h1>
+        </div>
+    </div>
+</div>
+
+           =20
+    <div class=3D"b-container">
+        <div class=3D"b-panel">
+            <h3 class=3D"email-headline"><strong>Hello Administrator</stron=
+g></h3>
+            <p>Here are new contact information:</p>
+            <br>
+            <div class=3D"b-panel">
+                <div class=3D"b-table-wrap">
+                    <table class=3D"b-table" cellspacing=3D"0" cellpadding=
+=3D"0">
+                        <tr class=3D"info-first-name">
+                            <td class=3D"label">T=C3=AAn</td>
+                            <td class=3D"val">Ali</td>
+                        </tr>
+                        <tr class=3D"info-first-name">
+                            <td class=3D"label">Email</td>
+                            <td class=3D"val">asif@rocketdigitaltech.com</t=
+d>
+                        </tr>
+                        <tr class=3D"info-first-name">
+                            <td class=3D"label">Tin nh=E1=BA=AFn</td>
+                            <td class=3D"val">Hello http://virenaretreat.co=
+m,
+=20
+If you=E2=80=99re looking to boost your website=E2=80=99s visibility, I can=
+ help you achieve top Google rankings.
+=20
+I=E2=80=99ll prepare a complete SEO plan with actionable steps and potentia=
+l growth insights for your products or services.
+=20
+Once you share your target keywords and target market, I=E2=80=99ll send a =
+full proposal.
+=20
+Best Regards,
+Asif</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+            <div class=3D"b-footer" style=3D"margin-top: 0px;">
+    <div class=3D"b-container">
+       =20
+    </div>
+</div>        </div>
+    </body>
+</html>
+  
+[2026-06-03 08:35:02] production.ERROR: Command "cache:view" is not defined.
+
+Did you mean one of these?
+    cache:clear
+    cache:forget
+    cache:table {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"cache:view\" is not defined.
+
+Did you mean one of these?
+    cache:clear
+    cache:forget
+    cache:table at /home/virenaretreat/main/vendor/symfony/console/Application.php:694)
+[stacktrace]
+#0 /home/virenaretreat/main/vendor/symfony/console/Application.php(259): Symfony\\Component\\Console\\Application->find()
+#1 /home/virenaretreat/main/vendor/symfony/console/Application.php(171): Symfony\\Component\\Console\\Application->doRun()
+#2 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Console/Application.php(102): Symfony\\Component\\Console\\Application->run()
+#3 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(155): Illuminate\\Console\\Application->run()
+#4 /home/virenaretreat/main/artisan(38): Illuminate\\Foundation\\Console\\Kernel->handle()
+#5 {main}
+"} 
+[2026-06-03 08:43:56] production.ERROR: Command "cache:view" is not defined.
+
+Did you mean one of these?
+    cache:clear
+    cache:forget
+    cache:table {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"cache:view\" is not defined.
+
+Did you mean one of these?
+    cache:clear
+    cache:forget
+    cache:table at /home/virenaretreat/main/vendor/symfony/console/Application.php:694)
+[stacktrace]
+#0 /home/virenaretreat/main/vendor/symfony/console/Application.php(259): Symfony\\Component\\Console\\Application->find()
+#1 /home/virenaretreat/main/vendor/symfony/console/Application.php(171): Symfony\\Component\\Console\\Application->doRun()
+#2 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Console/Application.php(102): Symfony\\Component\\Console\\Application->run()
+#3 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(155): Illuminate\\Console\\Application->run()
+#4 /home/virenaretreat/main/artisan(38): Illuminate\\Foundation\\Console\\Kernel->handle()
+#5 {main}
+"} 
+[2026-06-03 10:34:25] production.ERROR: Undefined array key "user_enable_permanently_delete" {"view":{"view":"/home/virenaretreat/main/modules/User/Views/admin/settings/_permanently_delete.blade.php","data":[]},"userId":1,"exception":"[object] (Spatie\\LaravelIgnition\\Exceptions\\ViewException(code: 0): Undefined array key \"user_enable_permanently_delete\" at /home/virenaretreat/main/modules/User/Views/admin/settings/_permanently_delete.blade.php:20)
+[stacktrace]
+#0 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(266): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleError()
+#1 /home/virenaretreat/main/modules/User/Views/admin/settings/_permanently_delete.blade.php(20): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->Illuminate\\Foundation\\Bootstrap\\{closure}()
+#2 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(109): require('...')
+#3 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(110): Illuminate\\Filesystem\\Filesystem::Illuminate\\Filesystem\\{closure}()
+#4 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/View/Engines/PhpEngine.php(58): Illuminate\\Filesystem\\Filesystem->getRequire()
+#5 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/View/Engines/CompilerEngine.php(70): Illuminate\\View\\Engines\\PhpEngine->evaluatePath()
+#6 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/View/View.php(152): Illuminate\\View\\Engines\\CompilerEngine->get()
+#7 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/View/View.php(135): Illuminate\\View\\View->getContents()
+#8 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/View/View.php(104): Illuminate\\View\\View->renderContents()
+#9 /home/virenaretreat/main/modules/User/Views/admin/settings/user.blade.php(120): Illuminate\\View\\View->render()
+#10 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(109): require('...')
+#11 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(110): Illuminate\\Filesystem\\Filesystem::Illuminate\\Filesystem\\{closure}()
+#12 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/View/Engines/PhpEngine.php(58): Illuminate\\Filesystem\\Filesystem->getRequire()
+#13 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/View/Engines/CompilerEngine.php(70): Illuminate\\View\\Engines\\PhpEngine->evaluatePath()
+#14 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/View/View.php(152): Illuminate\\View\\Engines\\CompilerEngine->get()
+#15 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/View/View.php(135): Illuminate\\View\\View->getContents()
+#16 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/View/View.php(104): Illuminate\\View\\View->renderContents()
+#17 /home/virenaretreat/main/modules/Core/Views/admin/settings/index.blade.php(39): Illuminate\\View\\View->render()
+#18 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(109): require('...')
+#19 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(110): Illuminate\\Filesystem\\Filesystem::Illuminate\\Filesystem\\{closure}()
+#20 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/View/Engines/PhpEngine.php(58): Illuminate\\Filesystem\\Filesystem->getRequire()
+#21 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/View/Engines/CompilerEngine.php(70): Illuminate\\View\\Engines\\PhpEngine->evaluatePath()
+#22 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/View/View.php(152): Illuminate\\View\\Engines\\CompilerEngine->get()
+#23 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/View/View.php(135): Illuminate\\View\\View->getContents()
+#24 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/View/View.php(104): Illuminate\\View\\View->renderContents()
+#25 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Http/Response.php(69): Illuminate\\View\\View->render()
+#26 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Http/Response.php(35): Illuminate\\Http\\Response->setContent()
+#27 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Routing/Router.php(906): Illuminate\\Http\\Response->__construct()
+#28 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Routing/Router.php(875): Illuminate\\Routing\\Router::toResponse()
+#29 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Routing/Router.php(797): Illuminate\\Routing\\Router->prepareResponse()
+#30 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(141): Illuminate\\Routing\\Router->Illuminate\\Routing\\{closure}()
+#31 /home/virenaretreat/main/app/Http/Middleware/Dashboard.php(25): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#32 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\Dashboard->handle()
+#33 /home/virenaretreat/main/app/Http/Middleware/RequireChangePassword.php(41): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#34 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\RequireChangePassword->handle()
+#35 /home/virenaretreat/main/app/Http/Middleware/SetLanguageForAdmin.php(37): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#36 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\SetLanguageForAdmin->handle()
+#37 /home/virenaretreat/main/app/Http/Middleware/SetCurrentCurrency.php(48): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#38 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\SetCurrentCurrency->handle()
+#39 /home/virenaretreat/main/app/Http/Middleware/HideDebugbar.php(32): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#40 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\HideDebugbar->handle()
+#41 /home/virenaretreat/main/app/Http/Middleware/RedirectForMultiLanguage.php(58): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#42 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\RedirectForMultiLanguage->handle()
+#43 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(50): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#44 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle()
+#45 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/VerifyCsrfToken.php(78): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#46 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken->handle()
+#47 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/View/Middleware/ShareErrorsFromSession.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#48 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\View\\Middleware\\ShareErrorsFromSession->handle()
+#49 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(121): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#50 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(64): Illuminate\\Session\\Middleware\\StartSession->handleStatefulRequest()
+#51 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Session\\Middleware\\StartSession->handle()
+#52 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(37): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#53 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse->handle()
+#54 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/EncryptCookies.php(67): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#55 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Cookie\\Middleware\\EncryptCookies->handle()
+#56 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#57 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Routing/Router.php(797): Illuminate\\Pipeline\\Pipeline->then()
+#58 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Routing/Router.php(776): Illuminate\\Routing\\Router->runRouteWithinStack()
+#59 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Routing/Router.php(740): Illuminate\\Routing\\Router->runRoute()
+#60 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Routing/Router.php(729): Illuminate\\Routing\\Router->dispatchToRoute()
+#61 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(190): Illuminate\\Routing\\Router->dispatch()
+#62 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(141): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}()
+#63 /home/virenaretreat/main/themes/Base/Core/Middleware/RunUpdater.php(72): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#64 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Themes\\Base\\Core\\Middleware\\RunUpdater->handle()
+#65 /home/virenaretreat/main/vendor/barryvdh/laravel-debugbar/src/Middleware/InjectDebugbar.php(59): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#66 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Barryvdh\\Debugbar\\Middleware\\InjectDebugbar->handle()
+#67 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#68 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#69 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle()
+#70 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#71 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(40): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#72 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle()
+#73 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#74 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize->handle()
+#75 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(86): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#76 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle()
+#77 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#78 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\HandleCors->handle()
+#79 /home/virenaretreat/main/app/Http/Middleware/RedirectToInstaller.php(40): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#80 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\RedirectToInstaller->handle()
+#81 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(39): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#82 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\TrustProxies->handle()
+#83 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#84 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(165): Illuminate\\Pipeline\\Pipeline->then()
+#85 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(134): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter()
+#86 /home/virenaretreat/main/public/index.php(71): Illuminate\\Foundation\\Http\\Kernel->handle()
+#87 {main}
+
+[previous exception] [object] (ErrorException(code: 0): Undefined array key \"user_enable_permanently_delete\" at /home/virenaretreat/main/storage/framework/views/367443e108eae1d59a896601692513182ce10a6a.php:20)
+[stacktrace]
+#0 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(266): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleError()
+#1 /home/virenaretreat/main/storage/framework/views/367443e108eae1d59a896601692513182ce10a6a.php(20): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->Illuminate\\Foundation\\Bootstrap\\{closure}()
+#2 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(109): require('...')
+#3 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(110): Illuminate\\Filesystem\\Filesystem::Illuminate\\Filesystem\\{closure}()
+#4 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/View/Engines/PhpEngine.php(58): Illuminate\\Filesystem\\Filesystem->getRequire()
+#5 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/View/Engines/CompilerEngine.php(70): Illuminate\\View\\Engines\\PhpEngine->evaluatePath()
+#6 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/View/View.php(152): Illuminate\\View\\Engines\\CompilerEngine->get()
+#7 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/View/View.php(135): Illuminate\\View\\View->getContents()
+#8 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/View/View.php(104): Illuminate\\View\\View->renderContents()
+#9 /home/virenaretreat/main/storage/framework/views/73ecda471ca29a6382746848043b7a5fe41d40db.php(120): Illuminate\\View\\View->render()
+#10 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(109): require('...')
+#11 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(110): Illuminate\\Filesystem\\Filesystem::Illuminate\\Filesystem\\{closure}()
+#12 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/View/Engines/PhpEngine.php(58): Illuminate\\Filesystem\\Filesystem->getRequire()
+#13 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/View/Engines/CompilerEngine.php(70): Illuminate\\View\\Engines\\PhpEngine->evaluatePath()
+#14 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/View/View.php(152): Illuminate\\View\\Engines\\CompilerEngine->get()
+#15 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/View/View.php(135): Illuminate\\View\\View->getContents()
+#16 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/View/View.php(104): Illuminate\\View\\View->renderContents()
+#17 /home/virenaretreat/main/storage/framework/views/74de168e2264221bfba6750c93d9f6fc9a6c93c4.php(40): Illuminate\\View\\View->render()
+#18 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(109): require('...')
+#19 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(110): Illuminate\\Filesystem\\Filesystem::Illuminate\\Filesystem\\{closure}()
+#20 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/View/Engines/PhpEngine.php(58): Illuminate\\Filesystem\\Filesystem->getRequire()
+#21 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/View/Engines/CompilerEngine.php(70): Illuminate\\View\\Engines\\PhpEngine->evaluatePath()
+#22 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/View/View.php(152): Illuminate\\View\\Engines\\CompilerEngine->get()
+#23 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/View/View.php(135): Illuminate\\View\\View->getContents()
+#24 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/View/View.php(104): Illuminate\\View\\View->renderContents()
+#25 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Http/Response.php(69): Illuminate\\View\\View->render()
+#26 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Http/Response.php(35): Illuminate\\Http\\Response->setContent()
+#27 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Routing/Router.php(906): Illuminate\\Http\\Response->__construct()
+#28 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Routing/Router.php(875): Illuminate\\Routing\\Router::toResponse()
+#29 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Routing/Router.php(797): Illuminate\\Routing\\Router->prepareResponse()
+#30 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(141): Illuminate\\Routing\\Router->Illuminate\\Routing\\{closure}()
+#31 /home/virenaretreat/main/app/Http/Middleware/Dashboard.php(25): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#32 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\Dashboard->handle()
+#33 /home/virenaretreat/main/app/Http/Middleware/RequireChangePassword.php(41): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#34 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\RequireChangePassword->handle()
+#35 /home/virenaretreat/main/app/Http/Middleware/SetLanguageForAdmin.php(37): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#36 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\SetLanguageForAdmin->handle()
+#37 /home/virenaretreat/main/app/Http/Middleware/SetCurrentCurrency.php(48): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#38 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\SetCurrentCurrency->handle()
+#39 /home/virenaretreat/main/app/Http/Middleware/HideDebugbar.php(32): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#40 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\HideDebugbar->handle()
+#41 /home/virenaretreat/main/app/Http/Middleware/RedirectForMultiLanguage.php(58): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#42 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\RedirectForMultiLanguage->handle()
+#43 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(50): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#44 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle()
+#45 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/VerifyCsrfToken.php(78): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#46 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken->handle()
+#47 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/View/Middleware/ShareErrorsFromSession.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#48 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\View\\Middleware\\ShareErrorsFromSession->handle()
+#49 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(121): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#50 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(64): Illuminate\\Session\\Middleware\\StartSession->handleStatefulRequest()
+#51 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Session\\Middleware\\StartSession->handle()
+#52 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(37): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#53 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse->handle()
+#54 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/EncryptCookies.php(67): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#55 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Cookie\\Middleware\\EncryptCookies->handle()
+#56 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#57 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Routing/Router.php(797): Illuminate\\Pipeline\\Pipeline->then()
+#58 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Routing/Router.php(776): Illuminate\\Routing\\Router->runRouteWithinStack()
+#59 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Routing/Router.php(740): Illuminate\\Routing\\Router->runRoute()
+#60 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Routing/Router.php(729): Illuminate\\Routing\\Router->dispatchToRoute()
+#61 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(190): Illuminate\\Routing\\Router->dispatch()
+#62 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(141): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}()
+#63 /home/virenaretreat/main/themes/Base/Core/Middleware/RunUpdater.php(72): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#64 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Themes\\Base\\Core\\Middleware\\RunUpdater->handle()
+#65 /home/virenaretreat/main/vendor/barryvdh/laravel-debugbar/src/Middleware/InjectDebugbar.php(59): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#66 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Barryvdh\\Debugbar\\Middleware\\InjectDebugbar->handle()
+#67 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#68 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#69 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle()
+#70 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#71 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(40): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#72 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle()
+#73 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#74 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize->handle()
+#75 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(86): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#76 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle()
+#77 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#78 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\HandleCors->handle()
+#79 /home/virenaretreat/main/app/Http/Middleware/RedirectToInstaller.php(40): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#80 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\RedirectToInstaller->handle()
+#81 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(39): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#82 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\TrustProxies->handle()
+#83 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#84 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(165): Illuminate\\Pipeline\\Pipeline->then()
+#85 /home/virenaretreat/main/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(134): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter()
+#86 /home/virenaretreat/main/public/index.php(71): Illuminate\\Foundation\\Http\\Kernel->handle()
+#87 {main}
+"} 

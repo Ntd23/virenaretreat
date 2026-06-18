@@ -1,0 +1,22 @@
+9999999999s:817:"<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TravelAgency",
+  "name": "Virena Retreat",
+  "alternateName": "Virenaretreat",
+  "url": "https://virenaretreat.com",
+  "logo": "https://virenaretreat.com/uploads/0000/1/2026/06/02/31.png",
+  "image": "https://virenaretreat.com/uploads/0000/1/2026/06/02/31.png",
+  "description": "Virena Retreat chuyên cung cấp dịch vụ đặt phòng khách sạn, resort nghỉ dưỡng cao cấp và các tour du lịch trọn gói chất lượng tại Việt Nam.",
+  "telephone": "0989692323",
+  "email": "Vnsgroup.vns@gmail.com",
+  "address": {
+    "@type": "PostalAddress",
+    "addressCountry": "VN",
+    "addressLocality": "Hà Nội"
+  },
+  "sameAs": [
+    "https://www.facebook.com/bamientoure"
+  ]
+}
+</script>";
