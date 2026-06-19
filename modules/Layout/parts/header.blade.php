@@ -40,7 +40,7 @@
                                 @else
                                     <span class="avatar-text">{{ucfirst( Auth::user()->getDisplayName()[0])}}</span>
                                 @endif
-                                {{__("Hi, :Name",['name'=>Auth::user()->getDisplayName()])}}
+                                <span class="user-name">{{__("Hi, :Name",['name'=>Auth::user()->getDisplayName()])}}</span>
                                 <i class="fa fa-angle-down"></i>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-user text-left">

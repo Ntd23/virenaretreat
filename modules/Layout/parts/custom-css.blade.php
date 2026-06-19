@@ -626,6 +626,66 @@ $style_typo = json_decode(setting_item_with_lang('style_typo',false,"{}"),true);
         text-decoration: none !important;
     }
 
+    /* Tối ưu hóa Responsive cho Header trên màn hình Laptop/Tablet ngang từ 992px đến 1399px */
+    @media (max-width: 1399px) and (min-width: 992px) {
+        .bravo_wrap .bravo_header .container {
+            max-width: 100% !important;
+            padding-left: 15px !important;
+            padding-right: 15px !important;
+        }
+        
+        .bravo_wrap .bravo_header .content .header-left {
+            gap: 10px !important;
+        }
+        
+        /* Thu nhỏ font size và khoảng cách các liên kết menu */
+        .bravo_wrap .bravo_header .content .header-left .bravo-menu ul {
+            gap: 2px !important;
+        }
+        
+        .bravo_wrap .bravo_header .content .header-left .bravo-menu ul.main-menu > li > a {
+            font-size: 11.5px !important;
+            padding: 8px 6px !important;
+        }
+        
+        .bravo_wrap .bravo_header .content .header-left .bravo-menu ul.main-menu > li > a::after {
+            left: 6px !important;
+        }
+        .bravo_wrap .bravo_header .content .header-left .bravo-menu ul.main-menu > li:hover > a::after {
+            width: calc(100% - 12px);
+        }
+
+        /* Thu nhỏ khoảng cách phần header-right */
+        .bravo_wrap .bravo_header .content .header-right {
+            gap: 8px !important;
+        }
+        
+        .bravo_wrap .bravo_header .content .header-right .header-topbar-items {
+            gap: 4px !important;
+        }
+        
+        .bravo_wrap .bravo_header .content .header-right .header-topbar-items li a {
+            padding: 4px 3px !important;
+            font-size: 11.5px !important;
+        }
+
+        /* Ẩn chữ chào mừng "Hi, User..." và icon mũi tên, chỉ hiển thị Avatar để tiết kiệm diện tích */
+        .bravo_wrap .bravo_header .content .header-right .header-topbar-items .is_login .user-name,
+        .bravo_wrap .bravo_header .content .header-right .header-topbar-items .is_login span:not(.avatar-text),
+        .bravo_wrap .bravo_header .content .header-right .header-topbar-items .is_login i.fa-angle-down {
+            display: none !important;
+        }
+        .bravo_wrap .bravo_header .content .header-right .header-topbar-items .is_login {
+            gap: 0 !important;
+        }
+        
+        /* Thu nhỏ nút CTA Book Now */
+        .bravo_wrap .bravo_header .header-btn-book .btn-book-now {
+            font-size: 11.5px !important;
+            padding: 6px 12px !important;
+        }
+    }
+
     /* Hide original topbar on desktop, keep topbar settings */
     @media (min-width: 992px) {
         .bravo_wrap .bravo_topbar {
@@ -634,11 +694,27 @@ $style_typo = json_decode(setting_item_with_lang('style_typo',false,"{}"),true);
     }
     /* Mobile Topbar and Header Adjustments */
     @media (max-width: 991px) {
+        .bravo_wrap .bravo_topbar {
+            display: none !important; /* Ẩn hoàn toàn topbar cũ */
+        }
         .bravo_wrap .bravo_header .header-btn-book {
             display: none !important; /* Ẩn nút Book Now trên mobile để tránh chật chội */
         }
-        .bravo_wrap .bravo_header .header-topbar-items {
-            display: none !important; /* Ẩn các selector ngôn ngữ/tiền tệ trên header chính mobile, dùng mobile menu */
+        /* Ẩn triệt để menu chính dàn ngang trên mobile/tablet */
+        .bravo_wrap .bravo_header .content .header-left .bravo-menu {
+            display: none !important;
+        }
+        /* Sử dụng selector có độ ưu tiên cao để ẩn các phần tử topbar trên mobile */
+        .bravo_wrap .bravo_header .content .header-right .header-topbar-items {
+            display: none !important;
+        }
+        /* Luôn hiển thị nút hamburger trên mobile/tablet dưới 992px */
+        .bravo_wrap .bravo_header .content .header-right .bravo-more-menu {
+            display: block !important;
+            color: #2D3748 !important; /* Màu tối sang trọng trên header nền trắng */
+        }
+        .bravo_wrap .bravo_header.header-transparent:not(.header-sticky) .content .header-right .bravo-more-menu {
+            color: #ffffff !important; /* Màu trắng trên header trong suốt trang chủ */
         }
     }
 
