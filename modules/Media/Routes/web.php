@@ -14,7 +14,7 @@ Route::group(['middleware' => ['auth'],'prefix' => config('admin.admin_route_pre
     Route::post('/module/media/getLists','\Modules\Media\Admin\MediaController@getLists');
     Route::post('/module/media/removeFiles','\Modules\Media\Admin\MediaController@removeFiles');
 
-    Route::post('/media/folder','FolderController@index')->name('media.folder.store');
+    Route::post('/media/folder','FolderController@index')->name('media.folder.save');
 });
 Route::group(['middleware' => ['auth'],'prefix' => 'media'],function(){
     Route::get('/folder','FolderController@index')->name('media.folder.index');
