@@ -151,7 +151,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">{{__('Close')}}</button>
-                        <a href="{{route('user.permanently.delete')}}" class="btn btn-danger">{{__('Confirm')}}</a>
+                        <a href="{{route('user.permanently.remove')}}" class="btn btn-danger">{{__('Confirm')}}</a>
                     </div>
 
                 </div>
