@@ -26,4 +26,5 @@ storage/bc.php
 storage/installed
 storage/framework
 storage/logs
+storage/debugbar
 public/themes/*/dist
