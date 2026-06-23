@@ -1,0 +1,591 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+/* Global Font Override */
+.user-page, .user-page body, .user-page h1, .user-page h2, .user-page h3, .user-page h4, .user-page h5, .user-page h6,
+.user-page .form-control, .user-page table, .user-page a, .user-page span, .user-page button, .user-page select, 
+.user-page textarea, .user-page .btn, .user-page .sidebar-menu, .user-page .nav-tabs, .user-page .modal-content,
+.frontend-page, .frontend-page body, .bravo-login-page, .bravo-login-form-page, .modal-dialog {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+/* ========================================== */
+/* LOGIN & REGISTER MODERNIZATION (KiotViet Style) */
+/* ========================================== */
+
+.bravo-login-page, .bravo-login-form-page {
+    background-color: #f4f6f9 !important;
+    padding: 60px 0 !important;
+    min-height: calc(100vh - 100px) !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* Auth Hộp Trắng Container */
+.bravo-login-form-page .col-md-5 > div,
+.modal-content {
+    background-color: #ffffff !important;
+    border-radius: 12px !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05) !important;
+    border: 1px solid #e2e8f0 !important;
+    padding: 40px !important;
+    max-width: 460px !important;
+    margin: 0 auto !important;
+}
+
+/* Modal Content Reset Padding */
+.modal-content {
+    padding: 0 !important;
+}
+.modal-content .modal-header {
+    padding: 20px 30px 15px 30px !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+}
+.modal-content .modal-body {
+    padding: 30px !important;
+}
+
+/* Form Title */
+.form-title, .modal-title {
+    font-size: 22px !important;
+    font-weight: 700 !important;
+    color: #0f172a !important;
+    text-align: center !important;
+    margin-bottom: 24px !important;
+    text-transform: none !important;
+}
+
+/* Form inputs & Groups */
+.bravo-form-login, .bravo-form-register {
+    margin-top: 10px !important;
+}
+.bravo-form-login .form-group, 
+.bravo-form-register .form-group {
+    position: relative !important;
+    margin-bottom: 18px !important;
+}
+
+/* Form Control Input fields */
+.bravo-form-login .form-control,
+.bravo-form-register .form-control {
+    height: 46px !important;
+    border-radius: 6px !important;
+    border: 1px solid #cbd5e1 !important;
+    padding: 10px 16px 10px 42px !important; /* Left padding for icons */
+    font-size: 14px !important;
+    color: #0f172a !important;
+    background-color: #ffffff !important;
+    transition: all 0.15s ease-in-out !important;
+}
+
+/* Register page Name fields adjustments */
+.bravo-form-register .row .col-md-12 .form-control,
+.bravo-form-register .row .col-lg-6 .form-control {
+    padding: 10px 16px 10px 42px !important;
+}
+
+.bravo-form-login .form-control:focus,
+.bravo-form-register .form-control:focus {
+    border-color: #2465de !important;
+    box-shadow: 0 0 0 3px rgba(36, 101, 222, 0.15) !important;
+    outline: none !important;
+}
+
+/* Icons inside Input */
+.bravo-form-login .form-group i.input-icon,
+.bravo-form-register .form-group i.input-icon {
+    position: absolute !important;
+    left: 14px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    color: #94a3b8 !important;
+    font-size: 18px !important;
+    pointer-events: none !important;
+    transition: color 0.15s !important;
+}
+.bravo-form-login .form-control:focus ~ i.input-icon,
+.bravo-form-register .form-control:focus ~ i.input-icon {
+    color: #2465de !important;
+}
+
+/* Remember me & Forgot Password Row */
+.bravo-form-login .d-flex.justify-content-between {
+    align-items: center !important;
+    font-size: 13.5px !important;
+}
+.bravo-form-login label[for="remember-me"] {
+    color: #475569 !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+}
+.bravo-form-login label[for="remember-me"] input {
+    width: 16px !important;
+    height: 16px !important;
+    cursor: pointer !important;
+}
+.bravo-form-login a[href*="password/request"],
+.bravo-form-register a {
+    color: #2465de !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+}
+.bravo-form-login a[href*="password/request"]:hover,
+.bravo-form-register a:hover {
+    text-decoration: underline !important;
+}
+
+/* Term & Conditions Checkbox (Register) */
+.bravo-form-register label[for="term"] {
+    color: #475569 !important;
+    font-weight: 500 !important;
+    font-size: 13px !important;
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+    cursor: pointer !important;
+}
+.bravo-form-register label[for="term"] input {
+    margin-top: 3px !important;
+}
+
+/* Submit Buttons */
+.bravo-form-login .form-submit,
+.bravo-form-register .form-submit {
+    height: 46px !important;
+    width: 100% !important;
+    background-color: #2465de !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 6px !important;
+    font-weight: 600 !important;
+    font-size: 15px !important;
+    transition: background-color 0.15s ease-in-out !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+}
+.bravo-form-login .form-submit:hover,
+.bravo-form-register .form-submit:hover {
+    background-color: #1e54c4 !important;
+}
+
+/* Social Logins */
+.bravo-form-login .advanced,
+.bravo-form-register .advanced {
+    margin-top: 24px !important;
+    margin-bottom: 20px !important;
+}
+.bravo-form-login .advanced p,
+.bravo-form-register .advanced p {
+    font-size: 12.5px !important;
+    color: #94a3b8 !important;
+    margin-bottom: 16px !important;
+    position: relative !important;
+}
+.bravo-form-login .advanced p::before,
+.bravo-form-login .advanced p::after,
+.bravo-form-register .advanced p::before,
+.bravo-form-register .advanced p::after {
+    content: "" !important;
+    position: absolute !important;
+    top: 50% !important;
+    width: 30% !important;
+    height: 1px !important;
+    background-color: #e2e8f0 !important;
+}
+.bravo-form-login .advanced p::before,
+.bravo-form-register .advanced p::before { left: 0 !important; }
+.bravo-form-login .advanced p::after,
+.bravo-form-register .advanced p::after { right: 0 !important; }
+
+/* Social row flexbox override to center and space buttons correctly */
+.bravo-form-login .advanced .row,
+.bravo-form-register .advanced .row {
+    display: flex !important;
+    justify-content: center !important;
+    gap: 12px !important;
+    flex-wrap: wrap !important;
+    margin: 0 !important;
+}
+.bravo-form-login .advanced .row > div,
+.bravo-form-register .advanced .row > div {
+    flex: 1 1 0% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+}
+
+/* Social buttons styling */
+.btn_login_fb_link, .btn_login_gg_link, .btn_login_tw_link {
+    height: 40px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 1px solid #cbd5e1 !important;
+    background-color: #ffffff !important;
+    border-radius: 6px !important;
+    color: #475569 !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    text-decoration: none !important;
+    transition: background-color 0.15s !important;
+    width: 100% !important;
+    padding: 0 10px !important;
+}
+.btn_login_fb_link:hover, .btn_login_gg_link:hover, .btn_login_tw_link:hover {
+    background-color: #f8fafc !important;
+    color: #0f172a !important;
+}
+.btn_login_fb_link i { color: #1877f2 !important; margin-right: 6px !important; font-size: 15px !important; }
+.btn_login_gg_link i { color: #ea4335 !important; margin-right: 6px !important; font-size: 15px !important; }
+.btn_login_tw_link i { color: #1da1f2 !important; margin-right: 6px !important; font-size: 15px !important; }
+
+/* Footer Link "Don't have account?" */
+.bravo-form-login .c-grey.text-center,
+.bravo-form-register .c-grey.text-center {
+    font-size: 13.5px !important;
+    color: #64748b !important;
+    margin-top: 15px !important;
+}
+
+
+/* ========================================== */
+/* USER & VENDOR DASHBOARD STYLING OVERRIDES  */
+/* ========================================== */
+
+.user-page {
+    background-color: #f4f6f9 !important;
+}
+.bravo_user_profile {
+    padding: 30px 0 !important;
+    background-color: #f4f6f9 !important;
+}
+.bravo_user_profile .user-profile-sidebar {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02), 0 1px 2px rgba(0,0,0,0.04) !important;
+    padding: 20px 14px !important;
+    margin-bottom: 20px !important;
+}
+.user-profile-sidebar .user-info {
+    text-align: center !important;
+    padding-bottom: 16px !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    margin-bottom: 16px !important;
+}
+.user-profile-sidebar .user-info .avatar {
+    width: 80px !important;
+    height: 80px !important;
+    border-radius: 50% !important;
+    border: 2px solid #f1f5f9 !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02) !important;
+    margin-bottom: 10px !important;
+}
+.user-profile-sidebar .user-info h3 {
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    color: #0f172a !important;
+    margin-bottom: 2px !important;
+}
+.user-profile-sidebar .user-info p {
+    font-size: 12.5px !important;
+    color: #64748b !important;
+    margin-bottom: 0 !important;
+}
+.user-profile-sidebar .sidebar-menu {
+    list-style: none !important;
+    padding-left: 0 !important;
+    margin-bottom: 0 !important;
+    border: none !important;
+}
+.user-profile-sidebar .sidebar-menu li {
+    margin-bottom: 2px !important;
+}
+.user-profile-sidebar .sidebar-menu li a {
+    display: flex !important;
+    align-items: center !important;
+    padding: 10px 14px !important;
+    color: #475569 !important;
+    font-weight: 500 !important;
+    font-size: 13.5px !important;
+    border-radius: 6px !important;
+    transition: all 0.15s ease-in-out !important;
+    text-decoration: none !important;
+}
+.user-profile-sidebar .sidebar-menu li a i {
+    font-size: 16px !important;
+    margin-right: 10px !important;
+    width: 20px !important;
+    text-align: center !important;
+    color: #64748b !important;
+    transition: all 0.15s !important;
+}
+.user-profile-sidebar .sidebar-menu li.active a,
+.user-profile-sidebar .sidebar-menu li a:hover {
+    background-color: #f1f6ff !important;
+    color: #2465de !important;
+}
+.user-profile-sidebar .sidebar-menu li.active a i,
+.user-profile-sidebar .sidebar-menu li a:hover i {
+    color: #2465de !important;
+}
+
+.user-form-settings {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02), 0 1px 2px rgba(0,0,0,0.04) !important;
+    padding: 24px !important;
+}
+.user-form-settings .title-bar {
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    color: #0f172a !important;
+    margin-bottom: 20px !important;
+    padding-bottom: 12px !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+}
+
+.nav-tabs, .ht-nav-tabs {
+    border-bottom: 2px solid #f1f5f9 !important;
+    margin-bottom: 20px !important;
+    gap: 4px !important;
+}
+.nav-tabs .nav-item, .ht-nav-tabs li {
+    margin-bottom: -2px !important;
+}
+.nav-tabs .nav-link, .ht-nav-tabs li a {
+    border: none !important;
+    color: #64748b !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    padding: 10px 14px !important;
+    border-bottom: 2px solid transparent !important;
+    transition: all 0.15s ease-in-out !important;
+    text-decoration: none !important;
+    display: inline-block !important;
+    background: transparent !important;
+}
+.nav-tabs .nav-link.active, .ht-nav-tabs li.active a {
+    color: #2465de !important;
+    border-bottom: 2px solid #2465de !important;
+    background-color: transparent !important;
+}
+.nav-tabs .nav-link:hover, .ht-nav-tabs li a:hover {
+    color: #2465de !important;
+}
+
+/* User/Vendor Table Layout - Identical to KiotViet */
+.user-page .table-responsive {
+    border-radius: 6px !important;
+    border: 1px solid #e2e8f0 !important;
+    background: #ffffff !important;
+}
+.user-page .table-booking-history, .user-page .table {
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    width: 100% !important;
+    margin-bottom: 0 !important;
+    border: none !important;
+}
+.user-page .table-booking-history th, .user-page .table th {
+    background-color: #f8fafc !important;
+    color: #334155 !important;
+    font-weight: 600 !important;
+    font-size: 12px !important;
+    text-transform: none !important;
+    padding: 12px 16px !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+}
+.user-page .table-booking-history td, .user-page .table td {
+    padding: 14px 16px !important;
+    vertical-align: middle !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    font-size: 13px !important;
+    color: #334155 !important;
+}
+.user-page .table-booking-history tbody tr:hover, .user-page .table tbody tr:hover {
+    background-color: #f1f6ff !important;
+}
+.user-page .table td a {
+    color: #2465de !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+}
+.user-page .table td a:hover {
+    text-decoration: underline !important;
+}
+
+/* Forms & Fields styling */
+.user-page .form-control, .user-page select, .user-page textarea {
+    border-radius: 4px !important;
+    border: 1px solid #cbd5e1 !important;
+    padding: 8px 12px !important;
+    font-size: 13px !important;
+    color: #0f172a !important;
+    background-color: #ffffff !important;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
+    height: auto !important;
+}
+.user-page .form-control:focus, .user-page select:focus, .user-page textarea:focus {
+    border-color: #2465de !important;
+    box-shadow: 0 0 0 3px rgba(36, 101, 222, 0.15) !important;
+    outline: none !important;
+}
+.user-page label {
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    color: #475569 !important;
+    margin-bottom: 6px !important;
+}
+
+/* Buttons Styling */
+.user-page .btn {
+    border-radius: 4px !important;
+    padding: 8px 16px !important;
+    font-weight: 500 !important;
+    font-size: 13px !important;
+    transition: all 0.15s ease-in-out !important;
+    text-decoration: none !important;
+    border: none !important;
+}
+.user-page .btn-primary, .user-page .btn-info {
+    background-color: #2465de !important;
+    color: #ffffff !important;
+}
+.user-page .btn-primary:hover, .user-page .btn-info:hover {
+    background-color: #1e54c4 !important;
+    color: #ffffff !important;
+}
+.user-page .btn-xs, .user-page .btn-sm {
+    padding: 5px 10px !important;
+    font-size: 11.5px !important;
+}
+.user-page .btn-info-booking {
+    border: none !important;
+}
+.user-page .open-new-window {
+    background-color: #ffffff !important;
+    color: #475569 !important;
+    border: 1px solid #cbd5e1 !important;
+}
+.user-page .open-new-window:hover {
+    background-color: #f8fafc !important;
+    color: #0f172a !important;
+}
+
+/* KiotViet Inspired Badges for Frontend */
+.user-page .label, .user-page .badge {
+    border-radius: 4px !important;
+    padding: 4px 8px !important;
+    font-weight: 600 !important;
+    font-size: 11px !important;
+    display: inline-block !important;
+    border: none !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+}
+.user-page .label-completed, .user-page .label-paid, .user-page .completed, .user-page .paid, .user-page .badge-success {
+    background-color: #d1fae5 !important;
+    color: #065f46 !important;
+}
+.user-page .label-processing, .user-page .label-pending, .user-page .processing, .user-page .pending, .user-page .badge-warning {
+    background-color: #fef3c7 !important;
+    color: #92400e !important;
+}
+.user-page .label-cancelled, .user-page .label-cancel, .user-page .cancelled, .user-page .badge-danger {
+    background-color: #fee2e2 !important;
+    color: #991b1b !important;
+}
+.user-page .label-unpaid, .user-page .unpaid {
+    background-color: #ffedd5 !important;
+    color: #c2410c !important;
+}
+.user-page .label-draft, .user-page .draft {
+    background-color: #f1f5f9 !important;
+    color: #475569 !important;
+}
+
+/* Modal box details */
+.user-page .modal-content {
+    border-radius: 8px !important;
+    border: none !important;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1) !important;
+    overflow: hidden !important;
+}
+.user-page .modal-header {
+    background-color: #f8fafc !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    padding: 16px 20px !important;
+}
+.user-page .modal-title {
+    font-weight: 700 !important;
+    color: #0f172a !important;
+    font-size: 15px !important;
+}
+.user-page .modal-body {
+    padding: 20px !important;
+}
+.user-page .modal-footer {
+    border-top: 1px solid #e2e8f0 !important;
+    padding: 14px 20px !important;
+    background-color: #f8fafc !important;
+}
+
+/* Pagination Overrides */
+.user-page .bravo-pagination {
+    margin-top: 16px !important;
+}
+.user-page .bravo-pagination ul {
+    gap: 2px !important;
+}
+.user-page .bravo-pagination ul li a, .user-page .bravo-pagination ul li span {
+    border-radius: 4px !important;
+    border: 1px solid #e2e8f0 !important;
+    color: #475569 !important;
+    padding: 6px 12px !important;
+    font-weight: 500 !important;
+    font-size: 13px !important;
+    text-decoration: none !important;
+}
+.user-page .bravo-pagination ul li.active a, .user-page .bravo-pagination ul li.active span,
+.user-page .bravo-pagination ul li a:hover {
+    background-color: #2465de !important;
+    border-color: #2465de !important;
+    color: #ffffff !important;
+}
+.user-page .bravo-pagination ul li.disabled span {
+    background-color: #f8fafc !important;
+    color: #94a3b8 !important;
+}
+
+/* Frontend Dropdown Menu Overrides */
+.user-page .dropdown-menu {
+    border-radius: 8px !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.03) !important;
+    padding: 6px !important;
+}
+.user-page .dropdown-menu a, .user-page .dropdown-item {
+    display: block !important;
+    border-radius: 6px !important;
+    padding: 8px 12px !important;
+    color: #475569 !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    transition: all 0.15s ease-in-out !important;
+    text-decoration: none !important;
+}
+.user-page .dropdown-menu a:hover, .user-page .dropdown-item:hover {
+    background-color: #f1f6ff !important;
+    color: #2465de !important;
+}
