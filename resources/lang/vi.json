@@ -904,8 +904,8 @@
     "Laravel Installer successfully INSTALLED on ": "Trình cài đặt Laravel thành công CÀI ĐẶT",
     "Laravel Installer successfully UPDATED on ": "Trình cài đặt Laravel CẬP NHẬT thành công trên",
     "Laravel Updater": "Trình cập nhật của Laravel",
-    "Last 30 Days": "30 ngày trước",
-    "Last 7 Days": "7 ngày trước",
+    "Last 30 Days": "30 ngày qua",
+    "Last 7 Days": "7 ngày qua",
     "Last build at": "Lần cuối thay đổi",
     "Last Month": "Tháng trước",
     "Last name": "Họ",
@@ -1850,7 +1850,7 @@
     "Yes please": "Vâng, làm ơn",
     "Yes, please disable it": "Vâng, vui lòng tắt nó đi",
     "Yes, please enable it": "Vâng, vui lòng bật nó",
-    "Yesterday": "Tuần trước",
+    "Yesterday": "Hôm qua",
     "You are already subscribed": "Bạn đã đăng ký",
     "You are receiving this email because we approved your vendor registration request.": "Bạn đang nhận được email này vì chúng tôi đã chấp thuận yêu cầu đăng ký nhà cung cấp của bạn.",
     "You are receiving this email because we updated your vendor verification data.": "Bạn đang nhận được email này vì chúng tôi đã cập nhật dữ liệu xác minh nhà cung cấp của bạn.",
@@ -2373,5 +2373,8 @@
     "Left Banner Link": "Đường dẫn banner trái",
     "Right Banner Image": "Ảnh banner phải",
     "Right Banner Title": "Tiêu đề banner phải",
-    "Right Banner Link": "Đường dẫn banner phải"
+    "Right Banner Link": "Đường dẫn banner phải",
+    "Become a vendor": "Trở thành nhà cung cấp",
+    "Become A Vendor": "Trở thành nhà cung cấp",
+    "Member Since": "Thành viên từ"
 }
