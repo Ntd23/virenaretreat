@@ -1126,14 +1126,14 @@ function format_interval($d1, $d2 = ''){
     $interval = $first_date->diff($second_date);
 
     $result = "";
-    if ($interval->y) { $result .= $interval->format("%y years "); }
-    if ($interval->m) { $result .= $interval->format("%m months "); }
-    if ($interval->d) { $result .= $interval->format("%d days "); }
-    if ($interval->h) { $result .= $interval->format("%h hours "); }
-    if ($interval->i) { $result .= $interval->format("%i minutes "); }
-    if ($interval->s) { $result .= $interval->format("%s seconds "); }
+    if ($interval->y) { $result .= __($interval->y > 1 ? ':count years' : ':count year', ['count' => $interval->y]) . ' '; }
+    if ($interval->m) { $result .= __($interval->m > 1 ? ':count months' : ':count month', ['count' => $interval->m]) . ' '; }
+    if ($interval->d) { $result .= __($interval->d > 1 ? ':count days' : ':count day', ['count' => $interval->d]) . ' '; }
+    if ($interval->h) { $result .= __($interval->h > 1 ? ':count hours' : ':count hour', ['count' => $interval->h]) . ' '; }
+    if ($interval->i) { $result .= __($interval->i > 1 ? ':count minutes' : ':count minute', ['count' => $interval->i]) . ' '; }
+    if ($interval->s) { $result .= __($interval->s > 1 ? ':count seconds' : ':count second', ['count' => $interval->s]) . ' '; }
 
-    return $result;
+    return trim($result);
 }
 function generate_timezone_list()
     {
