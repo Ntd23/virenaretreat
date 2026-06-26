@@ -40,7 +40,13 @@ class SettingClass extends BaseSettingsClass
                     'user_permanently_delete_content_email_to_admin',
 
                     'user_disable_register',
-                    'user_role'
+                    'user_role',
+                    'login_bg_image',
+                    'login_hero_title',
+                    'login_hero_subtitle',
+                    'register_bg_image',
+                    'register_hero_title',
+                    'register_hero_subtitle',
 
                 ],
                 'html_keys'=>[
