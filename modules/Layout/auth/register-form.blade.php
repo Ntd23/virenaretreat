@@ -86,6 +86,6 @@
     @endif
     <div class="c-grey f14 text-center">
        {{__(" Already have an account?")}}
-        <a href="#" data-target="#login" data-toggle="modal">{{__("Log In")}}</a>
+        <a href="{{ route('login') }}" @if(empty($is_page)) data-target="#login" data-toggle="modal" @endif>{{__("Log In")}}</a>
     </div>
 </form>
