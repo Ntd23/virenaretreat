@@ -32,6 +32,6 @@ Route::group(['prefix' => 'sepay', 'middleware' => ['web']], function() {
     Route::get('/oauth/connect', '\Modules\Booking\Controllers\SepayOAuthController@connect')->name('sepay.oauth.connect');
     Route::get('/oauth/callback', '\Modules\Booking\Controllers\SepayOAuthController@getCallback')->name('sepay.oauth.callback');
     Route::post('/oauth/callback', '\Modules\Booking\Controllers\SepayOAuthController@callback');
-    Route::post('/oauth/disconnect', '\Modules\Booking\Controllers\SepayOAuthController@disconnect')->name('sepay.oauth.disconnect');
+    Route::get('/oauth/disconnect', '\Modules\Booking\Controllers\SepayOAuthController@disconnect')->name('sepay.oauth.disconnect');
 });
 
