@@ -75,7 +75,8 @@ class SettingClass extends BaseSettingsClass
                 "keys"=>$keys,
                 'html_keys'=>[
 
-                ]
+                ],
+                'filter_values_callback' => [static::class, 'filterPaymentSettings']
             ],
             'enquiry'=>[
                 'id'   => 'enquiry',
@@ -114,5 +115,18 @@ class SettingClass extends BaseSettingsClass
             ]
         ];
         return apply_filters(Hook::BOOKING_SETTING_CONFIG,$configs);
+    }
+
+    public static function filterPaymentSettings($values, $request)
+    {
+        if (!empty($values['g_sepay_bank_account_id'])) {
+            try {
+                $gatewayObj = new \Modules\Booking\Gateways\SepayGateway('sepay');
+                $values = $gatewayObj->syncSepaySettings($values);
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::error('SePay sync error: ' . $e->getMessage());
+            }
+        }
+        return $values;
     }
 }

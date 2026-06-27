@@ -33,6 +33,9 @@
             </div>
             <div class="row booking-success-detail">
                 <div class="col-md-8">
+                    @if(!empty($gateway) && $gateway->id === 'sepay' && $booking->status === 'unpaid')
+                        @include('Booking::frontend.gateways.sepay-info')
+                    @endif
                     @include ($service->booking_customer_info_file ?? 'Booking::frontend/booking/booking-customer-info')
                     <div class="text-center">
                         <a href="{{route('user.booking_history')}}" class="btn btn-primary">{{__('Booking History')}}</a>
