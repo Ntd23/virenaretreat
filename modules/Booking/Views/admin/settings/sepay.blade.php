@@ -113,10 +113,7 @@
         if (confirm('Bạn có chắc chắn muốn ngắt kết nối tài khoản SePay?')) {
             $.ajax({
                 url: '{{ route('sepay.oauth.disconnect') }}',
-                type: 'POST',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                },
+                type: 'GET',
                 success: function(response) {
                     if (response.success) {
                         location.reload();
