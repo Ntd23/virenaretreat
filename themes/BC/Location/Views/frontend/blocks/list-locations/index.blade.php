@@ -99,7 +99,7 @@
             bottom: 0;
             background-size: cover;
             background-position: center;
-            transform: scale(1.1);
+            transform: scale(1);
             transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
             z-index: 0;
         }
@@ -114,14 +114,7 @@
             z-index: 1;
         }
 
-        .location-side-banner:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-        }
 
-        .location-side-banner:hover .banner-bg {
-            transform: scale(1);
-        }
 
         .location-side-banner .banner-content {
             position: relative;
@@ -166,11 +159,7 @@
             transition: all 0.3s ease;
         }
 
-        .location-side-banner:hover .banner-btn {
-            background: #5191FA;
-            color: #fff;
-            transform: translateX(4px);
-        }
+
 
         .list-locations-banner-wrapper .bravo-list-locations {
             margin: 0 !important;
