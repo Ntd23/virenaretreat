@@ -34,6 +34,7 @@ Route::group(['prefix'=>'vendor','middleware' => ['auth']],function(){
     Route::group(['prefix'=>'affiliate'],function(){
         Route::get('/products','AffiliateController@products')->name('vendor.affiliate.products');
         Route::get('/commissions','AffiliateController@commissions')->name('vendor.affiliate.commissions');
+        Route::post('/save-payout-account','AffiliateController@savePayoutAccount')->name('vendor.affiliate.save_payout_account');
     });
 
 });

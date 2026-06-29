@@ -21,10 +21,22 @@ class AffiliateTracking
         $ref = $request->query('ref');
         
         if ($ref && is_numeric($ref)) {
-            // Kiểm tra xem User giới thiệu có tồn tại trong hệ thống hay không
-            $referrerExists = DB::table('users')->where('id', $ref)->exists();
+            // Kiểm tra xem User giới thiệu có tồn tại và đã cấu hình ngân hàng tiếp thị hay chưa
+            $referrer = DB::table('users')->where('id', $ref)->first();
+            $hasPayoutAccount = false;
             
-            if ($referrerExists) {
+            if ($referrer) {
+                $payoutAccountJson = DB::table('user_meta')
+                    ->where('user_id', $ref)
+                    ->where('name', 'affiliate_payout_account')
+                    ->value('val');
+                $payoutAccount = json_decode($payoutAccountJson, true) ?? [];
+                if (!empty($payoutAccount['bank_name']) && !empty($payoutAccount['account_number'])) {
+                    $hasPayoutAccount = true;
+                }
+            }
+            
+            if ($hasPayoutAccount) {
                 // Xác định đối tượng đang xem (Tour/Hotel...) để ghi nhận click
                 $route = $request->route();
                 if ($route) {

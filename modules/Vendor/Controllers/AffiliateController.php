@@ -172,4 +172,16 @@ class AffiliateController extends FrontendController
 
         return view('Vendor::frontend.affiliate.commissions', $data);
     }
+
+    public function savePayoutAccount(Request $request)
+    {
+        $this->checkPermission('dashboard_vendor_access');
+        $user = \Illuminate\Support\Facades\Auth::user();
+
+        $account = $request->input('affiliate_payout_account', []);
+        
+        $user->addMeta('affiliate_payout_account', json_encode($account));
+
+        return redirect()->back()->with('success', __('Affiliate payout account saved successfully'));
+    }
 }

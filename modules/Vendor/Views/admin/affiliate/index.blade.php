@@ -54,6 +54,22 @@
                                     <td>
                                         <div><strong>{{ $row->first_name }} {{ $row->last_name }}</strong></div>
                                         <div class="text-muted" style="font-size: 11px">{{ $row->email }}</div>
+                                        @php
+                                            $payout_account_json = \App\User::find($row->referrer_id)->getMeta('affiliate_payout_account');
+                                            $payout_account = json_decode($payout_account_json, true) ?? [];
+                                        @endphp
+                                        @if(!empty($payout_account))
+                                            <div class="mt-1 p-2 bg-light border rounded text-dark" style="font-size: 11px; line-height: 1.4; background-color: #f8f9fa;">
+                                                <i class="fa fa-university text-primary mr-1"></i><strong>{{ $payout_account['bank_name'] }}</strong><br>
+                                                STK: <code class="text-danger font-weight-bold" style="font-size: 12px;">{{ $payout_account['account_number'] }}</code><br>
+                                                Chủ TK: <strong>{{ strtoupper($payout_account['account_holder']) }}</strong>
+                                                @if(!empty($payout_account['branch']))
+                                                    <br><span class="text-muted" style="font-size: 10px;">CN: {{ $payout_account['branch'] }}</span>
+                                                @endif
+                                            </div>
+                                        @else
+                                            <div class="text-danger mt-1" style="font-size: 11px;"><i class="fa fa-exclamation-triangle"></i> {{ __('No bank account configured') }}</div>
+                                        @endif
                                     </td>
                                     <td>
                                         <a href="{{ route('report.admin.booking') }}?s={{ $row->booking_id }}" target="_blank">
@@ -79,11 +95,15 @@
                                     <td>{{ display_date($row->created_at) }}</td>
                                     <td>
                                         @if($row->status === 'pending')
-                                            <div class="d-flex">
-                                                <form action="{{ route('vendor.admin.affiliate.commission.approve', ['id' => $row->id]) }}" method="post" class="mr-1" onsubmit="return confirm('{{ __('Are you sure you want to approve this commission?') }}')">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-sm btn-success">{{ __('Approve') }}</button>
-                                                </form>
+                                            <div class="d-flex align-items-center">
+                                                @if($row->booking_status === 'completed')
+                                                    <form action="{{ route('vendor.admin.affiliate.commission.approve', ['id' => $row->id]) }}" method="post" class="mr-1" onsubmit="return confirm('{{ __('Are you sure you want to approve this commission?') }}')">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-sm btn-success">{{ __('Approve') }}</button>
+                                                    </form>
+                                                @else
+                                                    <button type="button" class="btn btn-sm btn-secondary mr-1" disabled title="{{ __('Only completed bookings can be approved') }}">{{ __('Approve') }}</button>
+                                                @endif
                                                 <form action="{{ route('vendor.admin.affiliate.commission.reject', ['id' => $row->id]) }}" method="post" onsubmit="return confirm('{{ __('Are you sure you want to reject this commission?') }}')">
                                                     @csrf
                                                     <button type="submit" class="btn btn-sm btn-danger">{{ __('Reject') }}</button>

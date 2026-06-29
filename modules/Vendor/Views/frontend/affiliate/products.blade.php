@@ -6,6 +6,19 @@
     </h2>
     @include('admin.message')
 
+    @php
+        $payout_account = json_decode(auth()->user()->getMeta('affiliate_payout_account'), true) ?? [];
+        $hasPayoutAccount = !empty($payout_account['bank_name']) && !empty($payout_account['account_number']);
+    @endphp
+
+    @if(!$hasPayoutAccount)
+        <div class="alert alert-warning border-0 shadow-sm mb-4 text-dark" style="border-radius: 10px; border-left: 4px solid #E67E22 !important; background-color: #FFF9E6;">
+            <i class="fa fa-exclamation-triangle text-warning mr-2" style="font-size: 16px;"></i>
+            {{ __('You must configure your affiliate payout bank account to copy referral links and track referrals.') }}
+            <a href="{{ route('vendor.affiliate.commissions') }}" class="alert-link font-weight-bold ml-1 text-primary" style="text-decoration: underline;">{{ __('Configure now') }}</a>
+        </div>
+    @endif
+
     <div class="booking-history-manager">
         <div class="filter-div d-flex justify-content-between mb-3">
             <div class="col-left w-100 col-md-4 pl-0">
@@ -52,14 +65,20 @@
                                 </strong>
                             </td>
                             <td>
-                                <div class="input-group">
-                                    <input type="text" class="form-control form-control-sm bg-white" readonly value="{{ $refLink }}" id="ref-link-{{ $row->object_model }}-{{ $row->id }}">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-sm btn-info copy-btn" type="button" data-target="ref-link-{{ $row->object_model }}-{{ $row->id }}">
-                                            <i class="fa fa-copy mr-1"></i> {{__("Copy")}}
-                                        </button>
+                                @if($hasPayoutAccount)
+                                    <div class="input-group">
+                                        <input type="text" class="form-control form-control-sm bg-white" readonly value="{{ $refLink }}" id="ref-link-{{ $row->object_model }}-{{ $row->id }}">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-sm btn-info copy-btn" type="button" data-target="ref-link-{{ $row->object_model }}-{{ $row->id }}">
+                                                <i class="fa fa-copy mr-1"></i> {{__("Copy")}}
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
+                                @else
+                                    <span class="text-danger font-italic" style="font-size: 12px;">
+                                        <i class="fa fa-lock mr-1"></i> {{ __('Configuration required') }}
+                                    </span>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
