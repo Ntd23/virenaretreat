@@ -105,6 +105,7 @@
                                     </div>
                                 </div>
                             </div>
+                            @include('Core::admin.affiliate.panel')
                             @include('Space::admin.space.attributes')
                             <div class="panel">
                                 <div class="panel-title"><strong>{{__('Feature Image')}}</strong></div>

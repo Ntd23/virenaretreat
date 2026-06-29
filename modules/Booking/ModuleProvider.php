@@ -18,7 +18,9 @@ class ModuleProvider extends ModuleServiceProvider
     {
         $this->loadMigrationsFrom(__DIR__ . '/Migrations');
         Event::listen(BookingCreatedEvent::class,BookingCreatedListen::class);
+        Event::listen(BookingCreatedEvent::class,\Modules\Booking\Listeners\AffiliateCommissionListener::class);
         Event::listen(BookingUpdatedEvent::class,BookingUpdateListen::class);
+        Event::listen(BookingUpdatedEvent::class,\Modules\Booking\Listeners\AffiliateCommissionListener::class);
         Event::listen(SetPaidAmountEvent::class,SetPaidAmountListen::class);
 
         $this->loadMigrationsFrom(__DIR__.'/Database/Migrations');

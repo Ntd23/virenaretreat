@@ -11,3 +11,9 @@ Route::group(['prefix'=>'plan'],function(){
     Route::get('/getForSelect2','PlanController@getForSelect2')->name('vendor.admin.plan.getForSelect2');
     Route::post('/bulkEdit','PlanController@bulkEdit')->name('vendor.admin.plan.bulkEdit');
 });
+Route::group(['prefix'=>'affiliate'],function(){
+    Route::get('/','AffiliateController@index')->name('vendor.admin.affiliate.index');
+    Route::post('/commission/approve/{id}','AffiliateController@approveCommission')->name('vendor.admin.affiliate.commission.approve');
+    Route::post('/commission/reject/{id}','AffiliateController@rejectCommission')->name('vendor.admin.affiliate.commission.reject');
+});
+

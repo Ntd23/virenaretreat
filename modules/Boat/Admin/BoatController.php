@@ -240,6 +240,9 @@ class BoatController extends AdminController
         if ($request->input('slug')) {
             $row->slug = $request->input('slug');
         }
+        $row->is_affiliate = $request->input('is_affiliate', 0);
+        $row->affiliate_commission_type = $request->input('affiliate_commission_type', 'percent');
+        $row->affiliate_commission_value = $request->input('affiliate_commission_value', 0);
 
         $row->min_price = $row->price_per_day < $row->price_per_hour ? $row->price_per_day : $row->price_per_hour;
         $row->number = 1;

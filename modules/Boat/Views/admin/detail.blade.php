@@ -104,6 +104,7 @@
                                     </div>
                                 </div>
                             </div>
+                            @include('Core::admin.affiliate.panel')
                             @include('Boat::admin.boat.attributes')
                             <div class="panel">
                                 <div class="panel-title"><strong>{{__('Feature Image')}}</strong></div>

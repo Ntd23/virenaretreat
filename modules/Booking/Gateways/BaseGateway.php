@@ -183,4 +183,12 @@ abstract class BaseGateway
     public function getValidationMessages(){
         return [];
     }
+
+    public function __get($name)
+    {
+        if ($name === 'id') {
+            return $this->id;
+        }
+        return null;
+    }
 }

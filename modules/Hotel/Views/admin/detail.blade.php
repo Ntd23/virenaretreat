@@ -88,6 +88,7 @@
                                     </div>
                                 </div>
                             </div>
+                            @include('Core::admin.affiliate.panel')
                             @include('Hotel::admin.hotel.attributes')
 
                             <div class="panel">
