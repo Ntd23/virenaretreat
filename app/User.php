@@ -302,15 +302,7 @@
             $total =  $query
                 ->whereIn('status',$status)
                 ->where('vendor_id',$this->id)
-                ->sum(DB::raw('total_before_fees - commission + vendor_service_fee_amount'));
-
-            // Cộng thêm tiền hoa hồng Affiliate đã được duyệt
-            $total_affiliate = DB::table('affiliate_commissions')
-                ->where('referrer_id', $this->id)
-                ->where('status', 'approved')
-                ->sum('commission_amount');
-
-            $total = $total + $total_affiliate - $this->total_paid;
+                ->sum(DB::raw('total_before_fees - commission + vendor_service_fee_amount')) - $this->total_paid;
             return max(0,$total);
         }
 
