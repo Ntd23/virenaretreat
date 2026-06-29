@@ -157,6 +157,50 @@ class SepayGateway extends BaseGateway
         $transferAmount = (float)$request->input('transferAmount', 0);
         $transferType = $request->input('transferType', 'in');
 
+        if (strtolower($transferType) === 'out') {
+            // Nhận dạng nội dung chuyển tiền hoa hồng affiliate
+            // Cú pháp: "Thanh toan hoa hong affiliate don hang [booking_id]"
+            if (preg_match('/thanh toan hoa hong affiliate don hang (\d+)/i', $content, $matches)) {
+                $bookingId = $matches[1];
+                
+                // Tìm dòng hoa hồng tương ứng ở trạng thái pending hoặc approved
+                $commission = \Illuminate\Support\Facades\DB::table('affiliate_commissions')
+                    ->where('booking_id', $bookingId)
+                    ->whereIn('status', ['pending', 'approved'])
+                    ->first();
+                
+                if ($commission) {
+                    // Kiểm tra xem đơn đặt phòng tương ứng đã hoàn thành (completed) chưa để bảo mật
+                    $booking = \Illuminate\Support\Facades\DB::table('bravo_bookings')->where('id', $bookingId)->first();
+                    if (!$booking || $booking->status !== 'completed') {
+                        return response()->json([
+                            'success' => false,
+                            'message' => 'Booking not completed or not found for booking #' . $bookingId
+                        ], 400);
+                    }
+
+                    // Cập nhật trạng thái sang paid
+                    \Illuminate\Support\Facades\DB::table('affiliate_commissions')
+                        ->where('id', $commission->id)
+                        ->update([
+                            'status' => 'paid',
+                            'updated_at' => now()
+                        ]);
+                    
+                    return response()->json([
+                        'success' => true
+                    ]);
+                }
+                
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Commission not found or already paid for booking #' . $bookingId
+                ], 400);
+            }
+            
+            return response()->json(['success' => true]);
+        }
+
         if (strtolower($transferType) !== 'in') {
             return response()->json(['success' => true, 'message' => 'Not incoming transfer. Ignore.']);
         }

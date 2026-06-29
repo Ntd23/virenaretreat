@@ -28,11 +28,11 @@
                 <div class="card-body py-3">
                     <div class="d-flex align-items-center">
                         <div class="mr-3 bg-white p-2 rounded-circle" style="width: 45px; height: 45px; display: flex; align-items: center; justify-content: center;">
-                            <i class="fa fa-shopping-cart text-success" style="font-size: 20px;"></i>
+                            <i class="fa fa-check-circle text-success" style="font-size: 20px;"></i>
                         </div>
                         <div>
-                            <h6 class="card-subtitle text-muted mb-1" style="font-size: 12px;">{{__("Approved Referrals")}}</h6>
-                            <h4 class="card-title font-weight-bold m-0 text-dark">{{ number_format($total_approved_count) }}</h4>
+                            <h6 class="card-subtitle text-muted mb-1" style="font-size: 12px;">{{__("Paid Commission")}}</h6>
+                            <h4 class="card-title font-weight-bold m-0 text-success">{{ format_money($total_paid_amount) }}</h4>
                         </div>
                     </div>
                 </div>
@@ -105,7 +105,9 @@
                                         @if($row->status === 'pending')
                                             <span class="badge badge-warning text-white">{{__("Pending")}}</span>
                                         @elseif($row->status === 'approved')
-                                            <span class="badge badge-success">{{__("Approved")}}</span>
+                                            <span class="badge badge-info text-white">{{__("Approved (Unpaid)")}}</span>
+                                        @elseif($row->status === 'paid')
+                                            <span class="badge badge-success">{{__("Paid")}}</span>
                                         @else
                                             <span class="badge badge-danger">{{__("Cancelled")}}</span>
                                         @endif

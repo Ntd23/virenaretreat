@@ -12,7 +12,8 @@
                     <select name="status" class="form-control custom-select mr-2">
                         <option value="">{{__('-- Status --')}}</option>
                         <option value="pending" @if(Request()->status == 'pending') selected @endif>{{__('Pending')}}</option>
-                        <option value="approved" @if(Request()->status == 'approved') selected @endif>{{__('Approved')}}</option>
+                        <option value="approved" @if(Request()->status == 'approved') selected @endif>{{__('Approved (Unpaid)')}}</option>
+                        <option value="paid" @if(Request()->status == 'paid') selected @endif>{{__('Paid')}}</option>
                         <option value="cancelled" @if(Request()->status == 'cancelled') selected @endif>{{__('Cancelled')}}</option>
                     </select>
                     <button class="btn-info btn btn-icon btn_search" type="submit">{{__('Filter')}}</button>
@@ -59,7 +60,17 @@
                                             $payout_account = json_decode($payout_account_json, true) ?? [];
                                         @endphp
                                         @if(!empty($payout_account))
-                                            <div class="mt-1 p-2 bg-light border rounded text-dark" style="font-size: 11px; line-height: 1.4; background-color: #f8f9fa;">
+                                            <div class="mt-1 p-2 bg-light border rounded text-dark" style="font-size: 11px; line-height: 1.4; background-color: #f8f9fa; position: relative;">
+                                                <a href="#" class="btn-vietqr" 
+                                                   style="position: absolute; right: 8px; top: 8px;"
+                                                   data-bank="{{ $payout_account['bank_name'] }}"
+                                                   data-account="{{ $payout_account['account_number'] }}"
+                                                   data-holder="{{ $payout_account['account_holder'] }}"
+                                                   data-amount="{{ (int) $row->commission_amount }}"
+                                                   data-info="Thanh toan hoa hong affiliate don hang {{ $row->booking_id }}"
+                                                   title="Quét mã QR chuyển khoản nhanh">
+                                                    <i class="fa fa-qrcode text-danger" style="font-size: 20px;"></i>
+                                                </a>
                                                 <i class="fa fa-university text-primary mr-1"></i><strong>{{ $payout_account['bank_name'] }}</strong><br>
                                                 STK: <code class="text-danger font-weight-bold" style="font-size: 12px;">{{ $payout_account['account_number'] }}</code><br>
                                                 Chủ TK: <strong>{{ strtoupper($payout_account['account_holder']) }}</strong>
@@ -87,7 +98,9 @@
                                         @if($row->status === 'pending')
                                             <span class="badge badge-warning">{{ __('Pending') }}</span>
                                         @elseif($row->status === 'approved')
-                                            <span class="badge badge-success">{{ __('Approved') }}</span>
+                                            <span class="badge badge-info text-white">{{ __('Approved (Unpaid)') }}</span>
+                                        @elseif($row->status === 'paid')
+                                            <span class="badge badge-success">{{ __('Paid') }}</span>
                                         @else
                                             <span class="badge badge-danger">{{ __('Cancelled') }}</span>
                                         @endif
@@ -109,6 +122,11 @@
                                                     <button type="submit" class="btn btn-sm btn-danger">{{ __('Reject') }}</button>
                                                 </form>
                                             </div>
+                                        @elseif($row->status === 'approved')
+                                            <form action="{{ route('vendor.admin.affiliate.commission.pay', ['id' => $row->id]) }}" method="post" onsubmit="return confirm('{{ __('Are you sure you want to mark this commission as paid?') }}')">
+                                                @csrf
+                                                <button type="submit" class="btn btn-sm btn-primary">{{ __('Mark as Paid') }}</button>
+                                            </form>
                                         @endif
                                     </td>
                                 </tr>
@@ -127,4 +145,86 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal VietQR -->
+    <div class="modal fade" id="vietQrModal" tabindex="-1" role="dialog" aria-labelledby="vietQrModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="vietQrModalLabel"><i class="fa fa-qrcode mr-1"></i> Quét mã VietQR chuyển khoản</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <div id="qr-loading" class="my-4"><i class="fa fa-spinner fa-spin fa-2x text-primary"></i> Đang tạo mã QR...</div>
+                    <img id="vietqr-image" src="" alt="VietQR" class="img-fluid d-none shadow-sm rounded border mb-3" style="max-height: 380px; max-width: 280px; margin: 0 auto;">
+                    <div class="p-3 bg-light rounded text-left" style="font-size: 13px; line-height: 1.5; background-color: #f8f9fa;">
+                        <div class="mb-1">Ngân hàng nhận: <strong id="qr-bank" class="text-dark"></strong></div>
+                        <div class="mb-1">Số tài khoản: <strong id="qr-account" class="text-danger" style="font-size: 14px;"></strong></div>
+                        <div class="mb-1">Chủ tài khoản: <strong id="qr-holder" class="text-dark"></strong></div>
+                        <div class="mb-1">Số tiền: <strong id="qr-amount" class="text-success" style="font-size: 14px;"></strong></div>
+                        <div class="mb-1">Nội dung CK: <strong id="qr-info" class="text-primary"></strong></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
+
+@push('js')
+    <script>
+        $(document).ready(function() {
+            $('.btn-vietqr').on('click', function(e) {
+                e.preventDefault();
+                var bankName = $(this).data('bank');
+                var accountNo = $(this).data('account');
+                var accountHolder = $(this).data('holder');
+                var amount = $(this).data('amount');
+                var info = $(this).data('info');
+
+                // Chuẩn hóa mã ngân hàng cho VietQR
+                var bankMap = {
+                    'vietcombank': 'VCB', 'vcb': 'VCB',
+                    'techcombank': 'TCB', 'tcb': 'TCB',
+                    'mbbank': 'MB', 'mb bank': 'MB', 'mb': 'MB',
+                    'acb': 'ACB', 'vpb': 'VPB', 'vpbank': 'VPB',
+                    'bidv': 'BIDV', 'vietinbank': 'CTG', 'ctg': 'CTG',
+                    'tpbank': 'TPB', 'sacombank': 'STB', 'shb': 'SHB',
+                    'hdbank': 'HDB', 'agribank': 'VBA', 'vib': 'VIB',
+                    'ocb': 'OCB', 'msb': 'MSB'
+                };
+                var rawBank = bankName.toLowerCase();
+                var bankCode = 'VCB'; // mặc định
+                for (var key in bankMap) {
+                    if (rawBank.indexOf(key) !== -1) {
+                        bankCode = bankMap[key];
+                        break;
+                    }
+                }
+
+                // Tạo URL ảnh QR
+                var qrUrl = "https://api.vietqr.io/image/" + bankCode + "-" + accountNo + "-compact2.jpg?amount=" + amount + "&addInfo=" + encodeURIComponent(info) + "&accountName=" + encodeURIComponent(accountHolder);
+
+                $('#qr-bank').text(bankName);
+                $('#qr-account').text(accountNo);
+                $('#qr-holder').text(accountHolder.toUpperCase());
+                $('#qr-amount').text(new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount));
+                $('#qr-info').text(info);
+
+                $('#qr-loading').removeClass('d-none');
+                $('#vietqr-image').addClass('d-none').attr('src', qrUrl);
+
+                $('#vietQrModal').modal('show');
+            });
+
+            $('#vietqr-image').on('load', function() {
+                $('#qr-loading').addClass('d-none');
+                $(this).removeClass('d-none');
+            });
+        });
+    </script>
+@endpush

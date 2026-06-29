@@ -108,4 +108,27 @@ class AffiliateController extends AdminController
 
         return redirect()->back()->with('success', __('Commission rejected successfully'));
     }
+
+    public function payCommission(Request $request, $id)
+    {
+        $this->checkPermission('user_create');
+
+        $commission = DB::table('affiliate_commissions')->where('id', $id)->first();
+
+        if (!$commission) {
+            return redirect()->back()->with('error', __('Commission record not found'));
+        }
+
+        if ($commission->status !== 'approved') {
+            return redirect()->back()->with('error', __('Only approved commission can be marked as paid'));
+        }
+
+        // Cập nhật trạng thái sang paid
+        DB::table('affiliate_commissions')->where('id', $id)->update([
+            'status' => 'paid',
+            'updated_at' => now()
+        ]);
+
+        return redirect()->back()->with('success', __('Commission marked as paid successfully'));
+    }
 }

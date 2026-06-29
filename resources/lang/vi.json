@@ -1,4 +1,11 @@
 {
+    "Paid Commission": "Hoa hồng đã nhận",
+    "Approved (Unpaid)": "Đã duyệt (Chờ chuyển khoản)",
+    "Paid": "Đã thanh toán",
+    "Mark as Paid": "Đánh dấu đã thanh toán",
+    "Only approved commission can be marked as paid": "Chỉ những hoa hồng đã duyệt mới có thể đánh dấu đã thanh toán",
+    "Commission marked as paid successfully": "Đánh dấu hoa hồng đã thanh toán thành công",
+    "Are you sure you want to mark this commission as paid?": "Bạn có chắc chắn muốn đánh dấu hoa hồng này là đã thanh toán?",
     "You must configure your affiliate payout bank account to copy referral links and track referrals.": "Bạn phải cấu hình tài khoản ngân hàng nhận tiền tiếp thị để có thể sao chép link giới thiệu và ghi nhận click.",
     "Configure now": "Cấu hình ngay",
     "Configuration required": "Yêu cầu cấu hình",
