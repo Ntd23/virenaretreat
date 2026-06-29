@@ -72,21 +72,16 @@ class AffiliateController extends AdminController
             return redirect()->back()->with('error', __('Only pending commission can be approved'));
         }
 
+        $booking = DB::table('bravo_bookings')->where('id', $commission->booking_id)->first();
+        if (!$booking || $booking->status !== 'completed') {
+            return redirect()->back()->with('error', __('Only commission with completed booking can be approved'));
+        }
+
         // Cập nhật trạng thái
         DB::table('affiliate_commissions')->where('id', $id)->update([
             'status' => 'approved',
             'updated_at' => now()
         ]);
-
-        // Cộng tiền vào ví
-        $referrer = User::find($commission->referrer_id);
-        if ($referrer && method_exists($referrer, 'deposit')) {
-            $referrer->deposit($commission->commission_amount, [
-                'booking_id' => $commission->booking_id,
-                'action' => 'affiliate_commission',
-                'description' => 'Hoa hồng tiếp thị liên kết cho đơn hàng #' . $commission->booking_id . ' (Duyệt thủ công)'
-            ]);
-        }
 
         return redirect()->back()->with('success', __('Commission approved successfully'));
     }
