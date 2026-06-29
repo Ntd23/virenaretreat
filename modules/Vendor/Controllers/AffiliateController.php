@@ -140,10 +140,10 @@ class AffiliateController extends FrontendController
             ->where('status', 'pending')
             ->sum('commission_amount');
 
-        $totalApprovedCount = DB::table('affiliate_commissions')
+        $totalPaidAmount = DB::table('affiliate_commissions')
             ->where('referrer_id', $userId)
-            ->where('status', 'approved')
-            ->count();
+            ->where('status', 'paid')
+            ->sum('commission_amount');
 
         // Danh sách hoa hồng
         $commissions = DB::table('affiliate_commissions')
@@ -156,7 +156,7 @@ class AffiliateController extends FrontendController
             'total_clicks'         => $totalClicks,
             'total_approved_amount'=> $totalApprovedAmount,
             'total_pending_amount' => $totalPendingAmount,
-            'total_approved_count'  => $totalApprovedCount,
+            'total_paid_amount'    => $totalPaidAmount,
             'page_title'           => __("Commissions"),
             'breadcrumbs'          => [
                 [
