@@ -21,8 +21,40 @@
     $mediaUrls = is_array($row->media_urls) ? $row->media_urls : array_filter(preg_split('/\r\n|\r|\n|,/', (string) $row->media_urls));
 @endphp
 
+@push('css')
+    <style>
+        .advertisement-admin-detail .panel,
+        .advertisement-admin-detail .panel-body,
+        .advertisement-admin-detail .panel-body p {
+            min-width: 0;
+        }
+
+        .advertisement-admin-detail .advertisement-target-link {
+            display: inline;
+            max-width: 100%;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+
+        @media (max-width: 767px) {
+            .advertisement-admin-detail .title-bar {
+                font-size: 24px;
+                line-height: 1.25;
+            }
+
+            .advertisement-admin-detail .panel-body {
+                padding: 16px;
+            }
+
+            .advertisement-admin-detail .panel-body p {
+                line-height: 1.55;
+            }
+        }
+    </style>
+@endpush
+
 @section('content')
-    <div class="container-fluid">
+    <div class="container-fluid advertisement-admin-detail">
         <div class="d-flex justify-content-between mb20">
             <h1 class="title-bar">{{__("Yêu cầu quảng cáo")}} #{{$row->id}}</h1>
             <a href="{{route('admin.advertisements.index')}}" class="btn btn-secondary">{{__("Quay lại")}}</a>
@@ -44,7 +76,7 @@
                         <p><strong>{{__("Tiêu đề")}}:</strong> {{$row->title}}</p>
                         <p><strong>{{__("Link đích")}}:</strong>
                             @if($row->link_url ?: $row->target_url)
-                                <a href="{{$row->link_url ?: $row->target_url}}" target="_blank">{{$row->link_url ?: $row->target_url}}</a>
+                                <a href="{{$row->link_url ?: $row->target_url}}" target="_blank" class="advertisement-target-link">{{$row->link_url ?: $row->target_url}}</a>
                             @else
                                 -
                             @endif
@@ -223,15 +255,23 @@
                                 <div class="alert alert-warning">
                                     {{__("Người dùng đã thanh toán. Vui lòng kiểm tra số tiền thực nhận trước khi xác nhận.")}}
                                 </div>
-                                <form method="post" action="{{route('admin.advertisements.confirm-payment', $row)}}" class="js-loading-form">
+                                <form method="post" action="{{route('admin.advertisements.confirm-payment', $row)}}" class="js-loading-form js-confirm-payment-form" data-confirm-message="{{__('Thanh toán thành công?')}}">
                                     @csrf
                                     <div class="form-group">
                                         <label>{{__("Số tiền thực nhận")}}</label>
-                                        <input type="number" name="paid_amount" value="{{old('paid_amount', $row->payment->paid_amount > 0 ? $row->payment->paid_amount : $row->payment->amount)}}" class="form-control">
+                                        @php
+                                            $confirmPaidAmount = old('paid_amount', $row->payment->paid_amount > 0 ? $row->payment->paid_amount : $row->payment->amount);
+                                        @endphp
+                                        <input type="hidden" name="paid_amount" value="{{(float) $confirmPaidAmount}}" class="js-paid-amount-value">
+                                        <input type="text"
+                                               value="{{number_format((float) $confirmPaidAmount, 0, ',', '.')}}"
+                                               class="form-control js-money-input"
+                                               inputmode="numeric"
+                                               autocomplete="off">
                                         <small class="form-text text-muted">{{__("Chỉ xác nhận khi số tiền thực nhận đúng bằng số tiền cần thanh toán.")}}</small>
                                     </div>
                                     <button class="btn btn-success btn-block" type="submit" data-loading-text="{{__('Đang xử lý...')}}">
-                                        <i class="fa fa-check-circle"></i> {{__("Xác nhận số tiền đã đúng")}}
+                                        <i class="fa fa-check-circle"></i> {{__("Thanh toán thành công")}}
                                     </button>
                                 </form>
                             @endif
@@ -279,6 +319,28 @@
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" id="confirmPaymentSuccessModal" tabindex="-1" role="dialog" aria-labelledby="confirmPaymentSuccessModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmPaymentSuccessModalLabel">{{__("Xác nhận thanh toán")}}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="{{__('Đóng')}}">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {{__("Bạn xác nhận thanh toán này đã thành công?")}}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{__("Hủy")}}</button>
+                        <button type="button" class="btn btn-success js-confirm-payment-submit">
+                            <i class="fa fa-check-circle"></i> {{__("Xác nhận")}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 
@@ -314,8 +376,71 @@
         $('.js-advertisement-position, .js-advertisement-start-date, .js-advertisement-end-date').on('change keyup', updateAdvertisementFinalPrice);
         updateAdvertisementFinalPrice();
 
-        $('.js-loading-form').on('submit', function () {
+        function normalizeMoneyValue(value) {
+            return String(value || '').replace(/[^\d]/g, '');
+        }
+
+        function formatMoneyValue(value) {
+            var numberValue = normalizeMoneyValue(value);
+            if (!numberValue) {
+                return '';
+            }
+
+            return new Intl.NumberFormat('vi-VN').format(parseInt(numberValue, 10));
+        }
+
+        function syncPaidAmount(form) {
+            var input = form.find('.js-money-input');
+            var hidden = form.find('.js-paid-amount-value');
+            var value = normalizeMoneyValue(input.val());
+
+            hidden.val(value || 0);
+            input.val(formatMoneyValue(value));
+        }
+
+        $('.js-money-input').on('input blur', function () {
+            var input = $(this);
+            input.val(formatMoneyValue(input.val()));
+            input.closest('form').find('.js-paid-amount-value').val(normalizeMoneyValue(input.val()) || 0);
+        });
+
+        var pendingConfirmPaymentForm = null;
+
+        $('.js-confirm-payment-form').on('submit', function (event) {
+            var form = $(this);
+            syncPaidAmount(form);
+
+            if (form.data('confirmed') !== true) {
+                event.preventDefault();
+                pendingConfirmPaymentForm = form;
+                $('#confirmPaymentSuccessModal').modal('show');
+                return false;
+            }
+        });
+
+        $('.js-confirm-payment-submit').on('click', function () {
+            if (!pendingConfirmPaymentForm) {
+                return;
+            }
+
+            $('#confirmPaymentSuccessModal').modal('hide');
+            pendingConfirmPaymentForm.data('confirmed', true);
+            pendingConfirmPaymentForm.trigger('submit');
+        });
+
+        $('#confirmPaymentSuccessModal').on('hidden.bs.modal', function () {
+            if (pendingConfirmPaymentForm && pendingConfirmPaymentForm.data('confirmed') !== true) {
+                pendingConfirmPaymentForm = null;
+            }
+        });
+
+        $('.js-loading-form').on('submit', function (event) {
+            if (event.isDefaultPrevented()) {
+                return;
+            }
+
             updateAdvertisementFinalPrice();
+            syncPaidAmount($(this));
             var btn = $(this).find('button[type=submit]');
             btn.prop('disabled', true).data('original-text', btn.html()).html(btn.data('loading-text') || 'Đang xử lý...');
         });

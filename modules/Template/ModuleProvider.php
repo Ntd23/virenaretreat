@@ -26,6 +26,7 @@ class ModuleProvider extends ModuleServiceProvider
             'list_featured_item'=>"\\Modules\\Tour\\Blocks\\ListFeaturedItem",
             'testimonial'=>"\\Modules\\Tour\\Blocks\\Testimonial",
             'form_search_all_service'=>"\\Modules\\Template\\Blocks\\FormSearchAllService",
+            'advertisement_banner'=>"\\Modules\\Template\\Blocks\\AdvertisementBanner",
             'offer_block'=>"\\Modules\\Template\\Blocks\\OfferBlock",
             'how_it_works'=>"\\Modules\\Template\\Blocks\\HowItWork",
             'client_feedback'=>"\\Modules\\Template\\Blocks\\ClientFeedBack",

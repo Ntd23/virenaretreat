@@ -5,8 +5,8 @@
     $running_right_url = $running_right_ad ? $running_right_ad->firstMediaUrl() : '';
     $banner_left_url = $running_left_url ?: (!empty($banner_left_img) ? get_file_url($banner_left_img, 'full') : '');
     $banner_right_url = $running_right_url ?: (!empty($banner_right_img) ? get_file_url($banner_right_img, 'full') : '');
-    $banner_left_href = $running_left_ad ? ($running_left_ad->target_url ?: $running_left_ad->link_url ?: '#') : ($banner_left_link ?: '#');
-    $banner_right_href = $running_right_ad ? ($running_right_ad->target_url ?: $running_right_ad->link_url ?: '#') : ($banner_right_link ?: '#');
+    $banner_left_href = $running_left_ad ? ($running_left_ad->link_url ?: $running_left_ad->target_url ?: '#') : ($banner_left_link ?: '#');
+    $banner_right_href = $running_right_ad ? ($running_right_ad->link_url ?: $running_right_ad->target_url ?: '#') : ($banner_right_link ?: '#');
 @endphp
 <div class="container-fluid px-0">
     <div class="row align-items-stretch list-locations-banner-wrapper no-gutters">
@@ -211,4 +211,3 @@
         }
     </style>
 @endpush
-
