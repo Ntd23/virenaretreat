@@ -1,3 +1,4 @@
+# Deploys the Virena Retreat Laravel application to the production server.
 name: DeployVirenaretreat
 
 on:
@@ -25,6 +26,25 @@ jobs:
             git reset --hard origin/main
 
             composer install --no-dev --optimize-autoloader
+
+            mkdir -p storage/framework/cache/data storage/framework/sessions storage/framework/views storage/logs bootstrap/cache
+
+            WEB_USER="$(id -un)"
+            if id virenaretreat >/dev/null 2>&1; then
+              WEB_USER="virenaretreat"
+            elif id www >/dev/null 2>&1; then
+              WEB_USER="www"
+            elif id nginx >/dev/null 2>&1; then
+              WEB_USER="nginx"
+            elif id apache >/dev/null 2>&1; then
+              WEB_USER="apache"
+            fi
+
+            WEB_GROUP="$(id -gn "$WEB_USER")"
+            if [ "$(id -u)" -eq 0 ]; then
+              chown -R "$WEB_USER:$WEB_GROUP" storage bootstrap/cache
+            fi
+            chmod -R ug+rwX storage bootstrap/cache
 
             php artisan migrate --force
 
