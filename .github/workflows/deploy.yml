@@ -27,9 +27,11 @@ jobs:
             git fetch origin
             git reset --hard origin/main
 
+            export CACHE_DRIVER=array
+            export CACHE_STORE=array
+
             prepare_laravel_storage() {
               mkdir -p storage/framework/cache/data storage/framework/sessions storage/framework/views storage/logs bootstrap/cache
-              mkdir -p storage/framework/cache/data/d8/61
 
               WEB_USER="virenaretreat"
 
@@ -49,7 +51,6 @@ jobs:
             }
 
             prepare_laravel_storage
-            ls -ld storage storage/framework storage/framework/cache storage/framework/cache/data storage/framework/cache/data/d8 storage/framework/cache/data/d8/61 bootstrap/cache
             php -r "file_put_contents('storage/framework/cache/data/.deploy-write-test', 'ok'); unlink('storage/framework/cache/data/.deploy-write-test');"
 
             COMPOSER_ALLOW_SUPERUSER=1 composer install --no-dev --optimize-autoloader --no-interaction
@@ -58,5 +59,4 @@ jobs:
 
             php artisan optimize:clear
             prepare_laravel_storage
-            ls -ld storage storage/framework storage/framework/cache storage/framework/cache/data storage/framework/cache/data/d8 storage/framework/cache/data/d8/61 bootstrap/cache
             php artisan optimize
