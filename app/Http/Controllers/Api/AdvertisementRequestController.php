@@ -91,7 +91,7 @@ class AdvertisementRequestController extends Controller
             $folder = 'advertisements/' . date('Y/m');
             $filename = Str::uuid() . '.' . strtolower($file->getClientOriginalExtension());
             $path = $file->storeAs($folder, $filename, 'uploads');
-            $urls[] = asset('uploads/' . $path);
+            $urls[] = 'uploads/' . ltrim($path, '/');
         }
 
         return $urls;
