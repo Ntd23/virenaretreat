@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\ScanUserPlanExpiredCommand;
+use App\Console\Commands\SyncAdvertisementQueueCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -28,6 +29,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->hourly();
         $schedule->command(ScanUserPlanExpiredCommand::class)->daily()->withoutOverlapping();
+        $schedule->command(SyncAdvertisementQueueCommand::class)->hourly()->withoutOverlapping();
     }
 
     /**

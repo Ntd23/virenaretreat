@@ -1,12 +1,18 @@
 @php
-    $banner_left_url = !empty($banner_left_img) ? get_file_url($banner_left_img, 'full') : '';
-    $banner_right_url = !empty($banner_right_img) ? get_file_url($banner_right_img, 'full') : '';
+    $running_left_ad = $running_left_ad ?? null;
+    $running_right_ad = $running_right_ad ?? null;
+    $running_left_url = $running_left_ad ? $running_left_ad->firstMediaUrl() : '';
+    $running_right_url = $running_right_ad ? $running_right_ad->firstMediaUrl() : '';
+    $banner_left_url = $running_left_url ?: (!empty($banner_left_img) ? get_file_url($banner_left_img, 'full') : '');
+    $banner_right_url = $running_right_url ?: (!empty($banner_right_img) ? get_file_url($banner_right_img, 'full') : '');
+    $banner_left_href = $running_left_ad ? ($running_left_ad->target_url ?: $running_left_ad->link_url ?: '#') : ($banner_left_link ?: '#');
+    $banner_right_href = $running_right_ad ? ($running_right_ad->target_url ?: $running_right_ad->link_url ?: '#') : ($banner_right_link ?: '#');
 @endphp
 <div class="container-fluid px-0">
     <div class="row align-items-stretch list-locations-banner-wrapper no-gutters">
         <!-- Left Banner -->
         <div class="col-xl-2 d-none d-xl-block js-placeholder-left">
-            <a href="{{ $banner_left_link ?: '#' }}" class="location-side-banner location-side-banner-left d-block">
+            <a href="{{ $banner_left_href }}" class="location-side-banner location-side-banner-left d-block" @if($running_left_ad && $banner_left_href !== '#') target="_blank" rel="noopener" @endif>
                 <div class="banner-bg"
                     style="background-image: url('{{ $banner_left_url ?: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80' }}');">
                 </div>
@@ -51,7 +57,7 @@
 
         <!-- Right Banner -->
         <div class="col-xl-2 d-none d-xl-block js-placeholder-right">
-            <a href="{{ $banner_right_link ?: '#' }}" class="location-side-banner location-side-banner-right d-block">
+            <a href="{{ $banner_right_href }}" class="location-side-banner location-side-banner-right d-block" @if($running_right_ad && $banner_right_href !== '#') target="_blank" rel="noopener" @endif>
                 <div class="banner-bg"
                     style="background-image: url('{{ $banner_right_url ?: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=600&q=80' }}');">
                 </div>
@@ -205,5 +211,4 @@
         }
     </style>
 @endpush
-
 

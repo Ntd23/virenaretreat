@@ -1,7 +1,10 @@
 <?php
 namespace Modules\Booking\Gateways;
 
+use App\Models\AdvertisementPayment;
+use App\Models\AdvertisementRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Modules\Booking\Events\BookingCreatedEvent;
 use Modules\Booking\Models\Booking;
@@ -213,10 +216,7 @@ class SepayGateway extends BaseGateway
             })->first();
 
         if (!$booking) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Booking not found matching content: ' . $content
-            ], 400);
+            return $this->processAdvertisementPayment($request, $content, $transferAmount, $transferType);
         }
 
         // 4. Kiểm tra số tiền chuyển khoản (Cho phép sai số tolerance 1000đ)
@@ -245,6 +245,103 @@ class SepayGateway extends BaseGateway
             'success' => true,
             'message' => 'Payment processed successfully for booking: ' . $booking->code
         ]);
+    }
+
+    protected function processAdvertisementPayment(Request $request, string $content, float $transferAmount, string $transferType)
+    {
+        $payload = $request->all();
+        $code = (string) $request->input('code', '');
+        $transactionId = $this->getSepayTransactionId($payload);
+        $gateway = $request->input('gateway') ?: $request->input('gatewayName') ?: $request->input('bank_brand_name');
+        $transactionDate = $request->input('transactionDate') ?: $request->input('transaction_date') ?: $request->input('time');
+
+        if (AdvertisementPayment::where('sepay_transaction_id', $transactionId)->exists()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Transaction already processed.',
+            ]);
+        }
+
+        return DB::transaction(function () use ($payload, $code, $content, $transactionId, $transferType, $transferAmount, $gateway, $transactionDate) {
+            if ($code === '' && $content === '') {
+                Log::warning('SePay advertisement transaction missing transfer content/code.', [
+                    'sepay_transaction_id' => $transactionId,
+                    'transfer_type' => $transferType,
+                    'amount' => $transferAmount,
+                    'code' => $code,
+                    'content' => $content,
+                    'payload' => $payload,
+                ]);
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Missing transfer content/code.',
+                ], 400);
+            }
+
+            $payment = AdvertisementPayment::query()
+                ->where(function ($query) use ($code, $content) {
+                    if ($code !== '') {
+                        $query->whereRaw('? LIKE CONCAT("%", payment_code, "%")', [$code]);
+                    }
+                    if ($content !== '') {
+                        $query->orWhereRaw('? LIKE CONCAT("%", payment_code, "%")', [$content]);
+                    }
+                })
+                ->with('advertisementRequest')
+                ->lockForUpdate()
+                ->first();
+
+            if (!$payment) {
+                Log::warning('SePay advertisement transaction has no matching payment code.', [
+                    'sepay_transaction_id' => $transactionId,
+                    'transfer_type' => $transferType,
+                    'amount' => $transferAmount,
+                    'code' => $code,
+                    'content' => $content,
+                    'payload' => $payload,
+                ]);
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Booking or advertisement payment not found matching content: ' . $content,
+                ], 400);
+            }
+
+            $payment->update([
+                'paid_amount' => $transferAmount,
+                'payment_method' => 'sepay',
+                'payment_status' => AdvertisementPayment::STATUS_WAITING_CONFIRM,
+                'sepay_transaction_id' => $transactionId,
+                'sepay_gateway' => $gateway,
+                'sepay_code' => $code,
+                'sepay_content' => $content,
+                'sepay_transfer_content' => $content,
+                'sepay_transaction_date' => $transactionDate ? date('Y-m-d H:i:s', strtotime($transactionDate)) : null,
+                'sepay_payload' => $payload,
+                'paid_at' => null,
+            ]);
+
+            $payment->advertisementRequest()->update([
+                'status' => AdvertisementRequest::STATUS_PAYMENT_WAITING_CONFIRM,
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Advertisement payment is waiting for admin confirmation: ' . $payment->payment_code,
+                'payment_status' => AdvertisementPayment::STATUS_WAITING_CONFIRM,
+            ]);
+        });
+    }
+
+    protected function getSepayTransactionId(array $payload)
+    {
+        $transactionId = data_get($payload, 'id')
+            ?: data_get($payload, 'transactionId')
+            ?: data_get($payload, 'referenceCode')
+            ?: data_get($payload, 'reference_code');
+
+        return $transactionId ?: 'payload_' . hash('sha256', json_encode($payload));
     }
 
     public function syncSepaySettings(array $values)
