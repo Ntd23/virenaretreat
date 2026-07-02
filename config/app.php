@@ -1,5 +1,7 @@
 <?php
 
+// Defines the main Laravel application configuration and registered service providers.
+
 use Illuminate\Support\Facades\Facade;
 
 return [
@@ -201,7 +203,6 @@ return [
         \Themes\ThemeServiceProvider::class,
         Modules\ServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class, // Xử lý ảnh,
-        Barryvdh\Debugbar\ServiceProvider::class, // Debug BAR
 
         App\Providers\RouteServiceProvider::class,
         Plugins\ServiceProvider::class,
