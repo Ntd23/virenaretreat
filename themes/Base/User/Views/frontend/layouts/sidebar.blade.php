@@ -26,6 +26,13 @@ $menus = [
         'icon'     => 'fa fa-cogs',
         'position' => 22
     ],
+    'advertisement'   => [
+        'url'      => route("user.advertisement.index"),
+        'title'    => __("Đăng ký quảng cáo"),
+        'icon'     => 'fa fa-bullhorn',
+        'position' => 23,
+        'active_routes' => ['user.advertisement.*']
+    ],
     'password'        => [
         'url'      => route("user.change_password"),
         'title'    => __("Change password"),
@@ -132,7 +139,16 @@ if (!empty($menus))
             unset($menus[$k]);
             continue;
         }
-        $menus[$k]['class'] = $currentUrl == url($menuItem['url']) ? 'active' : '';
+        $isActive = $currentUrl == url($menuItem['url']);
+        if (!$isActive and !empty($menuItem['active_routes'])) {
+            foreach ($menuItem['active_routes'] as $activeRoute) {
+                if (Illuminate\Support\Facades\Route::is($activeRoute)) {
+                    $isActive = true;
+                    break;
+                }
+            }
+        }
+        $menus[$k]['class'] = $isActive ? 'active' : '';
         if (!empty($menuItem['children'])) {
             $menus[$k]['class'] .= ' has-children';
             foreach ($menuItem['children'] as $k2 => $menuItem2) {

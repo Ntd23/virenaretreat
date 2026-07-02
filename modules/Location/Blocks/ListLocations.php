@@ -1,6 +1,7 @@
 <?php
 namespace Modules\Location\Blocks;
 
+use App\Models\AdvertisementRequest;
 use Modules\Template\Blocks\BaseBlock;
 use Modules\Location\Models\Location;
 
@@ -152,6 +153,8 @@ class ListLocations extends BaseBlock
     public function content($model = [])
     {
         $list = $this->query($model);
+        $runningLeftAd = AdvertisementRequest::runningAds('left_sidebar', 1)->first();
+        $runningRightAd = AdvertisementRequest::runningAds('right_sidebar', 1)->first();
         $data = [
             'rows'         => $list,
             'title'        => $model['title'],
@@ -163,6 +166,8 @@ class ListLocations extends BaseBlock
             'banner_left_link'  => $model['banner_left_link'] ?? '',
             'banner_right_img'  => $model['banner_right_img'] ?? '',
             'banner_right_link' => $model['banner_right_link'] ?? '',
+            'running_left_ad'   => $runningLeftAd,
+            'running_right_ad'  => $runningRightAd,
         ];
         return view('Location::frontend.blocks.list-locations.index', $data);
     }

@@ -13,6 +13,12 @@ Route::group(['prefix'=>'user','middleware' => ['auth','verified']],function(){
     Route::post('/profile/change-password','PasswordController@changePasswordUpdate')->name("user.change_password.update");
     Route::get('/booking-history','UserController@bookingHistory')->name("user.booking_history");
 
+    Route::get('/advertisements','AdvertisementRequestController@index')->name("user.advertisement.index");
+    Route::get('/advertisements/create','AdvertisementRequestController@create')->name("user.advertisement.create");
+    Route::post('/advertisements','AdvertisementRequestController@store')->name("user.advertisement.store");
+    Route::post('/advertisements/{advertisementRequest}/pay','AdvertisementRequestController@pay')->name("user.advertisement.pay");
+    Route::get('/advertisements/{advertisementRequest}','AdvertisementRequestController@show')->name("user.advertisement.show");
+
 
     Route::post('/wishlist','UserWishListController@handleWishList')->name("user.wishList.handle");
     Route::get('/wishlist','UserWishListController@index')->name("user.wishList.index");
@@ -73,4 +79,3 @@ Route::get('/plan','PlanController@index')->name('plan');
 Route::get('/plan/thank-you','PlanController@thankYou')->name('user.plan.thank-you');
 Route::get('/user/plan/buy/{id}','PlanController@buy')->name('user.plan.buy')->middleware(['auth', 'verified']);
 Route::post('/user/plan/buyProcess/{id}','PlanController@buyProcess')->name('user.plan.buyProcess')->middleware(['auth', 'verified']);
-

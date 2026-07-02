@@ -239,6 +239,9 @@ class CarController extends AdminController
         if ($request->input('slug')) {
             $row->slug = $request->input('slug');
         }
+        $row->is_affiliate = $request->input('is_affiliate', 0);
+        $row->affiliate_commission_type = $request->input('affiliate_commission_type', 'percent');
+        $row->affiliate_commission_value = $request->input('affiliate_commission_value', 0);
         $res = $row->saveOriginOrTranslation($request->input('lang'), true);
         if ($res) {
             if (!$request->input('lang') or is_default_lang($request->input('lang'))) {

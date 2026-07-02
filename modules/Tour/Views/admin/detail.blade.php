@@ -95,6 +95,7 @@
                                 </div>
 
                             </div>
+                            @include('Core::admin.affiliate.panel')
                             @include('Tour::admin/tour/attributes')
                             <div class="panel">
                                 <div class="panel-title"><strong>{{__('Feature Image')}}</strong></div>

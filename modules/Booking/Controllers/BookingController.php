@@ -109,6 +109,21 @@ class BookingController extends \App\Http\Controllers\Controller
         }
         return response()->json($data, 200);
     }
+    public function checkSepayStatus($code)
+    {
+        $booking = $this->booking::where('code', $code)->first();
+        if (empty($booking)) {
+            return response()->json([
+                'error' => true,
+                'message' => 'Booking not found'
+            ]);
+        }
+        return response()->json([
+            'error' => false,
+            'status' => $booking->status,
+            'is_paid' => in_array($booking->status, [$booking::PAID, $booking::COMPLETED])
+        ]);
+    }
     protected function validateDoCheckout(){
 
         $request = \request();

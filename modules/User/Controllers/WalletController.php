@@ -37,7 +37,7 @@ class WalletController extends FrontendController
             return redirect(route("user.profile.index"));
         }
         $row = auth()->user();
-        $booking = new \Modules\Booking\Controllers\BookingController();
+        $booking = app(\Modules\Booking\Controllers\BookingController::class);
         $data = [
             'row'=>$row,
             'page_title'         => __("Buy credits"),

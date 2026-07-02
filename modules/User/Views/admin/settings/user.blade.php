@@ -1,3 +1,75 @@
+<div class="row">
+    <div class="col-sm-4">
+        <h3 class="form-group-title">{{__("Login Page Settings")}}</h3>
+        <p class="form-group-desc">{{__('Customize the login page appearance')}}</p>
+    </div>
+    <div class="col-sm-8">
+        <div class="panel">
+            <div class="panel-body">
+                @if(is_default_lang())
+                    <div class="form-group">
+                        <label>{{__("Login Background Image")}}</label>
+                        <p class="text-muted" style="font-size:12px">{{__('This image will appear on the left side of the login page.')}}</p>
+                        <div class="form-controls form-group-image">
+                            {!! \Modules\Media\Helpers\FileHelper::fieldUpload('login_bg_image', setting_item('login_bg_image')) !!}
+                        </div>
+                    </div>
+                @endif
+                <div class="form-group">
+                    <label>{{__("Hero Title")}}</label>
+                    <p class="text-muted" style="font-size:12px">{{__('Large heading on the left panel (e.g. "Welcome Back")')}}</p>
+                    <div class="form-controls">
+                        <input type="text" class="form-control" name="login_hero_title" value="{{ setting_item_with_lang('login_hero_title', request()->query('lang'), 'Welcome Back') }}" placeholder="Welcome Back">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>{{__("Hero Subtitle")}}</label>
+                    <p class="text-muted" style="font-size:12px">{{__('Description text below the heading on the left panel.')}}</p>
+                    <div class="form-controls">
+                        <textarea class="form-control" name="login_hero_subtitle" rows="3" placeholder="Sign in to continue your journey...">{{ setting_item_with_lang('login_hero_subtitle', request()->query('lang'), 'Sign in to continue your journey and explore amazing experiences with us.') }}</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+<div class="row">
+    <div class="col-sm-4">
+        <h3 class="form-group-title">{{__("Register Page Settings")}}</h3>
+        <p class="form-group-desc">{{__('Customize the register page appearance')}}</p>
+    </div>
+    <div class="col-sm-8">
+        <div class="panel">
+            <div class="panel-body">
+                @if(is_default_lang())
+                    <div class="form-group">
+                        <label>{{__("Register Background Image")}}</label>
+                        <p class="text-muted" style="font-size:12px">{{__('This image will appear on the left side of the register page.')}}</p>
+                        <div class="form-controls form-group-image">
+                            {!! \Modules\Media\Helpers\FileHelper::fieldUpload('register_bg_image', setting_item('register_bg_image')) !!}
+                        </div>
+                    </div>
+                @endif
+                <div class="form-group">
+                    <label>{{__("Hero Title")}}</label>
+                    <p class="text-muted" style="font-size:12px">{{__('Large heading on the left panel (e.g. "Join Us Now")')}}</p>
+                    <div class="form-controls">
+                        <input type="text" class="form-control" name="register_hero_title" value="{{ setting_item_with_lang('register_hero_title', request()->query('lang'), 'Join Us Now') }}" placeholder="Join Us Now">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>{{__("Hero Subtitle")}}</label>
+                    <p class="text-muted" style="font-size:12px">{{__('Description text below the heading on the left panel.')}}</p>
+                    <div class="form-controls">
+                        <textarea class="form-control" name="register_hero_subtitle" rows="3" placeholder="Create your account to start your journey...">{{ setting_item_with_lang('register_hero_subtitle', request()->query('lang'), 'Create your account to start your journey and explore amazing experiences with us.') }}</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
 @if(is_default_lang())
     <div class="row">
         <div class="col-sm-4">

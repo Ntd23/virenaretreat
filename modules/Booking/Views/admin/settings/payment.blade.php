@@ -235,7 +235,11 @@
                 </div>
                 <div class="panel-body collapse" id="gateway_{{$k}}">
                     <div class="" >
-                        @php App\Helpers\AdminForm::generate($options); @endphp
+                        @if($k === 'sepay')
+                            @include('Booking::admin.settings.sepay')
+                        @else
+                            @php App\Helpers\AdminForm::generate($options); @endphp
+                        @endif
                     </div>
                 </div>
             </div>

@@ -1,6 +1,7 @@
 <?php
 namespace Modules\Template\Blocks;
 
+use App\Models\AdvertisementRequest;
 use Modules\Flight\Models\SeatType;
 use Modules\Template\Blocks\BaseBlock;
 use Modules\Location\Models\Location;
@@ -115,7 +116,11 @@ class FormSearchAllService extends BaseBlock
 
     public function content($model = [])
     {
-        $model['bg_image_url'] = FileHelper::url($model['bg_image'] ?? "", 'full') ?? "";
+        $runningSearchAd = AdvertisementRequest::runningAds('large_banner', 1)->first();
+        $model['running_search_ad'] = $runningSearchAd;
+        $model['bg_image_url'] = $runningSearchAd
+            ? $runningSearchAd->firstMediaUrl()
+            : (FileHelper::url($model['bg_image'] ?? "", 'full') ?? "");
         $model['list_location'] = $model['tour_location'] =  Location::where("status","publish")->limit(1000)->orderBy('name', 'asc')->with(['translation'])->get()->toTree();
         $model['style'] = $model['style'] ?? "";
         $model['list_slider'] = $model['list_slider'] ?? "";

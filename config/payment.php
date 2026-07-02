@@ -5,5 +5,6 @@ return [
         'paypal'=>Modules\Booking\Gateways\PaypalGateway::class,
         'stripe'=>Modules\Booking\Gateways\StripeGateway::class,
         'payrexx'=>Modules\Booking\Gateways\PayrexxGateway::class,
+        'sepay'=>Modules\Booking\Gateways\SepayGateway::class,
     ],
 ];

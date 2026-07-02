@@ -31,6 +31,12 @@ Route::group(['prefix'=>'vendor','middleware' => ['auth']],function(){
         Route::get('/delete/{vendorTeam}','TeamController@delete')->name("delete")->middleware('signed');
     });
 
+    Route::group(['prefix'=>'affiliate'],function(){
+        Route::get('/products','AffiliateController@products')->name('vendor.affiliate.products');
+        Route::get('/commissions','AffiliateController@commissions')->name('vendor.affiliate.commissions');
+        Route::post('/save-payout-account','AffiliateController@savePayoutAccount')->name('vendor.affiliate.save_payout_account');
+    });
+
 });
 
 Route::group(['prefix'=>'vendor/enquiry-report'],function(){

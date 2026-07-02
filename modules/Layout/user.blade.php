@@ -80,6 +80,7 @@
         };
     </script>
     <link href="{{ asset('dist/frontend/module/user/css/user.css?_ver='.config('app.asset_version')) }}" rel="stylesheet">
+    <link href="{{ asset('dist/frontend/css/custom-modern-user.css?_ver='.config('app.asset_version')) }}" rel="stylesheet">
     <!-- Styles -->
     @stack('css')
     <style type="text/css">

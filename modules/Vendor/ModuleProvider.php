@@ -26,11 +26,18 @@ class ModuleProvider extends ModuleServiceProvider
     {
         $count = VendorPayout::countInitial();
         return [
-            'payout'=>[
+            'vendor_payout'=>[
                 "position"=>70,
                 'url'        => route('vendor.admin.payout.index'),
                 'title'      => __("Payouts :count",['count'=>$count ? sprintf('<span class="badge badge-warning">%d</span>',$count) : '']),
                 'icon'       => 'icon ion-md-card',
+                'permission' => 'user_create',
+            ],
+            'affiliate'=>[
+                "position"=>71,
+                'url'        => route('vendor.admin.affiliate.index'),
+                'title'      => __("Affiliate"),
+                'icon'       => 'icon ion-ios-share-alt',
                 'permission' => 'user_create',
             ]
         ];
@@ -63,6 +70,14 @@ class ModuleProvider extends ModuleServiceProvider
             'permission' => 'enquiry_view',
         ];
 
+        $res['affiliate'] = [
+            'url'        => route('vendor.affiliate.products'),
+            'title'      => __("Affiliate"),
+            'icon'       => 'icon ion-ios-share-alt',
+            'position'   => 85,
+            'permission' => 'dashboard_vendor_access',
+        ];
+
         if(!setting_item('disable_payout'))
         {
             $res['payout']= [
@@ -83,6 +98,28 @@ class ModuleProvider extends ModuleServiceProvider
                 'permission' => 'dashboard_vendor_access',
             ];
         }
+        return $res;
+    }
+
+    public static function getUserSubMenu()
+    {
+        $res = [];
+        $res['affiliate_products'] = [
+            'id'       => 'affiliate_products',
+            'parent'   => 'affiliate',
+            'title'    => __("Affiliate Products"),
+            'url'      => route('vendor.affiliate.products'),
+            'position' => 10,
+            'permission' => 'dashboard_vendor_access',
+        ];
+        $res['affiliate_commissions'] = [
+            'id'       => 'affiliate_commissions',
+            'parent'   => 'affiliate',
+            'title'    => __("Commissions"),
+            'url'      => route('vendor.affiliate.commissions'),
+            'position' => 20,
+            'permission' => 'dashboard_vendor_access',
+        ];
         return $res;
     }
 }

@@ -104,6 +104,7 @@
                                     </div>
                                 </div>
                             </div>
+                            @include('Core::admin.affiliate.panel')
                             @include('Car::admin.car.attributes')
                             @include('Car::admin.car.ical')
                             <div class="panel">

@@ -1,15 +1,22 @@
 <div class="container">
     <div class="bravo-list-hotel layout_{{$style_list}}">
-        @if($title)
-        <div class="title">
-            {{$title}}
-        </div>
-        @endif
-        @if($desc)
-            <div class="sub-title">
-                {{$desc}}
+        <div class="title-header d-flex justify-content-between align-items-end mb-4 flex-wrap gap-3">
+            <div class="title-group">
+                @if($title)
+                    <div class="title" style="margin-bottom: 0px;">
+                        {{$title}}
+                    </div>
+                @endif
+                @if($desc)
+                    <div class="sub-title" style="margin-top: 5px;">
+                        {{$desc}}
+                    </div>
+                @endif
             </div>
-        @endif
+            <a href="{{ route('hotel.search') }}" class="view-all-hotels">
+                {{ __('Xem tất cả') }} <i class="fa fa-angle-right"></i>
+            </a>
+        </div>
         <div class="list-item">
             @if($style_list === "normal")
                 <div class="row">
@@ -33,6 +40,35 @@
 
 @push('css')
     <style>
+        .bravo-list-hotel .title-header {
+            border-bottom: 1px solid #e7e7e7;
+            padding-bottom: 12px;
+        }
+        .bravo-list-hotel .view-all-hotels {
+            color: #003b95;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none !important;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 6px;
+            background-color: #f0f4fa;
+            transition: all 0.2s ease-in-out;
+            border: 1px solid transparent;
+        }
+        .bravo-list-hotel .view-all-hotels:hover {
+            color: #ffffff;
+            background-color: #003b95;
+        }
+        .bravo-list-hotel .view-all-hotels i {
+            font-size: 15px;
+            transition: transform 0.2s ease-in-out;
+        }
+        .bravo-list-hotel .view-all-hotels:hover i {
+            transform: translateX(4px);
+        }
         /* Modernized Booking.com Style for Hotel List Block (Compact & Balanced Version) */
         .bravo-list-hotel .item-loop {
             background: #ffffff;
