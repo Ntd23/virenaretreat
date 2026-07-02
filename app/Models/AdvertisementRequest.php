@@ -104,6 +104,78 @@ class AdvertisementRequest extends Model
         ], true);
     }
 
+    public function getMediaUrlsAttribute($value)
+    {
+        $mediaUrls = json_decode($value, true);
+
+        if (!is_array($mediaUrls)) {
+            $mediaUrls = array_filter(preg_split('/\r\n|\r|\n|,/', (string) $value));
+        }
+
+        return collect($mediaUrls)
+            ->filter()
+            ->map(function ($path) {
+                return static::normalizeMediaUrl($path);
+            })
+            ->values()
+            ->all();
+    }
+
+    public function setMediaUrlsAttribute($value)
+    {
+        if (!is_array($value)) {
+            $decoded = json_decode((string) $value, true);
+            $value = is_array($decoded)
+                ? $decoded
+                : array_filter(preg_split('/\r\n|\r|\n|,/', (string) $value));
+        }
+
+        $this->attributes['media_urls'] = json_encode(collect($value)
+            ->filter()
+            ->map(function ($path) {
+                return static::normalizeMediaPathForStorage($path);
+            })
+            ->values()
+            ->all());
+    }
+
+    public static function normalizeMediaUrl($path)
+    {
+        $path = trim((string) $path);
+
+        if ($path === '') {
+            return null;
+        }
+
+        if (preg_match('/^https?:\/\//i', $path)) {
+            return $path;
+        }
+
+        return asset(ltrim($path, '/'));
+    }
+
+    protected static function normalizeMediaPathForStorage($path)
+    {
+        $path = trim((string) $path);
+
+        if ($path === '') {
+            return null;
+        }
+
+        if (!preg_match('/^https?:\/\//i', $path)) {
+            return ltrim($path, '/');
+        }
+
+        $appHost = parse_url(config('app.url'), PHP_URL_HOST);
+        $pathHost = parse_url($path, PHP_URL_HOST);
+
+        if ($appHost && $pathHost && strcasecmp($appHost, $pathHost) === 0) {
+            return ltrim(parse_url($path, PHP_URL_PATH) ?: '', '/');
+        }
+
+        return $path;
+    }
+
     public function firstMediaUrl()
     {
         $mediaUrls = $this->media_urls ?: [];
