@@ -22,18 +22,37 @@
 
 @push('css')
     <style>
-        .advertisement-list-page .title-bar {
-            display: flex;
+        .advertisement-list-page .advertisement-list-header {
+            display: flex !important;
             align-items: center;
             justify-content: space-between;
             gap: 16px;
+            width: 100%;
             margin-bottom: 22px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid #f1f5f9;
         }
 
-        .advertisement-list-page .title-bar .btn {
+        .advertisement-list-page .advertisement-list-header h2 {
+            margin: 0;
+            color: #0f172a;
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 42px;
+        }
+
+        .advertisement-list-page .advertisement-list-header .btn {
+            align-self: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 42px;
+            margin-top: 8px;
+            margin-left: auto;
             border-radius: 6px;
-            padding: 10px 18px;
+            padding: 9px 18px;
             font-weight: 600;
+            line-height: 1;
         }
 
         .advertisement-table-card {
@@ -143,14 +162,115 @@
         }
 
         @media (max-width: 767px) {
-            .advertisement-list-page .title-bar {
-                align-items: flex-start;
-                flex-direction: column;
+            .advertisement-list-page {
+                padding-bottom: 20px;
             }
 
-            .advertisement-table-card thead th,
+            .advertisement-list-page .advertisement-list-header {
+                gap: 12px;
+                align-items: flex-start;
+                flex-direction: column;
+                margin-bottom: 16px;
+                padding-bottom: 16px;
+            }
+
+            .advertisement-list-page .advertisement-list-header h2 {
+                font-size: 20px;
+                line-height: 1.25;
+            }
+
+            .advertisement-list-page .advertisement-list-header .btn {
+                width: 100%;
+                min-height: 44px;
+                margin-top: 0;
+                margin-left: 0;
+            }
+
+            .advertisement-table-card {
+                overflow: visible;
+                border-radius: 6px;
+                border: 0;
+                background: transparent;
+                box-shadow: none;
+            }
+
+            .advertisement-table-card .table {
+                display: block;
+                width: 100%;
+                min-width: 0;
+                border: 0;
+            }
+
+            .advertisement-table-card thead {
+                display: none;
+            }
+
+            .advertisement-table-card tbody,
+            .advertisement-table-card tr,
+            .advertisement-table-card td {
+                display: block;
+                width: 100%;
+            }
+
+            .advertisement-table-card tbody tr {
+                margin-bottom: 12px;
+                overflow: hidden;
+                border: 1px solid #e6edf5;
+                border-radius: 8px;
+                background: #fff;
+                box-shadow: 0 6px 18px rgba(26, 43, 72, 0.06);
+            }
+
+            .advertisement-table-card tbody tr:nth-child(even) {
+                background: #fff;
+            }
+
             .advertisement-table-card tbody td {
-                white-space: nowrap;
+                display: flex;
+                align-items: flex-start;
+                justify-content: space-between;
+                gap: 14px;
+                min-height: 44px;
+                padding: 10px 14px !important;
+                border: 0;
+                border-bottom: 1px solid #edf1f6;
+                font-size: 13px;
+                text-align: right;
+                white-space: normal;
+            }
+
+            .advertisement-table-card tbody td:last-child {
+                border-bottom: 0;
+            }
+
+            .advertisement-table-card tbody td:before {
+                content: attr(data-label);
+                flex: 0 0 112px;
+                color: #6b778c;
+                font-weight: 700;
+                text-align: left;
+            }
+
+            .advertisement-table-card tbody td:nth-child(2) {
+                font-weight: 700;
+            }
+
+            .advertisement-table-card .badge {
+                padding: 6px 8px;
+                font-size: 11px;
+                white-space: normal;
+            }
+
+            .advertisement-actions {
+                justify-content: space-between;
+                min-width: 72px;
+            }
+
+            .advertisement-table-card td.advertisement-actions a.advertisement-action-btn {
+                min-width: 54px;
+                min-height: 32px;
+                margin-left: auto;
+                font-size: 12px !important;
             }
         }
     </style>
@@ -158,12 +278,12 @@
 
 @section('content')
     <div class="advertisement-list-page">
-        <h2 class="title-bar">
-            <span>{{__("Đăng ký quảng cáo")}}</span>
+        <div class="advertisement-list-header">
+            <h2>{{__("Đăng ký quảng cáo")}}</h2>
             <a href="{{route('user.advertisement.create')}}" class="btn btn-primary">
                 <i class="fa fa-plus"></i> {{__("Tạo yêu cầu")}}
             </a>
-        </h2>
+        </div>
         @include('admin.message')
 
         @if($rows->total() > 0)
@@ -190,26 +310,26 @@
 
                     @endphp
                     <tr>
-                        <td>{{$rows->firstItem() + $loop->index}}</td>
-                        <td>{{$row->title}}</td>
-                        <td>{{$row->duration_label}}</td>
-                        <td><span class="badge badge-info">{{$requestStatuses[$row->status] ?? $row->status}}</span></td>
-                        <td>
+                        <td data-label="{{__('STT')}}">{{$rows->firstItem() + $loop->index}}</td>
+                        <td data-label="{{__('Tiêu đề')}}">{{$row->title}}</td>
+                        <td data-label="{{__('Thời gian chạy')}}">{{$row->duration_label}}</td>
+                        <td data-label="{{__('Trạng thái')}}"><span class="badge badge-info">{{$requestStatuses[$row->status] ?? $row->status}}</span></td>
+                        <td data-label="{{__('Thanh toán')}}">
                             @if($row->payment)
                                 <span class="badge badge-secondary">{{$paymentStatusLabel}}</span>
                             @else
                                 -
                             @endif
                         </td>
-                        <td>
+                        <td data-label="{{__('Số tiền')}}">
                             @if($row->payment)
                                 {{number_format((float) $row->payment->amount)}}đ
                             @else
                                 -
                             @endif
                         </td>
-                        <td>{{display_datetime($row->created_at)}}</td>
-                        <td class="advertisement-actions">
+                        <td data-label="{{__('Ngày gửi')}}">{{display_datetime($row->created_at)}}</td>
+                        <td data-label="{{__('Thao tác')}}" class="advertisement-actions">
                             <a href="{{route('user.advertisement.show', $row)}}" class="advertisement-action-btn advertisement-action-btn-view"><span>{{__("Xem")}}</span></a>
                             @if($row->status === \App\Models\AdvertisementRequest::STATUS_APPROVED_WAIT_PAYMENT && $row->payment && $row->payment->payment_status === \App\Models\AdvertisementPayment::STATUS_PENDING)
                                 <a href="{{route('user.advertisement.show', $row)}}#advertisement-payment" class="advertisement-action-btn advertisement-action-btn-pay"><span>{{__("Thanh toán")}}</span></a>
