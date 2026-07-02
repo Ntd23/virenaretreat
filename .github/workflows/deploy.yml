@@ -20,6 +20,8 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
 
           script: |
+            set -e
+
             cd /home/virenaretreat/main
 
             git fetch origin
@@ -29,22 +31,23 @@ jobs:
 
             mkdir -p storage/framework/cache/data storage/framework/sessions storage/framework/views storage/logs bootstrap/cache
 
-            WEB_USER="$(id -un)"
-            if id virenaretreat >/dev/null 2>&1; then
-              WEB_USER="virenaretreat"
-            elif id www >/dev/null 2>&1; then
-              WEB_USER="www"
-            elif id nginx >/dev/null 2>&1; then
-              WEB_USER="nginx"
-            elif id apache >/dev/null 2>&1; then
-              WEB_USER="apache"
+            WEB_USER="virenaretreat"
+
+            if ! id "$WEB_USER" >/dev/null 2>&1; then
+              echo "Configured web user '$WEB_USER' does not exist on the server."
+              exit 1
             fi
 
             WEB_GROUP="$(id -gn "$WEB_USER")"
             if [ "$(id -u)" -eq 0 ]; then
               chown -R "$WEB_USER:$WEB_GROUP" storage bootstrap/cache
+            elif [ "$(id -un)" != "$WEB_USER" ]; then
+              echo "Deploy user is not root; skipping ownership update."
             fi
+
             chmod -R ug+rwX storage bootstrap/cache
+
+            php -r "file_put_contents('storage/framework/cache/data/.deploy-write-test', 'ok'); unlink('storage/framework/cache/data/.deploy-write-test');"
 
             php artisan migrate --force
 
