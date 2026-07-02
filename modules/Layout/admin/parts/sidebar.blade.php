@@ -13,6 +13,13 @@ $menus = [
         'icon'       => 'icon ion-ios-apps',
         'permission' => 'menu_view',
     ],
+    'advertisements'=>[
+        "position"=>75,
+        'url'        => route('admin.advertisements.index'),
+        'title'      => __("Quảng cáo"),
+        'icon'       => 'icon ion-ios-megaphone',
+        'permission' => 'dashboard_access',
+    ],
     'general'=>[
         "position"=>80,
         'url'        => route('core.admin.settings.index',['group'=>'general']),
