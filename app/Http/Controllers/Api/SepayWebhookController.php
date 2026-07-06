@@ -30,6 +30,10 @@ class SepayWebhookController extends Controller
             return response()->json(['success' => true]);
         }
 
+        if ($this->hasAffiliatePaymentCode($code, $content)) {
+            return app(AffiliatePaymentWebhookController::class)->__invoke($request);
+        }
+
         if ($this->transactionAlreadyProcessed($transactionId)) {
             return response()->json([
                 'message' => 'Transaction already processed.',
@@ -124,5 +128,10 @@ class SepayWebhookController extends Controller
             ->with('advertisementRequest')
             ->lockForUpdate()
             ->first();
+    }
+
+    protected function hasAffiliatePaymentCode($code, $content)
+    {
+        return preg_match('/AFFPAY\d{8}/i', (string)$code . ' ' . (string)$content) === 1;
     }
 }
