@@ -3,6 +3,55 @@
     <link href="{{ asset('dist/frontend/module/tour/css/tour.css?_ver='.config('app.asset_version')) }}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{ asset("libs/ion_rangeslider/css/ion.rangeSlider.min.css") }}"/>
     <link rel="stylesheet" type="text/css" href="{{ asset("libs/fotorama/fotorama.css") }}"/>
+    <style>
+        .bravo_wrap .bravo_detail_tour .bravo_content .g-header {
+            align-items: flex-start;
+            gap: 36px;
+        }
+        .bravo_wrap .bravo_detail_tour .bravo_content .g-header > .left {
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+        .bravo_wrap .bravo_detail_tour .bravo_content .g-header > .right {
+            flex: 0 0 340px;
+            min-width: 340px;
+        }
+        .bravo_wrap .bravo_detail_tour .bravo_content .g-header h1,
+        .bravo_wrap .bravo_detail_tour .bravo_content .g-header h2 {
+            overflow-wrap: anywhere;
+        }
+        .bravo_wrap .bravo_detail_tour .bravo_content .g-header .review-score .head {
+            gap: 20px;
+        }
+        .bravo_wrap .bravo_detail_tour .bravo_content .g-header .review-score .head .left {
+            flex: 0 1 auto;
+            min-width: 0;
+        }
+        .bravo_wrap .bravo_detail_tour .bravo_content .g-header .review-score .head .left .head-rating {
+            line-height: 1.15;
+            white-space: nowrap;
+        }
+        .bravo_wrap .bravo_detail_tour .bravo_content .g-header .review-score .head .score {
+            margin-left: 0;
+        }
+        @media (max-width: 1199px) {
+            .bravo_wrap .bravo_detail_tour .bravo_content .g-header {
+                gap: 24px;
+            }
+            .bravo_wrap .bravo_detail_tour .bravo_content .g-header > .right {
+                flex-basis: 300px;
+                min-width: 300px;
+            }
+        }
+        @media (max-width: 766px) {
+            .bravo_wrap .bravo_detail_tour .bravo_content .g-header {
+                gap: 0;
+            }
+            .bravo_wrap .bravo_detail_tour .bravo_content .g-header > .left {
+                flex: 0 0 100%;
+            }
+        }
+    </style>
 @endpush
 @section('content')
     <div class="bravo_detail_tour">
