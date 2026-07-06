@@ -157,10 +157,11 @@ class SepayGateway extends BaseGateway
 
         // 2. Nhận dữ liệu giao dịch
         $content = $request->input('content', '');
+        $code = $request->input('code', '');
         $transferAmount = (float)$request->input('transferAmount', 0);
         $transferType = $request->input('transferType', 'in');
 
-        if (strtolower($transferType) === 'out') {
+        if (strtolower($transferType) === 'out' || $this->hasAffiliatePaymentCode($code, $content)) {
             return app(\App\Http\Controllers\Api\AffiliatePaymentWebhookController::class)->__invoke($request);
         }
 
@@ -292,6 +293,11 @@ class SepayGateway extends BaseGateway
                 'payment_status' => AdvertisementPayment::STATUS_WAITING_CONFIRM,
             ]);
         });
+    }
+
+    protected function hasAffiliatePaymentCode($code, $content)
+    {
+        return preg_match('/AFFPAY\d{8}/i', (string)$code . ' ' . (string)$content) === 1;
     }
 
     protected function getSepayTransactionId(array $payload)

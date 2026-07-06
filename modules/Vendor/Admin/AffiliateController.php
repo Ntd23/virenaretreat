@@ -19,6 +19,7 @@ class AffiliateController extends AdminController
     public function index(Request $request)
     {
         $this->checkPermission('user_create'); // Quyền quản trị viên chung
+        $this->ensureApprovedPayments();
         $dateFilter = $this->getDateFilter($request);
 
         $query = DB::table('affiliate_commissions')
@@ -74,6 +75,23 @@ class AffiliateController extends AdminController
         ];
 
         return view('Vendor::admin.affiliate.index', $data);
+    }
+
+    protected function ensureApprovedPayments()
+    {
+        if (!Schema::hasTable('affiliate_payments')) {
+            return;
+        }
+
+        AffiliateCommission::query()
+            ->where('status', AffiliateCommission::STATUS_APPROVED)
+            ->whereDoesntHave('payment')
+            ->orderBy('id')
+            ->chunkById(50, function ($commissions) {
+                foreach ($commissions as $commission) {
+                    $commission->ensurePayment();
+                }
+            });
     }
 
     protected function getDateFilter(Request $request)
