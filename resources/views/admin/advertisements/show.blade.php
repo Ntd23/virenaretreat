@@ -177,7 +177,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>{{__("Giá tiền / ngày")}}</label>
-                                    <input type="number" class="form-control js-base-price" readonly>
+                                    <input type="text" class="form-control js-base-price" readonly>
                                     <small class="form-text text-muted">
                                         {{__("Giá tiền được tính theo đơn giá/ngày của vị trí quảng cáo đã chọn.")}}
                                         <a href="{{route('admin.advertisements.pricing')}}" target="_blank">{{__("Cấu hình giá")}}</a>
@@ -185,7 +185,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label>{{__("Thành tiền")}}</label>
-                                    <input type="number" name="final_price" value="{{old('final_price', $row->final_price)}}" class="form-control js-final-price" readonly>
+                                    <input type="hidden" name="final_price" value="{{old('final_price', $row->final_price)}}" class="js-final-price-value">
+                                    <input type="text" value="{{number_format((float) old('final_price', $row->final_price), 0, ',', '.')}}" class="form-control js-final-price" readonly>
                                     <small class="form-text text-muted">{{__("Thành tiền = số ngày chạy x giá tiền/ngày.")}}</small>
                                 </div>
                                 <div class="form-group">
@@ -368,8 +369,12 @@
                     finalPrice = basePrice * days;
                 }
 
-                form.find('.js-base-price').val(Math.max(0, Math.round(basePrice)));
-                form.find('.js-final-price').val(Math.max(0, Math.round(finalPrice)));
+                var roundedBasePrice = Math.max(0, Math.round(basePrice));
+                var roundedFinalPrice = Math.max(0, Math.round(finalPrice));
+
+                form.find('.js-base-price').val(formatMoneyValue(roundedBasePrice));
+                form.find('.js-final-price').val(formatMoneyValue(roundedFinalPrice));
+                form.find('.js-final-price-value').val(roundedFinalPrice);
             });
         }
 

@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use Modules\Booking\Events\BookingCreatedEvent;
 use Modules\Booking\Events\BookingUpdatedEvent;
 use App\User;
+use Illuminate\Support\Facades\Schema;
+use Modules\Vendor\Models\AffiliateCommission;
 
 class AffiliateCommissionListener
 {
@@ -82,13 +84,23 @@ class AffiliateCommissionListener
 
         if ($commission) {
             if ($booking->status === 'completed' && $commission->status === 'pending') {
-                // Duyệt hoa hồng
+                $updates = [
+                    'status' => AffiliateCommission::STATUS_APPROVED,
+                    'updated_at' => now(),
+                ];
+
+                if (Schema::hasColumn('affiliate_commissions', 'approved_at')) {
+                    $updates['approved_at'] = now();
+                }
+
                 DB::table('affiliate_commissions')
                     ->where('id', $commission->id)
-                    ->update([
-                        'status' => 'approved',
-                        'updated_at' => now()
-                    ]);
+                    ->update($updates);
+
+                $affiliateCommission = AffiliateCommission::query()->with('payment')->find($commission->id);
+                if ($affiliateCommission) {
+                    $affiliateCommission->ensurePayment();
+                }
             } elseif (in_array($booking->status, ['cancelled', 'cancel']) && $commission->status === 'pending') {
                 // Hủy hoa hồng
                 DB::table('affiliate_commissions')

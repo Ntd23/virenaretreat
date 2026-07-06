@@ -5,26 +5,53 @@
             <h1 class="title-bar">{{__("Affiliate Commission Management")}}</h1>
         </div>
         @include('admin.message')
-        <div class="filter-div d-flex justify-content-between ">
-            <div class="col-left">
-                <!-- Bộ lọc theo trạng thái -->
-                <form method="get" action="{{route('vendor.admin.affiliate.index')}}" class="filter-form filter-form-left d-flex justify-content-start flex-column flex-sm-row">
-                    <select name="status" class="form-control custom-select mr-2">
+        <div class="filter-div">
+            <form method="get" action="{{route('vendor.admin.affiliate.index')}}" class="filter-form d-flex align-items-end flex-column flex-lg-row" role="search" id="affiliate-filter-form">
+                <div class="form-group mb-2 mr-lg-2">
+                    <label>{{__("Status")}}</label>
+                    <select name="status" class="form-control custom-select">
                         <option value="">{{__('-- Status --')}}</option>
+                        <option value="unpaid" @if(Request()->status == 'unpaid') selected @endif>{{__('Unpaid')}}</option>
                         <option value="pending" @if(Request()->status == 'pending') selected @endif>{{__('Pending')}}</option>
                         <option value="approved" @if(Request()->status == 'approved') selected @endif>{{__('Approved (Unpaid)')}}</option>
                         <option value="paid" @if(Request()->status == 'paid') selected @endif>{{__('Paid')}}</option>
                         <option value="cancelled" @if(Request()->status == 'cancelled') selected @endif>{{__('Cancelled')}}</option>
                     </select>
-                    <button class="btn-info btn btn-icon btn_search" type="submit">{{__('Filter')}}</button>
-                </form>
-            </div>
-            <div class="col-right">
-                <form method="get" action="{{route('vendor.admin.affiliate.index')}}" class="filter-form filter-form-right d-flex justify-content-end flex-column flex-sm-row" role="search">
+                </div>
+                <div class="form-group mb-2 mr-lg-2">
+                    <label>{{__("Filter by")}}</label>
+                    <select name="filter_type" class="form-control custom-select" id="affiliate-filter-type">
+                        <option value="" @if(empty($date_filter['type'])) selected @endif>{{__("All dates")}}</option>
+                        <option value="day" @if(($date_filter['type'] ?? '') == 'day') selected @endif>{{__("Day")}}</option>
+                        <option value="month" @if(($date_filter['type'] ?? '') == 'month') selected @endif>{{__("Month")}}</option>
+                        <option value="year" @if(($date_filter['type'] ?? '') == 'year') selected @endif>{{__("Year")}}</option>
+                    </select>
+                </div>
+                <div class="form-group mb-2 mr-lg-2 affiliate-filter-control" data-filter-control="day">
+                    <label>{{__("Day")}}</label>
+                    <input type="date" name="filter_day" value="{{$date_filter['day'] ?? date('Y-m-d')}}" class="form-control">
+                </div>
+                <div class="form-group mb-2 mr-lg-2 affiliate-filter-control" data-filter-control="month">
+                    <label>{{__("Month")}}</label>
+                    <input type="month" name="filter_month" value="{{$date_filter['month'] ?? date('Y-m')}}" class="form-control">
+                </div>
+                <div class="form-group mb-2 mr-lg-2 affiliate-filter-control" data-filter-control="year">
+                    <label>{{__("Year")}}</label>
+                    <input type="number" name="filter_year" value="{{$date_filter['year'] ?? date('Y')}}" min="2000" max="2100" class="form-control">
+                </div>
+                <div class="form-group mb-2 mr-lg-2 flex-grow-1">
+                    <label>{{__("Search")}}</label>
                     <input type="text" name="s" value="{{ Request()->s }}" placeholder="{{__('Search by email, name or booking ID')}}" class="form-control">
-                    <button class="btn-info btn btn-icon btn_search" type="submit">{{__('Search')}}</button>
-                </form>
-            </div>
+                </div>
+                <div class="form-group mb-2 mr-lg-2">
+                    <button class="btn-info btn btn-icon btn_search" type="submit">{{__('Filter')}}</button>
+                    <a href="{{route('vendor.admin.affiliate.index')}}" class="btn btn-secondary">{{__('Reset')}}</a>
+                </div>
+                <div class="form-group mb-2 ml-lg-auto">
+                    <label>{{__("Current period")}}</label>
+                    <div class="form-control-plaintext font-weight-bold">{{$date_filter['label'] ?? __('All dates')}}</div>
+                </div>
+            </form>
         </div>
         <div class="text-right mb-2">
             <p><i>{{__('Found :total items',['total'=>$rows->total()])}}</i></p>
@@ -178,6 +205,17 @@
 @push('js')
     <script>
         $(document).ready(function() {
+            var filterType = $('#affiliate-filter-type');
+            function toggleAffiliateFilterControls() {
+                var selected = filterType.val();
+                $('.affiliate-filter-control').hide();
+                if (selected) {
+                    $('[data-filter-control="' + selected + '"]').show();
+                }
+            }
+            filterType.on('change', toggleAffiliateFilterControls);
+            toggleAffiliateFilterControls();
+
             $('.btn-vietqr').on('click', function(e) {
                 e.preventDefault();
                 var bankName = $(this).data('bank');

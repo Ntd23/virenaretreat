@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminAdvertisementRequestController;
 use App\Http\Controllers\Api\AdvertisementRequestController;
+use App\Http\Controllers\Api\AffiliatePaymentWebhookController;
 use App\Http\Controllers\Api\SepayWebhookController;
 
 /*
@@ -21,6 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/sepay/webhook', SepayWebhookController::class)->name('api.sepay.webhook');
+Route::post('/webhooks/sepay/affiliate-payment', AffiliatePaymentWebhookController::class)->name('api.webhooks.sepay.affiliate-payment');
 
 Route::middleware('auth:api')->group(function () {
     Route::get('/advertisement-requests', [AdvertisementRequestController::class, 'index']);
