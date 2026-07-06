@@ -23,9 +23,11 @@ class SepayWebhookController extends Controller
         $transactionDate = data_get($payload, 'transactionDate') ?: data_get($payload, 'transaction_date') ?: data_get($payload, 'time');
 
         if ($transferType !== 'in') {
-            return response()->json([
-                'message' => 'Ignored non-in transaction.',
-            ]);
+            if ($transferType === 'out') {
+                return app(AffiliatePaymentWebhookController::class)->__invoke($request);
+            }
+
+            return response()->json(['success' => true]);
         }
 
         if ($this->transactionAlreadyProcessed($transactionId)) {

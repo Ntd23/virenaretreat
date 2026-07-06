@@ -85,6 +85,7 @@
                                         @php
                                             $payout_account_json = \App\User::find($row->referrer_id)->getMeta('affiliate_payout_account');
                                             $payout_account = json_decode($payout_account_json, true) ?? [];
+                                            $affiliatePaymentCode = $row->affiliate_payment_code ?: ('AFFPAY' . str_pad($row->id, 8, '0', STR_PAD_LEFT));
                                         @endphp
                                         @if(!empty($payout_account))
                                             <div class="mt-1 p-2 bg-light border rounded text-dark" style="font-size: 11px; line-height: 1.4; background-color: #f8f9fa; position: relative;">
@@ -94,12 +95,13 @@
                                                    data-account="{{ $payout_account['account_number'] }}"
                                                    data-holder="{{ $payout_account['account_holder'] }}"
                                                    data-amount="{{ (int) $row->commission_amount }}"
-                                                   data-info="Thanh toan hoa hong affiliate don hang {{ $row->booking_id }}"
+                                                   data-info="{{ $affiliatePaymentCode }}"
                                                    title="Quét mã QR chuyển khoản nhanh">
                                                     <i class="fa fa-qrcode text-danger" style="font-size: 20px;"></i>
                                                 </a>
                                                 <i class="fa fa-university text-primary mr-1"></i><strong>{{ $payout_account['bank_name'] }}</strong><br>
                                                 STK: <code class="text-danger font-weight-bold" style="font-size: 12px;">{{ $payout_account['account_number'] }}</code><br>
+                                                Mã CK: <code class="text-primary font-weight-bold" style="font-size: 12px;">{{ $affiliatePaymentCode }}</code><br>
                                                 Chủ TK: <strong>{{ strtoupper($payout_account['account_holder']) }}</strong>
                                                 @if(!empty($payout_account['branch']))
                                                     <br><span class="text-muted" style="font-size: 10px;">CN: {{ $payout_account['branch'] }}</span>
