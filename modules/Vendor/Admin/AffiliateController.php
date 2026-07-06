@@ -24,13 +24,16 @@ class AffiliateController extends AdminController
         $query = DB::table('affiliate_commissions')
             ->join('users', 'affiliate_commissions.referrer_id', '=', 'users.id')
             ->join('bravo_bookings', 'affiliate_commissions.booking_id', '=', 'bravo_bookings.id')
+            ->leftJoin('affiliate_payments', 'affiliate_commissions.id', '=', 'affiliate_payments.commission_id')
             ->select(
                 'affiliate_commissions.*',
                 'users.first_name',
                 'users.last_name',
                 'users.email',
                 'bravo_bookings.total as booking_total',
-                'bravo_bookings.status as booking_status'
+                'bravo_bookings.status as booking_status',
+                'affiliate_payments.payment_code as affiliate_payment_code',
+                'affiliate_payments.status as affiliate_payment_status'
             );
 
         if ($status = $request->query('status')) {

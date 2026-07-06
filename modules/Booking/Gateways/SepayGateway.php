@@ -161,9 +161,7 @@ class SepayGateway extends BaseGateway
         $transferType = $request->input('transferType', 'in');
 
         if (strtolower($transferType) === 'out') {
-            // Affiliate payouts are handled by /api/webhooks/sepay/affiliate-payment.
-            // Do not mark affiliate_commissions as paid here; that endpoint matches affiliate_payments.payment_code.
-            return response()->json(['success' => true]);
+            return app(\App\Http\Controllers\Api\AffiliatePaymentWebhookController::class)->__invoke($request);
         }
 
         if (strtolower($transferType) !== 'in') {
