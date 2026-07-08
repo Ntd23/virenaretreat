@@ -1,4 +1,26 @@
-@if(!empty($style) and $style == "carousel" and !empty($list_slider))
+@php
+    $runningSearchAds = $running_search_ads ?? [];
+@endphp
+@if(empty($style) && count($runningSearchAds) > 1)
+    <div class="effect">
+        <div class="owl-carousel bravo-large-banner-carousel">
+            @foreach($runningSearchAds as $advertisement)
+                @php
+                    $adImageUrl = $advertisement['image_url'] ?? '';
+                    $adLinkUrl = $advertisement['link_url'] ?? '#';
+                    $hasAdLink = $adLinkUrl && $adLinkUrl !== '#';
+                @endphp
+                <div class="item">
+                    @if($hasAdLink)
+                        <a href="{{$adLinkUrl}}" target="_blank" rel="noopener" class="item-bg advertisement-hero-slide-link" style="background-image: linear-gradient(0deg,rgba(0, 0, 0, 0.0),rgba(0, 0, 0, 0.0)),url('{{$adImageUrl}}') !important"></a>
+                    @else
+                        <div class="item-bg" style="background-image: linear-gradient(0deg,rgba(0, 0, 0, 0.0),rgba(0, 0, 0, 0.0)),url('{{$adImageUrl}}') !important"></div>
+                    @endif
+                </div>
+            @endforeach
+        </div>
+    </div>
+@elseif(!empty($style) and $style == "carousel" and !empty($list_slider))
     <div class="effect">
         <div class="owl-carousel">
             @foreach($list_slider as $item)
@@ -104,6 +126,35 @@
             display: flex !important;
             flex-direction: column !important;
             justify-content: flex-end !important;
+        }
+
+        .bravo-form-search-all .effect,
+        .bravo-form-search-all .effect .owl-carousel,
+        .bravo-form-search-all .effect .owl-stage-outer,
+        .bravo-form-search-all .effect .owl-stage,
+        .bravo-form-search-all .effect .owl-item,
+        .bravo-form-search-all .effect .item,
+        .bravo-form-search-all .effect .item-bg {
+            height: 100% !important;
+        }
+
+        .bravo-form-search-all .effect {
+            position: absolute !important;
+            inset: 0 !important;
+            z-index: 0 !important;
+            overflow: hidden !important;
+        }
+
+        .bravo-form-search-all .effect .item-bg {
+            display: block !important;
+            width: 100% !important;
+            background-repeat: no-repeat !important;
+            background-position: top center !important;
+            background-size: cover !important;
+        }
+
+        .bravo-form-search-all .advertisement-hero-slide-link {
+            cursor: pointer;
         }
 
         /* Tiêu đề & Subtitle */
@@ -557,3 +608,29 @@
         }
     </style>
 @endpush
+
+@if(empty($style) && count($runningSearchAds) > 1)
+    @push('js')
+        <script>
+            $(function () {
+                $('.bravo-large-banner-carousel').each(function () {
+                    var carousel = $(this);
+                    if (carousel.hasClass('owl-loaded')) {
+                        return;
+                    }
+                    carousel.owlCarousel({
+                        items: 1,
+                        loop: true,
+                        margin: 0,
+                        nav: false,
+                        dots: true,
+                        autoplay: true,
+                        autoplayTimeout: 5000,
+                        autoplayHoverPause: false,
+                        animateOut: 'fadeOut'
+                    });
+                });
+            });
+        </script>
+    @endpush
+@endif

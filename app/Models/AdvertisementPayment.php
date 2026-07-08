@@ -17,6 +17,8 @@ class AdvertisementPayment extends Model
         'user_id',
         'payment_code',
         'qr_url',
+        'receipt_image_url',
+        'receipt_uploaded_at',
         'amount',
         'paid_amount',
         'payment_method',
@@ -35,6 +37,7 @@ class AdvertisementPayment extends Model
         'amount' => 'decimal:2',
         'paid_amount' => 'decimal:2',
         'sepay_payload' => 'array',
+        'receipt_uploaded_at' => 'datetime',
         'sepay_transaction_date' => 'datetime',
         'paid_at' => 'datetime',
     ];

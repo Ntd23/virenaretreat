@@ -116,10 +116,19 @@ class FormSearchAllService extends BaseBlock
 
     public function content($model = [])
     {
-        $runningSearchAd = AdvertisementRequest::runningAds('large_banner', 1)->first();
+        $runningSearchAds = AdvertisementRequest::runningAds('large_banner', 3);
+        $runningSearchAd = $runningSearchAds->first();
         $model['running_search_ad'] = $runningSearchAd;
+        $model['running_search_ads'] = $runningSearchAds->map(function ($advertisement) {
+            return [
+                'image_url' => $advertisement->mediaUrlForPlacement('large_banner'),
+                'link_url' => $advertisement->link_url ?: $advertisement->target_url ?: '#',
+            ];
+        })->filter(function ($advertisement) {
+            return !empty($advertisement['image_url']);
+        })->values()->all();
         $model['bg_image_url'] = $runningSearchAd
-            ? $runningSearchAd->firstMediaUrl()
+            ? $runningSearchAd->mediaUrlForPlacement('large_banner')
             : (FileHelper::url($model['bg_image'] ?? "", 'full') ?? "");
         $model['list_location'] = $model['tour_location'] =  Location::where("status","publish")->limit(1000)->orderBy('name', 'asc')->with(['translation'])->get()->toTree();
         $model['style'] = $model['style'] ?? "";

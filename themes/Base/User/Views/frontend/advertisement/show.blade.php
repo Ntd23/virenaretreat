@@ -186,6 +186,22 @@
             width: 100%;
         }
 
+        .advertisement-receipt-preview {
+            display: inline-block;
+            overflow: hidden;
+            max-width: 280px;
+            border: 1px solid #e6edf5;
+            border-radius: 8px;
+            background: #fff;
+        }
+
+        .advertisement-receipt-preview img {
+            display: block;
+            width: 100%;
+            max-height: 360px;
+            object-fit: contain;
+        }
+
         .advertisement-pay-note {
             margin: 18px 0 0;
             color: #6b778c;
@@ -346,7 +362,7 @@
                 @if($isPayable)
                     <h4>{{__("Chọn phương thức thanh toán")}}</h4>
                     @if(!empty($gateways))
-                        <form action="{{route('user.advertisement.pay', $row)}}" method="post">
+                        <form action="{{route('user.advertisement.pay', $row)}}" method="post" enctype="multipart/form-data" class="js-advertisement-pay-form">
                             @csrf
                             <div class="gateways-table accordion" id="advertisementPaymentGateways">
                                 @foreach($gateways as $key => $gateway)
@@ -391,9 +407,40 @@
                                 @endforeach
                             </div>
                             <p class="advertisement-pay-note">{{__("Sau khi đã chuyển khoản/thanh toán, bấm nút bên dưới để gửi admin xác nhận.")}}</p>
-                            <button class="btn btn-primary mt-3" type="submit">
-                                <i class="fa fa-check-circle"></i> {{__("Tôi đã thanh toán")}}
+                            <button class="btn btn-primary mt-3 js-open-receipt-modal" type="button" data-toggle="modal" data-target="#advertisementReceiptModal">
+                                <i class="fa fa-check-circle"></i> {{__("Tôi đã chuyển khoản")}}
                             </button>
+
+                            <div class="modal fade" id="advertisementReceiptModal" tabindex="-1" role="dialog" aria-labelledby="advertisementReceiptModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="advertisementReceiptModalLabel">{{__("Gửi ảnh bill chuyển khoản")}}</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="{{__('Đóng')}}">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p class="text-muted">{{__("Vui lòng gửi ảnh bill chuyển khoản để admin kiểm tra và xác nhận thanh toán.")}}</p>
+                                            <div class="form-group">
+                                                <label>{{__("Ảnh bill chuyển khoản")}} <span class="text-danger">*</span></label>
+                                                <input type="file" name="payment_receipt" class="form-control" accept="image/*" required>
+                                                <small class="form-text text-muted">{{__("Hỗ trợ jpg, jpeg, png, gif, webp. Tối đa 10MB.")}}</small>
+                                            </div>
+                                            <div class="advertisement-description mb-0">
+                                                <p><strong>{{__("Số tiền")}}:</strong> {{number_format((float) $row->payment->amount)}}đ</p>
+                                                <p class="mb-0"><strong>{{__("Nội dung chuyển khoản")}}:</strong> <code>{{$row->payment->payment_code}}</code></p>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{__("Hủy")}}</button>
+                                            <button class="btn btn-primary" type="submit">
+                                                <i class="fa fa-paper-plane"></i> {{__("Gửi bill cho admin")}}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </form>
                     @else
                         <p>{{__("Hiện chưa có cổng thanh toán khả dụng.")}}</p>
@@ -414,6 +461,32 @@
                     <div class="advertisement-qr-box mt-3">
                         <img src="{{$row->payment->qr_url}}" alt="{{$row->payment->payment_code}}">
                     </div>
+                @endif
+
+                @if($row->payment->receipt_image_url)
+                    <div class="advertisement-description">
+                        <h4>{{__("Bill chuyển khoản đã gửi")}}</h4>
+                        <a href="{{asset($row->payment->receipt_image_url)}}" target="_blank" class="advertisement-receipt-preview">
+                            <img src="{{asset($row->payment->receipt_image_url)}}" alt="{{__('Bill chuyển khoản')}}">
+                        </a>
+                        <p class="mb-0 mt-2 text-muted">
+                            {{__("Thời gian gửi")}}:
+                            {{$row->payment->receipt_uploaded_at ? display_datetime($row->payment->receipt_uploaded_at) : '-'}}
+                        </p>
+                    </div>
+                @endif
+
+                @if($row->status === \App\Models\AdvertisementRequest::STATUS_PAYMENT_WAITING_CONFIRM)
+                    <form action="{{route('user.advertisement.upload-receipt', $row)}}" method="post" enctype="multipart/form-data" class="advertisement-description">
+                        @csrf
+                        <h4>{{__($row->payment->receipt_image_url ? "Gửi lại ảnh bill" : "Gửi ảnh bill chuyển khoản")}}</h4>
+                        <div class="form-group">
+                            <input type="file" name="payment_receipt" class="form-control" accept="image/*" required>
+                        </div>
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fa fa-upload"></i> {{__("Gửi bill cho admin")}}
+                        </button>
+                    </form>
                 @endif
                 </div>
             </div>
