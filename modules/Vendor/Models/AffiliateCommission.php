@@ -62,6 +62,6 @@ class AffiliateCommission extends Model
 
     public static function makePaymentCode($commissionId)
     {
-        return 'AFFPAY' . str_pad((string) $commissionId, 8, '0', STR_PAD_LEFT);
+        return 'AFPAY' . str_pad((string) $commissionId, 8, '0', STR_PAD_LEFT);
     }
 }

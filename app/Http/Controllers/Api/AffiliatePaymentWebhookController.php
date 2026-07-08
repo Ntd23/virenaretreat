@@ -180,7 +180,7 @@ class AffiliatePaymentWebhookController extends Controller
 
     protected function hasAffiliatePaymentCode($code, $content)
     {
-        return preg_match('/AFFPAY\d{8}/i', $code . ' ' . $content) === 1;
+        return preg_match('/AF{1,2}PAY\d{8}/i', $code . ' ' . $content) === 1;
     }
 
     protected function isTestWebhook(array $payload)

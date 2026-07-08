@@ -132,6 +132,6 @@ class SepayWebhookController extends Controller
 
     protected function hasAffiliatePaymentCode($code, $content)
     {
-        return preg_match('/AFFPAY\d{8}/i', (string)$code . ' ' . (string)$content) === 1;
+        return preg_match('/AF{1,2}PAY\d{8}/i', (string)$code . ' ' . (string)$content) === 1;
     }
 }

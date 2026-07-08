@@ -131,34 +131,108 @@
         </div>
         <div class="col-md-4">
             <!-- Cấu hình tài khoản thanh toán Affiliate -->
-            <div class="panel" style="border-radius: 10px; border: 1px solid #EAEAEA; background: #fff;">
+            <div class="panel" style="margin-top: 70px; border-radius: 10px; border: 1px solid #EAEAEA; background: #fff;">
                 <div class="panel-title" style="padding: 15px; border-bottom: 1px solid #EAEAEA; background: #F9F9F9; border-top-left-radius: 9px; border-top-right-radius: 9px;">
                     <strong>{{__("Affiliate Bank Account")}}</strong>
                 </div>
                 <div class="panel-body" style="padding: 15px;">
-                    <form action="{{ route('vendor.affiliate.save_payout_account') }}" method="post">
-                        @csrf
-                        @php
-                            $payout_account = json_decode(auth()->user()->getMeta('affiliate_payout_account'), true) ?? [];
-                        @endphp
-                        <div class="form-group mb-3">
-                            <label class="mb-1"><strong>{{__("Bank Name")}}</strong> <span class="text-danger">*</span></label>
-                            <input type="text" name="affiliate_payout_account[bank_name]" class="form-control" value="{{ $payout_account['bank_name'] ?? '' }}" required placeholder="{{__('e.g. Vietcombank, Techcombank')}}">
+                    @php
+                        $affiliate_payout_accounts = $affiliate_payout_accounts ?? [];
+                    @endphp
+                    <button type="button" class="btn btn-primary btn-block" style="width: 100%" data-toggle="modal" data-target="#affiliatePayoutAccountsModal">
+                        <i class="fa fa-credit-card mr-1"></i> {{__("Tài khoản đã lưu")}}
+                    </button>
+                    @if(!count($affiliate_payout_accounts))
+                        <div class="text-muted mt-2" style="font-size: 12px;">
+                            {{__("Bạn chưa thêm tài khoản nhận hoa hồng.")}}
                         </div>
-                        <div class="form-group mb-3">
-                            <label class="mb-1"><strong>{{__("Account Number")}}</strong> <span class="text-danger">*</span></label>
-                            <input type="text" name="affiliate_payout_account[account_number]" class="form-control" value="{{ $payout_account['account_number'] ?? '' }}" required placeholder="{{__('e.g. 19033...')}}">
+                    @else
+                        <div class="mt-3">
+                            <div class="text-muted mb-1" style="font-size: 12px;">{{__("Tài khoản mặc định")}}</div>
+                            <div class="p-2 border rounded bg-light" style="font-size: 12px;">
+                                <strong>{{ $affiliate_payout_accounts[0]['bank_name'] }}</strong><br>
+                                STK: <code class="text-danger">{{ $affiliate_payout_accounts[0]['account_number'] }}</code><br>
+                                {{__("Chủ TK")}}: <strong>{{ strtoupper($affiliate_payout_accounts[0]['account_holder']) }}</strong>
+                            </div>
                         </div>
-                        <div class="form-group mb-3">
-                            <label class="mb-1"><strong>{{__("Account Holder Name")}}</strong> <span class="text-danger">*</span></label>
-                            <input type="text" name="affiliate_payout_account[account_holder]" class="form-control" value="{{ $payout_account['account_holder'] ?? '' }}" required placeholder="{{__('e.g. NGUYEN VAN A')}}">
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="affiliatePayoutAccountsModal" tabindex="-1" role="dialog" aria-labelledby="affiliatePayoutAccountsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="affiliatePayoutAccountsModalLabel">
+                        <i class="fa fa-credit-card mr-1"></i> {{__("Tài khoản đã lưu")}}
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{{__("Close")}}">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @if(count($affiliate_payout_accounts))
+                        <div class="row">
+                            @foreach($affiliate_payout_accounts as $account)
+                                <div class="col-md-6 mb-3">
+                                    <div class="border rounded p-3 h-100 bg-light">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <strong class="text-dark">{{ $account['bank_name'] }}</strong>
+                                                @if($loop->first)
+                                                    <span class="badge badge-primary ml-1">{{__("Mặc định")}}</span>
+                                                @endif
+                                            </div>
+                                            <i class="fa fa-university text-primary"></i>
+                                        </div>
+                                        <div class="mt-2" style="font-size: 13px; line-height: 1.6;">
+                                            <div>{{__("Số tài khoản")}}: <code class="text-danger font-weight-bold">{{ $account['account_number'] }}</code></div>
+                                            <div>{{__("Chủ tài khoản")}}: <strong>{{ strtoupper($account['account_holder']) }}</strong></div>
+                                            @if(!empty($account['branch']))
+                                                <div class="text-muted">{{__("Chi nhánh")}}: {{ $account['branch'] }}</div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
-                        <div class="form-group mb-3">
-                            <label class="mb-1"><strong>{{__("Branch (Optional)")}}</strong></label>
-                            <input type="text" name="affiliate_payout_account[branch]" class="form-control" value="{{ $payout_account['branch'] ?? '' }}" placeholder="{{__('e.g. Ha Noi Branch')}}">
+                    @else
+                        <div class="alert alert-warning mb-3">
+                            {{__("Bạn chưa thêm tài khoản nhận hoa hồng.")}}
                         </div>
-                        <button type="submit" class="btn btn-primary btn-block" style="width: 100%">{{__("Save Settings")}}</button>
-                    </form>
+                    @endif
+
+                    <hr>
+                    <button type="button" class="btn btn-outline-primary mb-3" data-toggle="collapse" data-target="#affiliateAddPayoutAccountForm" aria-expanded="{{ count($affiliate_payout_accounts) ? 'false' : 'true' }}">
+                        <i class="fa fa-plus mr-1"></i> {{__("Thêm tài khoản")}}
+                    </button>
+
+                    <div class="collapse @if(!count($affiliate_payout_accounts)) show @endif" id="affiliateAddPayoutAccountForm">
+                        <form action="{{ route('vendor.affiliate.save_payout_account') }}" method="post">
+                            @csrf
+                            <div class="form-group mb-3">
+                                <label class="mb-1"><strong>{{__("Bank Name")}}</strong> <span class="text-danger">*</span></label>
+                                <input type="text" name="affiliate_payout_account[bank_name]" class="form-control" required placeholder="{{__('e.g. Vietcombank, Techcombank')}}">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="mb-1"><strong>{{__("Account Number")}}</strong> <span class="text-danger">*</span></label>
+                                <input type="text" name="affiliate_payout_account[account_number]" class="form-control" required placeholder="{{__('e.g. 19033...')}}">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="mb-1"><strong>{{__("Account Holder Name")}}</strong> <span class="text-danger">*</span></label>
+                                <input type="text" name="affiliate_payout_account[account_holder]" class="form-control" required placeholder="{{__('e.g. NGUYEN VAN A')}}">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="mb-1"><strong>{{__("Branch (Optional)")}}</strong></label>
+                                <input type="text" name="affiliate_payout_account[branch]" class="form-control" placeholder="{{__('e.g. Ha Noi Branch')}}">
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fa fa-save mr-1"></i> {{__("Lưu tài khoản")}}
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

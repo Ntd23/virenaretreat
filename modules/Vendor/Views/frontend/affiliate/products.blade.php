@@ -7,8 +7,8 @@
     @include('admin.message')
 
     @php
-        $payout_account = json_decode(auth()->user()->getMeta('affiliate_payout_account'), true) ?? [];
-        $hasPayoutAccount = !empty($payout_account['bank_name']) && !empty($payout_account['account_number']);
+        $affiliate_payout_accounts = $affiliate_payout_accounts ?? [];
+        $hasPayoutAccount = count($affiliate_payout_accounts) > 0;
     @endphp
 
     @if(!$hasPayoutAccount)
