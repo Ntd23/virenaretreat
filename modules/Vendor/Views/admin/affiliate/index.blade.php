@@ -71,45 +71,22 @@
                             <th>{{ __('Commission Amount') }}</th>
                             <th>{{ __('Commission Status') }}</th>
                             <th>{{ __('Created At') }}</th>
-                            <th width="200px">{{ __('Actions') }}</th>
+                            <th width="280px">{{ __('Actions') }}</th>
                         </tr>
                         </thead>
                         <tbody>
                         @if($rows->total() > 0)
                             @foreach($rows as $row)
                                 <tr>
+                                    @php
+                                        $payout_account_json = \App\User::find($row->referrer_id)->getMeta('affiliate_payout_account');
+                                        $payout_account = json_decode($payout_account_json, true) ?? [];
+                                        $affiliatePaymentCode = $row->affiliate_payment_code ?: ('AFPAY' . str_pad($row->id, 8, '0', STR_PAD_LEFT));
+                                    @endphp
                                     <td>#{{$row->id}}</td>
                                     <td>
                                         <div><strong>{{ $row->first_name }} {{ $row->last_name }}</strong></div>
                                         <div class="text-muted" style="font-size: 11px">{{ $row->email }}</div>
-                                        @php
-                                            $payout_account_json = \App\User::find($row->referrer_id)->getMeta('affiliate_payout_account');
-                                            $payout_account = json_decode($payout_account_json, true) ?? [];
-                                            $affiliatePaymentCode = $row->affiliate_payment_code ?: ('AFFPAY' . str_pad($row->id, 8, '0', STR_PAD_LEFT));
-                                        @endphp
-                                        @if(!empty($payout_account))
-                                            <div class="mt-1 p-2 bg-light border rounded text-dark" style="font-size: 11px; line-height: 1.4; background-color: #f8f9fa; position: relative;">
-                                                <a href="#" class="btn-vietqr" 
-                                                   style="position: absolute; right: 8px; top: 8px;"
-                                                   data-bank="{{ $payout_account['bank_name'] }}"
-                                                   data-account="{{ $payout_account['account_number'] }}"
-                                                   data-holder="{{ $payout_account['account_holder'] }}"
-                                                   data-amount="{{ (int) $row->commission_amount }}"
-                                                   data-info="{{ $affiliatePaymentCode }}"
-                                                   title="Quét mã QR chuyển khoản nhanh">
-                                                    <i class="fa fa-qrcode text-danger" style="font-size: 20px;"></i>
-                                                </a>
-                                                <i class="fa fa-university text-primary mr-1"></i><strong>{{ $payout_account['bank_name'] }}</strong><br>
-                                                STK: <code class="text-danger font-weight-bold" style="font-size: 12px;">{{ $payout_account['account_number'] }}</code><br>
-                                                Mã CK: <code class="text-primary font-weight-bold" style="font-size: 12px;">{{ $affiliatePaymentCode }}</code><br>
-                                                Chủ TK: <strong>{{ strtoupper($payout_account['account_holder']) }}</strong>
-                                                @if(!empty($payout_account['branch']))
-                                                    <br><span class="text-muted" style="font-size: 10px;">CN: {{ $payout_account['branch'] }}</span>
-                                                @endif
-                                            </div>
-                                        @else
-                                            <div class="text-danger mt-1" style="font-size: 11px;"><i class="fa fa-exclamation-triangle"></i> {{ __('No bank account configured') }}</div>
-                                        @endif
                                     </td>
                                     <td>
                                         <a href="{{ route('report.admin.booking') }}?s={{ $row->booking_id }}" target="_blank">
@@ -136,27 +113,61 @@
                                     </td>
                                     <td>{{ display_date($row->created_at) }}</td>
                                     <td>
-                                        @if($row->status === 'pending')
-                                            <div class="d-flex align-items-center">
-                                                @if($row->booking_status === 'completed')
-                                                    <form action="{{ route('vendor.admin.affiliate.commission.approve', ['id' => $row->id]) }}" method="post" class="mr-1" onsubmit="return confirm('{{ __('Are you sure you want to approve this commission?') }}')">
-                                                        @csrf
-                                                        <button type="submit" class="btn btn-sm btn-success">{{ __('Approve') }}</button>
-                                                    </form>
+                                        <div class="d-flex align-items-start">
+                                            <div class="flex-grow-1">
+                                                @if(!empty($payout_account))
+                                                    <div class="p-2 bg-light border rounded text-dark" style="font-size: 11px; line-height: 1.4; background-color: #f8f9fa; position: relative;">
+                                                        <a href="#" class="btn-vietqr"
+                                                           style="position: absolute; right: 8px; top: 8px;"
+                                                           data-bank="{{ $payout_account['bank_name'] }}"
+                                                           data-account="{{ $payout_account['account_number'] }}"
+                                                           data-holder="{{ $payout_account['account_holder'] }}"
+                                                           data-amount="{{ (int) $row->commission_amount }}"
+                                                           data-info="{{ $affiliatePaymentCode }}"
+                                                           title="Quét mã QR chuyển khoản nhanh">
+                                                            <i class="fa fa-qrcode text-danger" style="font-size: 20px;"></i>
+                                                        </a>
+                                                        <i class="fa fa-university text-primary mr-1"></i><strong>{{ $payout_account['bank_name'] }}</strong><br>
+                                                        STK: <code class="text-danger font-weight-bold" style="font-size: 12px;">{{ $payout_account['account_number'] }}</code><br>
+                                                        Mã thanh toán: <code class="text-primary font-weight-bold" style="font-size: 12px;">{{ $affiliatePaymentCode }}</code><br>
+                                                        Chủ TK: <strong>{{ strtoupper($payout_account['account_holder']) }}</strong>
+                                                        @if(!empty($payout_account['branch']))
+                                                            <br><span class="text-muted" style="font-size: 10px;">CN: {{ $payout_account['branch'] }}</span>
+                                                        @endif
+                                                    </div>
                                                 @else
-                                                    <button type="button" class="btn btn-sm btn-secondary mr-1" disabled title="{{ __('Only completed bookings can be approved') }}">{{ __('Approve') }}</button>
+                                                    <div class="text-danger" style="font-size: 11px;"><i class="fa fa-exclamation-triangle"></i> {{ __('No bank account configured') }}</div>
                                                 @endif
-                                                <form action="{{ route('vendor.admin.affiliate.commission.reject', ['id' => $row->id]) }}" method="post" onsubmit="return confirm('{{ __('Are you sure you want to reject this commission?') }}')">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-sm btn-danger">{{ __('Reject') }}</button>
-                                                </form>
                                             </div>
-                                        @elseif($row->status === 'approved')
-                                            <form action="{{ route('vendor.admin.affiliate.commission.pay', ['id' => $row->id]) }}" method="post" onsubmit="return confirm('{{ __('Are you sure you want to mark this commission as paid?') }}')">
-                                                @csrf
-                                                <button type="submit" class="btn btn-sm btn-primary">{{ __('Mark as Paid') }}</button>
-                                            </form>
-                                        @endif
+                                            <div class="dropdown ml-2">
+                                                <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="{{ __('Actions') }}">
+                                                    <i class="fa fa-ellipsis-v"></i>
+                                                </button>
+                                                <div class="dropdown-menu dropdown-menu-right">
+                                                    @if($row->status === 'pending')
+                                                        @if($row->booking_status === 'completed')
+                                                            <form action="{{ route('vendor.admin.affiliate.commission.approve', ['id' => $row->id]) }}" method="post" onsubmit="return confirm('{{ __('Are you sure you want to approve this commission?') }}')">
+                                                                @csrf
+                                                                <button type="submit" class="dropdown-item text-success">{{ __('Approve') }}</button>
+                                                            </form>
+                                                        @else
+                                                            <button type="button" class="dropdown-item disabled" disabled>{{ __('Approve') }}</button>
+                                                        @endif
+                                                        <form action="{{ route('vendor.admin.affiliate.commission.reject', ['id' => $row->id]) }}" method="post" onsubmit="return confirm('{{ __('Are you sure you want to reject this commission?') }}')">
+                                                            @csrf
+                                                            <button type="submit" class="dropdown-item text-danger">{{ __('Reject') }}</button>
+                                                        </form>
+                                                    @elseif($row->status === 'approved')
+                                                        <form action="{{ route('vendor.admin.affiliate.commission.pay', ['id' => $row->id]) }}" method="post" onsubmit="return confirm('{{ __('Are you sure you want to mark this commission as paid?') }}')">
+                                                            @csrf
+                                                            <button type="submit" class="dropdown-item text-primary">{{ __('Mark as Paid') }}</button>
+                                                        </form>
+                                                    @else
+                                                        <span class="dropdown-item text-muted">{{ __('No actions') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach
@@ -193,7 +204,7 @@
                         <div class="mb-1">Số tài khoản: <strong id="qr-account" class="text-danger" style="font-size: 14px;"></strong></div>
                         <div class="mb-1">Chủ tài khoản: <strong id="qr-holder" class="text-dark"></strong></div>
                         <div class="mb-1">Số tiền: <strong id="qr-amount" class="text-success" style="font-size: 14px;"></strong></div>
-                        <div class="mb-1">Nội dung CK: <strong id="qr-info" class="text-primary"></strong></div>
+                        <div class="mb-1">Mã thanh toán: <strong id="qr-info" class="text-primary"></strong></div>
                     </div>
                 </div>
                 <div class="modal-footer">

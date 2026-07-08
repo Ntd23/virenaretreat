@@ -101,6 +101,7 @@ class AffiliateController extends FrontendController
 
         $data = [
             'rows'        => $products,
+            'affiliate_payout_accounts' => $this->getAffiliatePayoutAccounts(Auth::user()),
             'page_title'  => __("Affiliate Products"),
             'breadcrumbs' => [
                 [
@@ -157,6 +158,7 @@ class AffiliateController extends FrontendController
             'total_approved_amount'=> $totalApprovedAmount,
             'total_pending_amount' => $totalPendingAmount,
             'total_paid_amount'    => $totalPaidAmount,
+            'affiliate_payout_accounts' => $this->getAffiliatePayoutAccounts(Auth::user()),
             'page_title'           => __("Commissions"),
             'breadcrumbs'          => [
                 [
@@ -179,9 +181,68 @@ class AffiliateController extends FrontendController
         $user = \Illuminate\Support\Facades\Auth::user();
 
         $account = $request->input('affiliate_payout_account', []);
-        
-        $user->addMeta('affiliate_payout_account', json_encode($account));
+
+        $account = $this->normalizePayoutAccount($account);
+        if (empty($account)) {
+            return redirect()->back()->with('error', __('Please enter valid bank account information'));
+        }
+
+        $accounts = $this->getAffiliatePayoutAccounts($user);
+        $accounts[] = $account;
+        $accounts = array_values($accounts);
+
+        $user->addMeta('affiliate_payout_accounts', json_encode($accounts));
+        $user->addMeta('affiliate_payout_account', json_encode($accounts[0]));
 
         return redirect()->back()->with('success', __('Affiliate payout account saved successfully'));
+    }
+
+    protected function getAffiliatePayoutAccounts($user)
+    {
+        $accounts = json_decode($user->getMeta('affiliate_payout_accounts'), true);
+        if (!is_array($accounts)) {
+            $accounts = [];
+        }
+
+        $legacyAccount = json_decode($user->getMeta('affiliate_payout_account'), true);
+        if (is_array($legacyAccount)) {
+            $legacyAccount = $this->normalizePayoutAccount($legacyAccount);
+            if (!empty($legacyAccount)) {
+                $exists = false;
+                foreach ($accounts as $account) {
+                    $account = $this->normalizePayoutAccount($account);
+                    if (($account['bank_name'] ?? '') === $legacyAccount['bank_name']
+                        && ($account['account_number'] ?? '') === $legacyAccount['account_number']) {
+                        $exists = true;
+                        break;
+                    }
+                }
+                if (!$exists) {
+                    array_unshift($accounts, $legacyAccount);
+                }
+            }
+        }
+
+        return array_values(array_filter(array_map([$this, 'normalizePayoutAccount'], $accounts)));
+    }
+
+    protected function normalizePayoutAccount($account)
+    {
+        if (!is_array($account)) {
+            return [];
+        }
+
+        $normalized = [
+            'bank_name' => trim((string) ($account['bank_name'] ?? '')),
+            'account_number' => trim((string) ($account['account_number'] ?? '')),
+            'account_holder' => trim((string) ($account['account_holder'] ?? '')),
+            'branch' => trim((string) ($account['branch'] ?? '')),
+        ];
+
+        if ($normalized['bank_name'] === '' || $normalized['account_number'] === '' || $normalized['account_holder'] === '') {
+            return [];
+        }
+
+        return $normalized;
     }
 }
