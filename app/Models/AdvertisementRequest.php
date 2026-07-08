@@ -22,10 +22,13 @@ class AdvertisementRequest extends Model
     protected $fillable = [
         'user_id',
         'advertisement_position_id',
+        'advertisement_position_ids',
         'title',
         'description',
         'content',
         'media_urls',
+        'selected_media_url',
+        'selected_media_urls',
         'target_url',
         'customer_name',
         'customer_email',
@@ -54,6 +57,8 @@ class AdvertisementRequest extends Model
 
     protected $casts = [
         'media_urls' => 'array',
+        'selected_media_urls' => 'array',
+        'advertisement_position_ids' => 'array',
         'start_date' => 'datetime',
         'end_date' => 'datetime',
         'original_price' => 'decimal:2',
@@ -178,6 +183,33 @@ class AdvertisementRequest extends Model
 
     public function firstMediaUrl()
     {
+        return $this->mediaUrlForPlacement();
+    }
+
+    public function mediaUrlForPlacement($placement = null)
+    {
+        $selectedMediaUrls = is_array($this->selected_media_urls) ? $this->selected_media_urls : [];
+
+        if ($placement && $selectedMediaUrls) {
+            $positionIds = AdvertisementPosition::query()
+                ->where(function ($query) use ($placement) {
+                    $query->where('code', $placement)
+                        ->orWhere('placement', $placement);
+                })
+                ->pluck('id');
+
+            foreach ($positionIds as $positionId) {
+                $mediaUrl = $selectedMediaUrls[(string) $positionId] ?? $selectedMediaUrls[(int) $positionId] ?? null;
+                if ($mediaUrl) {
+                    return static::normalizeMediaUrl($mediaUrl);
+                }
+            }
+        }
+
+        if ($this->selected_media_url) {
+            return static::normalizeMediaUrl($this->selected_media_url);
+        }
+
         $mediaUrls = $this->media_urls ?: [];
 
         if (!is_array($mediaUrls)) {
@@ -194,16 +226,30 @@ class AdvertisementRequest extends Model
 
     public static function runningAds($placement = null, $limit = 3)
     {
+        $positionIds = collect();
+        if ($placement) {
+            $positionIds = AdvertisementPosition::query()
+                ->where(function ($query) use ($placement) {
+                    $query->where('code', $placement)
+                        ->orWhere('placement', $placement);
+                })
+                ->pluck('id');
+        }
+
         return static::query()
             ->with('position')
             ->where('status', self::STATUS_RUNNING)
-            ->when($placement, function ($query) use ($placement) {
-                $query->where(function ($query) use ($placement) {
+            ->when($placement, function ($query) use ($placement, $positionIds) {
+                $query->where(function ($query) use ($placement, $positionIds) {
                     $query->where('placement', $placement)
                         ->orWhereHas('position', function ($query) use ($placement) {
                             $query->where('code', $placement)
                                 ->orWhere('placement', $placement);
                         });
+
+                    foreach ($positionIds as $positionId) {
+                        $query->orWhereJsonContains('advertisement_position_ids', (int) $positionId);
+                    }
                 });
             })
             ->whereNotNull('media_urls')
@@ -211,8 +257,8 @@ class AdvertisementRequest extends Model
             ->latest('updated_at')
             ->limit($limit * 3)
             ->get()
-            ->filter(function ($advertisement) {
-                return (bool) $advertisement->firstMediaUrl();
+            ->filter(function ($advertisement) use ($placement) {
+                return (bool) $advertisement->mediaUrlForPlacement($placement);
             })
             ->take($limit)
             ->values();
@@ -242,7 +288,7 @@ class AdvertisementRequest extends Model
 
             return [
                 'completed' => $runningAdvertisement->fresh(['user', 'payment', 'position']),
-                'promoted' => $positionId ? self::promoteNextWaitingForPosition($positionId, $actorId) : null,
+                'promoted' => $positionId ? self::promoteWaitingForEmptyPositions($actorId) : null,
             ];
         });
     }
@@ -294,8 +340,7 @@ class AdvertisementRequest extends Model
 
         foreach ($positionIds as $positionId) {
             $capacity = self::getPositionRunningCapacity($positionId);
-            $runningAdvertisements = static::query()
-                ->where('advertisement_position_id', $positionId)
+            $runningAdvertisements = self::queryForPosition($positionId)
                 ->where('status', self::STATUS_RUNNING)
                 ->orderByRaw('running_at IS NULL')
                 ->orderBy('running_at')
@@ -320,9 +365,13 @@ class AdvertisementRequest extends Model
     {
         $positionIds = static::query()
             ->where('status', self::STATUS_WAITING_QUEUE)
-            ->whereNotNull('advertisement_position_id')
-            ->distinct()
-            ->pluck('advertisement_position_id');
+            ->get()
+            ->flatMap(function ($advertisement) {
+                return self::getAdvertisementPositionIds($advertisement);
+            })
+            ->filter()
+            ->unique()
+            ->values();
 
         $promotedCount = 0;
 
@@ -341,18 +390,26 @@ class AdvertisementRequest extends Model
 
     public static function promoteNextWaitingForPosition($positionId, $actorId = null)
     {
-        if (self::isPositionRunningFull($positionId)) {
-            return null;
-        }
-
-        $nextAdvertisement = static::query()
-            ->where('advertisement_position_id', $positionId)
+        $waitingAdvertisements = self::queryForPosition($positionId)
             ->where('status', self::STATUS_WAITING_QUEUE)
             ->orderByRaw('confirmed_at IS NULL')
             ->orderBy('confirmed_at')
             ->orderBy('created_at')
             ->lockForUpdate()
-            ->first();
+            ->get();
+
+        $nextAdvertisement = null;
+        foreach ($waitingAdvertisements as $advertisement) {
+            $positionIds = self::getAdvertisementPositionIds($advertisement);
+            $hasAvailableSlots = $positionIds->every(function ($selectedPositionId) {
+                return !self::isPositionRunningFull($selectedPositionId);
+            });
+
+            if ($hasAvailableSlots) {
+                $nextAdvertisement = $advertisement;
+                break;
+            }
+        }
 
         if (!$nextAdvertisement) {
             return null;
@@ -377,10 +434,33 @@ class AdvertisementRequest extends Model
 
     public static function isPositionRunningFull($positionId)
     {
-        return static::query()
-            ->where('advertisement_position_id', $positionId)
+        return self::queryForPosition($positionId)
             ->where('status', self::STATUS_RUNNING)
             ->count() >= self::getPositionRunningCapacity($positionId);
+    }
+
+    public static function queryForPosition($positionId)
+    {
+        return static::query()
+            ->where(function ($query) use ($positionId) {
+                $query->where('advertisement_position_id', $positionId)
+                    ->orWhereJsonContains('advertisement_position_ids', (int) $positionId);
+            });
+    }
+
+    public static function getAdvertisementPositionIds(AdvertisementRequest $advertisement)
+    {
+        $positionIds = collect($advertisement->advertisement_position_ids ?: [])
+            ->map(function ($id) {
+                return (int) $id;
+            })
+            ->filter();
+
+        if ($positionIds->isEmpty() && $advertisement->advertisement_position_id) {
+            $positionIds->push((int) $advertisement->advertisement_position_id);
+        }
+
+        return $positionIds->unique()->values();
     }
 
     protected static function getPositionRunningCapacity($positionId)

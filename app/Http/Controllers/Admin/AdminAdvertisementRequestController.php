@@ -192,15 +192,27 @@ class AdminAdvertisementRequestController extends AdminController
             ->get()
             ->map(function ($position) {
                 $position->active_ads_count = $this->getPositionWaitingQueueCount($position->id);
+                $position->running_ads_count = $this->getPositionRunningCount($position->id);
                 $position->fixed_quantity = $this->getFixedPositionQuantity($position);
                 $position->is_full = $position->active_ads_count >= $position->fixed_quantity;
 
                 return $position;
             });
+        $selectedPositionIds = collect($advertisementRequest->advertisement_position_ids ?: [])
+            ->map(function ($id) {
+                return (int) $id;
+            })
+            ->filter()
+            ->values()
+            ->all();
+        if (empty($selectedPositionIds) && $advertisementRequest->advertisement_position_id) {
+            $selectedPositionIds = [(int) $advertisementRequest->advertisement_position_id];
+        }
 
         return view('admin.advertisements.show', [
             'row' => $advertisementRequest,
             'advertisementPositions' => $advertisementPositions,
+            'selectedPositionIds' => $selectedPositionIds,
             'currentPositionRunningCount' => $advertisementRequest->advertisement_position_id
                 ? $this->getPositionRunningCount($advertisementRequest->advertisement_position_id)
                 : 0,
@@ -224,7 +236,11 @@ class AdminAdvertisementRequestController extends AdminController
         $this->checkPermission('dashboard_access');
 
         $data = $request->validate([
-            'advertisement_position_id' => 'required|exists:advertisement_positions,id',
+            'advertisement_position_ids' => 'required|array|min:1',
+            'advertisement_position_ids.*' => 'exists:advertisement_positions,id',
+            'selected_media_url' => 'nullable|string',
+            'selected_media_urls' => 'nullable|array',
+            'selected_media_urls.*' => 'nullable|string',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'admin_note' => 'nullable|string',
@@ -238,25 +254,46 @@ class AdminAdvertisementRequestController extends AdminController
             return $this->respondError($request, __('Không thể sửa giá sau khi đã thanh toán, đang chạy hoặc đã hoàn thành.'));
         }
 
-        $position = AdvertisementPosition::query()
+        $positions = AdvertisementPosition::query()
             ->where('is_active', true)
-            ->findOrFail($data['advertisement_position_id']);
+            ->whereIn('id', $data['advertisement_position_ids'])
+            ->orderBy('sort_order')
+            ->orderBy('name')
+            ->get();
 
-        if ($this->isPositionFull($position)) {
-            return $this->respondError($request, __('Vị trí quảng cáo này đã đủ số lượng trong danh sách chờ.'));
+        if ($positions->count() !== count(array_unique($data['advertisement_position_ids']))) {
+            return $this->respondError($request, __('Có vị trí quảng cáo không hợp lệ hoặc đang tắt.'));
+        }
+
+        foreach ($positions as $position) {
+            if ($this->isPositionFull($position)) {
+                return $this->respondError($request, __('Vị trí :name đã đủ số lượng trong danh sách chờ.', ['name' => $position->name]));
+            }
         }
 
         $startDate = Carbon::parse($data['start_date'])->startOfDay();
         $endDate = Carbon::parse($data['end_date'])->startOfDay();
         $durationDays = $startDate->diffInDays($endDate) + 1;
 
-        $quote = $this->calculatePositionQuoteByDays($position, $durationDays);
+        $quote = $this->calculatePositionsQuoteByDays($positions, $durationDays);
         $data['original_price'] = $quote['original_price'];
         $data['discount_amount'] = $quote['discount_amount'];
         $data['final_price'] = $quote['final_price'];
         $data['duration'] = $durationDays . ' ngày';
         $data['start_date'] = $startDate;
         $data['end_date'] = $endDate;
+        $data['advertisement_position_ids'] = $positions->pluck('id')->map(function ($id) {
+            return (int) $id;
+        })->values()->all();
+        $data['advertisement_position_id'] = $data['advertisement_position_ids'][0];
+        $data['placement'] = optional($positions->first())->placement ?: optional($positions->first())->code;
+        $data['selected_media_urls'] = $this->normalizeSelectedMediaUrls(
+            $data['selected_media_urls'] ?? [],
+            $positions,
+            $advertisementRequest
+        );
+        $data['selected_media_url'] = collect($data['selected_media_urls'])->filter()->first()
+            ?: $this->normalizeSelectedMediaUrl($data['selected_media_url'] ?? null, $advertisementRequest);
 
         if ($data['final_price'] <= 0) {
             return $this->respondError($request, __('Thành tiền phải lớn hơn 0.'));
@@ -268,6 +305,10 @@ class AdminAdvertisementRequestController extends AdminController
             $advertisementRequest->update([
                 'status' => AdvertisementRequest::STATUS_APPROVED_WAIT_PAYMENT,
                 'advertisement_position_id' => $data['advertisement_position_id'],
+                'advertisement_position_ids' => $data['advertisement_position_ids'],
+                'placement' => $data['placement'],
+                'selected_media_url' => $data['selected_media_url'],
+                'selected_media_urls' => $data['selected_media_urls'],
                 'duration' => $data['duration'],
                 'start_date' => $data['start_date'],
                 'end_date' => $data['end_date'],
@@ -377,8 +418,10 @@ class AdminAdvertisementRequestController extends AdminController
             return $this->respondError($request, __('Yêu cầu chưa có vị trí quảng cáo.'));
         }
 
-        if ($this->isPositionRunningFull($advertisementRequest->position)) {
-            return $this->respondError($request, __('Vị trí quảng cáo này đã đủ số lượng quảng cáo đang chạy.'));
+        foreach (AdvertisementRequest::getAdvertisementPositionIds($advertisementRequest) as $positionId) {
+            if ($this->getPositionRunningCount($positionId, $advertisementRequest->id) >= $this->getFixedPositionQuantityById($positionId)) {
+                return $this->respondError($request, __('Một vị trí quảng cáo đã đủ số lượng quảng cáo đang chạy.'));
+            }
         }
 
         $advertisementRequest->update([
@@ -406,8 +449,10 @@ class AdminAdvertisementRequestController extends AdminController
             return $this->respondError($request, __('Yêu cầu chưa có vị trí quảng cáo.'));
         }
 
-        if ($this->isPositionFull($advertisementRequest->position)) {
-            return $this->respondError($request, __('Vị trí quảng cáo này đã đủ số lượng trong danh sách chờ.'));
+        foreach (AdvertisementRequest::getAdvertisementPositionIds($advertisementRequest) as $positionId) {
+            if ($this->getPositionWaitingQueueCount($positionId, $advertisementRequest->id) >= $this->getFixedPositionQuantityById($positionId)) {
+                return $this->respondError($request, __('Một vị trí quảng cáo đã đủ số lượng trong danh sách chờ.'));
+            }
         }
 
         $advertisementRequest->update([
@@ -567,16 +612,62 @@ class AdminAdvertisementRequestController extends AdminController
         return null;
     }
 
-    protected function calculatePositionQuoteByDays(AdvertisementPosition $position, $days)
+    protected function calculatePositionsQuoteByDays($positions, $days)
     {
         $days = max(1, (int) $days);
-        $originalPrice = (float) $position->base_price * $days;
+        $originalPrice = $positions->sum(function ($position) {
+            return (float) $position->base_price;
+        }) * $days;
 
         return [
             'original_price' => $originalPrice,
             'discount_amount' => 0,
             'final_price' => max(0, round($originalPrice, 2)),
         ];
+    }
+
+    protected function normalizeSelectedMediaUrl($selectedMediaUrl, AdvertisementRequest $advertisementRequest)
+    {
+        $selectedMediaUrl = trim((string) $selectedMediaUrl);
+        $mediaUrls = collect($advertisementRequest->media_urls ?: [])
+            ->map(function ($url) {
+                return (string) $url;
+            })
+            ->filter()
+            ->values();
+
+        if ($selectedMediaUrl === '') {
+            return $mediaUrls->first();
+        }
+
+        return $mediaUrls->contains($selectedMediaUrl) ? $selectedMediaUrl : $mediaUrls->first();
+    }
+
+    protected function normalizeSelectedMediaUrls($selectedMediaUrls, $positions, AdvertisementRequest $advertisementRequest)
+    {
+        $selectedMediaUrls = is_array($selectedMediaUrls) ? $selectedMediaUrls : [];
+        $mediaUrls = collect($advertisementRequest->media_urls ?: [])
+            ->map(function ($url) {
+                return (string) $url;
+            })
+            ->filter()
+            ->values();
+
+        if ($mediaUrls->isEmpty()) {
+            return [];
+        }
+
+        $fallbackMediaUrl = $mediaUrls->first();
+        $normalized = [];
+
+        foreach ($positions as $position) {
+            $selectedMediaUrl = trim((string) ($selectedMediaUrls[$position->id] ?? ''));
+            $normalized[(string) $position->id] = $mediaUrls->contains($selectedMediaUrl)
+                ? $selectedMediaUrl
+                : $fallbackMediaUrl;
+        }
+
+        return $normalized;
     }
 
     protected function isPositionFull(AdvertisementPosition $position, $excludeRequestId = null)
@@ -589,10 +680,16 @@ class AdminAdvertisementRequestController extends AdminController
         return $this->getPositionRunningCount($position->id, $excludeRequestId) >= $this->getFixedPositionQuantity($position);
     }
 
+    protected function getFixedPositionQuantityById($positionId)
+    {
+        $position = AdvertisementPosition::query()->find($positionId);
+
+        return $position ? $this->getFixedPositionQuantity($position) : 1;
+    }
+
     protected function getPositionRunningCount($positionId, $excludeRequestId = null)
     {
-        return AdvertisementRequest::query()
-            ->where('advertisement_position_id', $positionId)
+        return AdvertisementRequest::queryForPosition($positionId)
             ->where('status', AdvertisementRequest::STATUS_RUNNING)
             ->when($excludeRequestId, function ($query) use ($excludeRequestId) {
                 $query->where('id', '<>', $excludeRequestId);
@@ -602,8 +699,7 @@ class AdminAdvertisementRequestController extends AdminController
 
     protected function getPositionWaitingQueueCount($positionId, $excludeRequestId = null)
     {
-        return AdvertisementRequest::query()
-            ->where('advertisement_position_id', $positionId)
+        return AdvertisementRequest::queryForPosition($positionId)
             ->where('status', AdvertisementRequest::STATUS_WAITING_QUEUE)
             ->when($excludeRequestId, function ($query) use ($excludeRequestId) {
                 $query->where('id', '<>', $excludeRequestId);

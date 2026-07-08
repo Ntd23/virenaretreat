@@ -17,6 +17,7 @@ Route::group(['prefix'=>'user','middleware' => ['auth','verified']],function(){
     Route::get('/advertisements/create','AdvertisementRequestController@create')->name("user.advertisement.create");
     Route::post('/advertisements','AdvertisementRequestController@store')->name("user.advertisement.store");
     Route::post('/advertisements/{advertisementRequest}/pay','AdvertisementRequestController@pay')->name("user.advertisement.pay");
+    Route::post('/advertisements/{advertisementRequest}/upload-receipt','AdvertisementRequestController@uploadReceipt')->name("user.advertisement.upload-receipt");
     Route::get('/advertisements/{advertisementRequest}','AdvertisementRequestController@show')->name("user.advertisement.show");
 
 

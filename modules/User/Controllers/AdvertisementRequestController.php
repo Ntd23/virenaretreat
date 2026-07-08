@@ -131,6 +131,11 @@ class AdvertisementRequestController extends FrontendController
         $gateways = $this->getAvailablePaymentGateways();
         $request->validate([
             'payment_gateway' => 'required|in:' . implode(',', array_keys($gateways)),
+            'payment_receipt' => 'required_if:payment_gateway,sepay|nullable|image|mimes:jpg,jpeg,png,gif,webp|max:10240',
+        ], [
+            'payment_receipt.required_if' => __('Vui lòng gửi ảnh bill chuyển khoản.'),
+            'payment_receipt.image' => __('Bill chuyển khoản phải là hình ảnh.'),
+            'payment_receipt.mimes' => __('Bill chuyển khoản chỉ được dùng định dạng jpg, jpeg, png, gif hoặc webp.'),
         ]);
 
         if ($advertisementRequest->status !== AdvertisementRequest::STATUS_APPROVED_WAIT_PAYMENT) {
@@ -149,11 +154,14 @@ class AdvertisementRequestController extends FrontendController
         }
 
         $gatewayId = $request->input('payment_gateway');
+        $receiptImageUrl = $this->storePaymentReceipt($request);
 
-        DB::transaction(function () use ($advertisementRequest, $payment, $gatewayId) {
+        DB::transaction(function () use ($advertisementRequest, $payment, $gatewayId, $receiptImageUrl) {
             $payment->update([
                 'payment_method' => $gatewayId,
                 'payment_status' => AdvertisementPayment::STATUS_WAITING_CONFIRM,
+                'receipt_image_url' => $receiptImageUrl ?: $payment->receipt_image_url,
+                'receipt_uploaded_at' => $receiptImageUrl ? now() : $payment->receipt_uploaded_at,
                 'sepay_gateway' => $gatewayId === 'sepay'
                     ? (setting_item('g_sepay_bank_brand_name') ?: setting_item('g_sepay_bank_short_name') ?: setting_item('g_sepay_bank'))
                     : null,
@@ -168,6 +176,49 @@ class AdvertisementRequestController extends FrontendController
         });
 
         return redirect()->back()->with('success', __('Đã gửi xác nhận thanh toán. Vui lòng chờ admin kiểm tra và xác nhận.'));
+    }
+
+    public function uploadReceipt(Request $request, AdvertisementRequest $advertisementRequest)
+    {
+        if ((int) $advertisementRequest->user_id !== (int) Auth::id()) {
+            abort(403);
+        }
+
+        if (!in_array($advertisementRequest->status, [
+            AdvertisementRequest::STATUS_APPROVED_WAIT_PAYMENT,
+            AdvertisementRequest::STATUS_PAYMENT_WAITING_CONFIRM,
+        ], true)) {
+            return redirect()->back()->with('error', __('Yêu cầu này không ở trạng thái có thể gửi bill thanh toán.'));
+        }
+
+        $request->validate([
+            'payment_receipt' => 'required|image|mimes:jpg,jpeg,png,gif,webp|max:10240',
+        ], [
+            'payment_receipt.required' => __('Vui lòng gửi ảnh bill chuyển khoản.'),
+            'payment_receipt.image' => __('Bill chuyển khoản phải là hình ảnh.'),
+            'payment_receipt.mimes' => __('Bill chuyển khoản chỉ được dùng định dạng jpg, jpeg, png, gif hoặc webp.'),
+        ]);
+
+        $payment = $advertisementRequest->payment;
+        if (!$payment) {
+            return redirect()->back()->with('error', __('Không tìm thấy thông tin thanh toán.'));
+        }
+
+        $receiptImageUrl = $this->storePaymentReceipt($request);
+
+        DB::transaction(function () use ($advertisementRequest, $payment, $receiptImageUrl) {
+            $payment->update([
+                'payment_status' => AdvertisementPayment::STATUS_WAITING_CONFIRM,
+                'receipt_image_url' => $receiptImageUrl,
+                'receipt_uploaded_at' => now(),
+            ]);
+
+            $advertisementRequest->update([
+                'status' => AdvertisementRequest::STATUS_PAYMENT_WAITING_CONFIRM,
+            ]);
+        });
+
+        return redirect()->back()->with('success', __('Đã gửi ảnh bill chuyển khoản cho admin kiểm tra.'));
     }
 
     protected function storeMediaFiles(Request $request)
@@ -190,6 +241,20 @@ class AdvertisementRequestController extends FrontendController
         }
 
         return $urls;
+    }
+
+    protected function storePaymentReceipt(Request $request)
+    {
+        if (!$request->hasFile('payment_receipt') || !$request->file('payment_receipt')->isValid()) {
+            return null;
+        }
+
+        $file = $request->file('payment_receipt');
+        $folder = 'advertisement-bills/' . date('Y/m');
+        $filename = Str::uuid() . '.' . strtolower($file->getClientOriginalExtension());
+        $path = $file->storeAs($folder, $filename, 'uploads');
+
+        return 'uploads/' . ltrim($path, '/');
     }
 
     protected function getAvailablePaymentGateways()

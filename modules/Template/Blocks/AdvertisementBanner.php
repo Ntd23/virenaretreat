@@ -80,11 +80,20 @@ class AdvertisementBanner extends BaseBlock
     public function content($model = [])
     {
         $placement = $model['placement'] ?? 'advertisement_banner';
-        $advertisement = AdvertisementRequest::runningAds($placement, 1)->first();
+        $advertisements = AdvertisementRequest::runningAds($placement, 3);
+        $advertisement = $advertisements->first();
 
         $model['advertisement'] = $advertisement;
+        $model['advertisements'] = $advertisements->map(function ($advertisement) use ($placement) {
+            return [
+                'image_url' => $advertisement->mediaUrlForPlacement($placement),
+                'link_url' => $advertisement->link_url ?: $advertisement->target_url ?: '#',
+            ];
+        })->filter(function ($advertisement) {
+            return !empty($advertisement['image_url']);
+        })->values()->all();
         $model['banner_image_url'] = $advertisement
-            ? $advertisement->firstMediaUrl()
+            ? $advertisement->mediaUrlForPlacement($placement)
             : (FileHelper::url($model['fallback_image'] ?? '', 'full') ?? '');
         $model['banner_link_url'] = $advertisement
             ? ($advertisement->link_url ?: $advertisement->target_url ?: '#')

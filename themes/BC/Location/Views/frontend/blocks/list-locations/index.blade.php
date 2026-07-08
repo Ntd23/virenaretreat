@@ -1,8 +1,8 @@
 @php
     $running_left_ad = $running_left_ad ?? null;
     $running_right_ad = $running_right_ad ?? null;
-    $running_left_url = $running_left_ad ? $running_left_ad->firstMediaUrl() : '';
-    $running_right_url = $running_right_ad ? $running_right_ad->firstMediaUrl() : '';
+    $running_left_url = $running_left_ad ? $running_left_ad->mediaUrlForPlacement('left_sidebar') : '';
+    $running_right_url = $running_right_ad ? $running_right_ad->mediaUrlForPlacement('right_sidebar') : '';
     $banner_left_url = $running_left_url ?: (!empty($banner_left_img) ? get_file_url($banner_left_img, 'full') : '');
     $banner_right_url = $running_right_url ?: (!empty($banner_right_img) ? get_file_url($banner_right_img, 'full') : '');
     $banner_left_href = $running_left_ad ? ($running_left_ad->link_url ?: $running_left_ad->target_url ?: '#') : ($banner_left_link ?: '#');

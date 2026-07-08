@@ -3,6 +3,7 @@
     $subTitle = $sub_title ?? '';
     $imageUrl = $banner_image_url ?? '';
     $linkUrl = $banner_link_url ?: '#';
+    $advertisements = $advertisements ?? [];
     $targetBlank = !empty($advertisement) && $linkUrl !== '#';
 @endphp
 
@@ -20,7 +21,22 @@
             <a href="{{url('/hotel')}}" class="advertisement-banner-more">{{__("Xem tất cả")}} <i class="fa fa-angle-right"></i></a>
         </div>
 
-        @if($imageUrl)
+        @if(count($advertisements) > 1)
+            <div class="owl-carousel advertisement-banner-carousel" style="height: {{$height}}px;">
+                @foreach($advertisements as $advertisementItem)
+                    @php
+                        $adImageUrl = $advertisementItem['image_url'] ?? '';
+                        $adLinkUrl = $advertisementItem['link_url'] ?? '#';
+                        $hasAdLink = $adLinkUrl && $adLinkUrl !== '#';
+                    @endphp
+                    <div class="item">
+                        <a href="{{$adLinkUrl}}" class="advertisement-banner-media" style="height: {{$height}}px;" @if($hasAdLink) target="_blank" rel="noopener" @endif>
+                            <img src="{{$adImageUrl}}" alt="{{$title ?: __('Banner quảng cáo')}}">
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+        @elseif($imageUrl)
             <a href="{{$linkUrl}}" class="advertisement-banner-media" style="height: {{$height}}px;" @if($targetBlank) target="_blank" rel="noopener" @endif>
                 <img src="{{$imageUrl}}" alt="{{$title ?: __('Banner quảng cáo')}}">
             </a>
@@ -75,6 +91,14 @@
             background: #f3f6fb;
         }
 
+        .bravo-advertisement-banner .advertisement-banner-carousel,
+        .bravo-advertisement-banner .advertisement-banner-carousel .owl-stage-outer,
+        .bravo-advertisement-banner .advertisement-banner-carousel .owl-stage,
+        .bravo-advertisement-banner .advertisement-banner-carousel .owl-item,
+        .bravo-advertisement-banner .advertisement-banner-carousel .item {
+            height: 100%;
+        }
+
         .bravo-advertisement-banner .advertisement-banner-media img {
             display: block;
             width: 100%;
@@ -108,3 +132,29 @@
         }
     </style>
 @endpush
+
+@if(count($advertisements) > 1)
+    @push('js')
+        <script>
+            $(function () {
+                $('.advertisement-banner-carousel').each(function () {
+                    var carousel = $(this);
+                    if (carousel.hasClass('owl-loaded')) {
+                        return;
+                    }
+                    carousel.owlCarousel({
+                        items: 1,
+                        loop: true,
+                        margin: 0,
+                        nav: false,
+                        dots: true,
+                        autoplay: true,
+                        autoplayTimeout: 5000,
+                        autoplayHoverPause: true,
+                        animateOut: 'fadeOut'
+                    });
+                });
+            });
+        </script>
+    @endpush
+@endif

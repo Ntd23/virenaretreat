@@ -19,6 +19,8 @@
         'failed' => 'danger',
     ];
     $mediaUrls = is_array($row->media_urls) ? $row->media_urls : array_filter(preg_split('/\r\n|\r|\n|,/', (string) $row->media_urls));
+    $selectedMediaUrls = old('selected_media_urls', $row->selected_media_urls ?: []);
+    $selectedMediaUrls = is_array($selectedMediaUrls) ? $selectedMediaUrls : [];
 @endphp
 
 @push('css')
@@ -119,7 +121,26 @@
                         <p><strong>{{__("Email")}}:</strong> {{$row->customer_email ?: '-'}}</p>
                         <p><strong>{{__("Số điện thoại")}}:</strong> {{$row->customer_phone ?: '-'}}</p>
                         <p><strong>{{__("Địa chỉ")}}:</strong> {{$row->customer_address ?: '-'}}</p>
-                        <p><strong>{{__("Vị trí quảng cáo")}}:</strong> {{$row->position ? $row->position->name : '-'}}</p>
+                        <p><strong>{{__("Vị trí quảng cáo")}}:</strong>
+                            @php
+                                $rowPositionIds = collect($row->advertisement_position_ids ?: [])
+                                    ->map(function ($id) { return (int) $id; })
+                                    ->filter();
+                                if ($rowPositionIds->isEmpty() && $row->advertisement_position_id) {
+                                    $rowPositionIds->push((int) $row->advertisement_position_id);
+                                }
+                                $rowPositions = \App\Models\AdvertisementPosition::query()
+                                    ->whereIn('id', $rowPositionIds->all())
+                                    ->orderBy('sort_order')
+                                    ->orderBy('name')
+                                    ->get();
+                            @endphp
+                            @if($rowPositions->count())
+                                {{ $rowPositions->pluck('name')->implode(', ') }}
+                            @else
+                                -
+                            @endif
+                        </p>
                         <p><strong>{{__("Thời gian chạy")}}:</strong> {{$row->duration_label}}</p>
                     </div>
                 </div>
@@ -134,21 +155,61 @@
                                 @csrf
                                 <div class="form-group">
                                     <label>{{__("Vị trí quảng cáo")}} <span class="text-danger">*</span></label>
-                                    <select name="advertisement_position_id" class="form-control js-advertisement-position" required>
-                                        <option value="">{{__("-- Chọn vị trí quảng cáo --")}}</option>
+                                    <div class="border rounded p-2">
                                         @foreach($advertisementPositions as $position)
-                                            <option
-                                                value="{{$position->id}}"
-                                                data-price="{{(float) $position->base_price}}"
-                                                @if($position->is_full && (string) old('advertisement_position_id', $row->advertisement_position_id) !== (string) $position->id) disabled @endif
-                                                @if((string) old('advertisement_position_id', $row->advertisement_position_id) === (string) $position->id) selected @endif
-                                            >
-                                                {{$position->name}} - {{$position->code}}
-                                                ({{__("Chờ")}}: {{$position->active_ads_count}}/{{$position->fixed_quantity}})
-                                                @if($position->is_full) - {{__("Đã đủ")}} @endif
-                                            </option>
+                                            @php
+                                                $oldPositionIds = collect(old('advertisement_position_ids', $selectedPositionIds ?? []))
+                                                    ->map(function ($id) { return (string) $id; })
+                                                    ->all();
+                                                $isSelectedPosition = in_array((string) $position->id, $oldPositionIds, true);
+                                                $isDisabledPosition = $position->is_full && !$isSelectedPosition;
+                                            @endphp
+                                            <div class="js-advertisement-position-item mb-3 pb-2 border-bottom">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox"
+                                                           name="advertisement_position_ids[]"
+                                                           value="{{$position->id}}"
+                                                           id="advertisement-position-{{$position->id}}"
+                                                           class="custom-control-input js-advertisement-position"
+                                                           data-price="{{(float) $position->base_price}}"
+                                                           @if($isSelectedPosition) checked @endif
+                                                           @if($isDisabledPosition) disabled @endif>
+                                                    <label class="custom-control-label" for="advertisement-position-{{$position->id}}">
+                                                        <strong>{{$position->name}}</strong> - {{$position->code}}
+                                                        <span class="text-muted">
+                                                            ({{__("Chờ")}}: {{$position->active_ads_count}}/{{$position->fixed_quantity}},
+                                                            {{__("Đang chạy")}}: {{$position->running_ads_count}}/{{$position->fixed_quantity}})
+                                                        </span>
+                                                        <span class="d-block text-muted">{{__("Giá")}}: {{number_format((float) $position->base_price, 0, ',', '.')}}đ/{{__("ngày")}}</span>
+                                                        @if($isDisabledPosition)
+                                                            <span class="badge badge-secondary">{{__("Đã đủ")}}</span>
+                                                        @endif
+                                                    </label>
+                                                </div>
+                                                @if($mediaUrls)
+                                                    @php
+                                                        $selectedMediaForPosition = $selectedMediaUrls[$position->id] ?? $selectedMediaUrls[(string) $position->id] ?? $row->selected_media_url;
+                                                    @endphp
+                                                    <div class="js-position-media-options mt-2 ml-4">
+                                                        <label class="small mb-2">{{__("Ảnh cho vị trí này")}}</label>
+                                                        <div class="row">
+                                                            @foreach($mediaUrls as $mediaIndex => $url)
+                                                                <div class="col-md-6 mb-2">
+                                                                    <label class="border rounded p-2 d-block h-100">
+                                                                        <input type="radio"
+                                                                               name="selected_media_urls[{{$position->id}}]"
+                                                                               value="{{$url}}"
+                                                                               @if(($selectedMediaForPosition ?: ($mediaIndex === 0 ? $url : '')) === $url) checked @endif>
+                                                                        <img src="{{$url}}" alt="media" class="img-fluid mt-1" style="height: 90px; width: 100%; object-fit: cover;">
+                                                                    </label>
+                                                                </div>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                            </div>
                                         @endforeach
-                                    </select>
+                                    </div>
                                     @if($advertisementPositions->isEmpty())
                                         <small class="form-text text-danger">{{__("Chưa có cấu hình vị trí quảng cáo. Vui lòng tạo dữ liệu trong bảng advertisement_positions.")}}</small>
                                     @endif
@@ -179,7 +240,7 @@
                                     <label>{{__("Giá tiền / ngày")}}</label>
                                     <input type="text" class="form-control js-base-price" readonly>
                                     <small class="form-text text-muted">
-                                        {{__("Giá tiền được tính theo đơn giá/ngày của vị trí quảng cáo đã chọn.")}}
+                                        {{__("Giá tiền được tính theo tổng đơn giá/ngày của các vị trí quảng cáo đã chọn.")}}
                                         <a href="{{route('admin.advertisements.pricing')}}" target="_blank">{{__("Cấu hình giá")}}</a>
                                     </small>
                                 </div>
@@ -187,7 +248,7 @@
                                     <label>{{__("Thành tiền")}}</label>
                                     <input type="hidden" name="final_price" value="{{old('final_price', $row->final_price)}}" class="js-final-price-value">
                                     <input type="text" value="{{number_format((float) old('final_price', $row->final_price), 0, ',', '.')}}" class="form-control js-final-price" readonly>
-                                    <small class="form-text text-muted">{{__("Thành tiền = số ngày chạy x giá tiền/ngày.")}}</small>
+                                    <small class="form-text text-muted">{{__("Thành tiền = số ngày chạy x tổng giá tiền/ngày của các vị trí đã chọn.")}}</small>
                                 </div>
                                 <div class="form-group">
                                     <label>{{__("Ghi chú admin")}}</label>
@@ -238,11 +299,15 @@
                             <p><strong>{{__("Cổng SePay")}}:</strong> {{$row->payment->sepay_gateway ?: '-'}}</p>
                             <p><strong>{{__("Nội dung chuyển khoản SePay")}}:</strong> {{$row->payment->sepay_transfer_content ?: $row->payment->sepay_content ?: '-'}}</p>
                             <p><strong>{{__("Ngày giao dịch SePay")}}:</strong> {{$row->payment->sepay_transaction_date ? display_datetime($row->payment->sepay_transaction_date) : '-'}}</p>
+                            <p><strong>{{__("Thời gian gửi bill")}}:</strong> {{$row->payment->receipt_uploaded_at ? display_datetime($row->payment->receipt_uploaded_at) : '-'}}</p>
                             <p><strong>{{__("Thời gian thanh toán")}}:</strong> {{$row->payment->paid_at ? display_datetime($row->payment->paid_at) : '-'}}</p>
 
-                            @if($row->payment->qr_url)
-                                <div class="text-center mb-3">
-                                    <img src="{{$row->payment->qr_url}}" alt="{{$row->payment->payment_code}}" class="img-fluid" style="max-width: 220px;">
+                            @if($row->payment->receipt_image_url)
+                                <div class="mb-3">
+                                    <p><strong>{{__("Ảnh bill chuyển khoản")}}:</strong></p>
+                                    <a href="{{asset($row->payment->receipt_image_url)}}" target="_blank" class="d-inline-block border rounded p-2">
+                                        <img src="{{asset($row->payment->receipt_image_url)}}" alt="{{__('Ảnh bill chuyển khoản')}}" class="img-fluid" style="max-width: 320px; max-height: 420px; object-fit: contain;">
+                                    </a>
                                 </div>
                             @endif
 
@@ -350,8 +415,10 @@
         function updateAdvertisementFinalPrice() {
             $('.js-approve-form').each(function () {
                 var form = $(this);
-                var selectedPosition = form.find('.js-advertisement-position option:selected');
-                var basePrice = parseFloat(selectedPosition.data('price')) || 0;
+                var basePrice = 0;
+                form.find('.js-advertisement-position:checked').each(function () {
+                    basePrice += parseFloat($(this).data('price')) || 0;
+                });
                 var finalPrice = basePrice;
                 var startDate = form.find('.js-advertisement-start-date').val();
                 var endDate = form.find('.js-advertisement-end-date').val();
@@ -378,8 +445,23 @@
             });
         }
 
-        $('.js-advertisement-position, .js-advertisement-start-date, .js-advertisement-end-date').on('change keyup', updateAdvertisementFinalPrice);
+        function togglePositionMediaOptions() {
+            $('.js-advertisement-position').each(function () {
+                var checkbox = $(this);
+                checkbox
+                    .closest('.js-advertisement-position-item')
+                    .find('.js-position-media-options')
+                    .toggleClass('d-none', !checkbox.is(':checked'));
+            });
+        }
+
+        $('.js-advertisement-position').on('change', function () {
+            updateAdvertisementFinalPrice();
+            togglePositionMediaOptions();
+        });
+        $('.js-advertisement-start-date, .js-advertisement-end-date').on('change keyup', updateAdvertisementFinalPrice);
         updateAdvertisementFinalPrice();
+        togglePositionMediaOptions();
 
         function normalizeMoneyValue(value) {
             return String(value || '').replace(/[^\d]/g, '');
